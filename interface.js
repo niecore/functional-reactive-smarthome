@@ -31,6 +31,8 @@ let inRoom = (roomName) => {
     }
 }
 
+let getOccupancy = (msg) => msg.payload.occupancy
+
 let isDeviceType = (type) => {
     return (msg) => {
         return devices
@@ -50,7 +52,7 @@ let staircaseStream = devicesStream
 
 let staircaseOccupancy = staircaseStream
     .filter(isDeviceType("motion_sensor"))
-    .map(_ => _.payload.occupancy)
+    .map(getOccupancy)
     .filter(Boolean)
 
 staircaseOccupancy.onValue(msg => {
