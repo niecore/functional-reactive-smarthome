@@ -1,10 +1,12 @@
 const bacon = require("baconjs")
 const mqtt = require("mqtt")
+const {matches} = require('z')
+const {getSunrise, getSunset} = require('sunrise-sunset-js')
 
 const config = {
     services: {
         mqtt: {
-            address: "mqtt://localhost"
+            address: "mqtt://192.168.0.158"
         }
     },
     baseTopic: "zigbee2mqtt"
@@ -18,6 +20,7 @@ let devices = [
     {name: "motionsensor_aqara_2", type: "motion_sensor", room: "unused"},
     {name: "motionsensor_aqara_3", type: "motion_sensor", room: "staircase"},
     {name: "motionsensor_aqara_4", type: "motion_sensor", room: "staircase"},
+    {name: "motionsensor_aqara_5", type: "motion_sensor", room: "staircase"},
     {name: "lightbulb_huew_1", type: "light", room: "junk_room"},
     {name: "lightbulb_tradfriw_1", type: "light", room: "staircase"},
     {name: "lightbulb_tradfriw_2", type: "light", room: "staircase"},
@@ -26,20 +29,22 @@ let devices = [
 ]
 
 let rooms = [
-    {name: "front_door", motion_light: {enabled: false}},
-    {name: "hallway", motion_light: {enabled: false}},
-    {name: "server_room", motion_light: {enabled: false}},
-    {name: "bathroom_small", motion_light: {enabled: false}},
-    {name: "kitchen", motion_light: {enabled: false}},
-    {name: "living_room", motion_light: {enabled: false}},
-    {name: "junk_room", motion_light: {enabled: false}},
-    {name: "garden", motion_light: {enabled: false}},
-    {name: "staircase", motion_light: {enabled: true}},
-    {name: "office", motion_light: {enabled: false}},
-    {name: "bathroom", motion_light: {enabled: false}},
-    {name: "bedroom", motion_light: {enabled: false}},
-    {name: "laundry_room", motion_light: {enabled: false}},
+    {name: "front_door", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "hallway", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "server_room", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "bathroom_small", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "kitchen", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "living_room", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "junk_room", motion_light: {enabled: true, adaptiveBrigthness: false}},
+    {name: "garden", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "staircase", motion_light: {enabled: true, adaptiveBrigthness: true}},
+    {name: "office", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "bathroom", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "bedroom", motion_light: {enabled: false, adaptiveBrigthness: false}},
+    {name: "laundry_room", motion_light: {enabled: false, adaptiveBrigthness: false}},
 ]
+
+let getRoomFromDevice = device => rooms.filter(room => room.name = device.room)
 
 let motionLightEnabled = room => room.motion_light.enabled == true
 
@@ -64,9 +69,8 @@ let inRoom = roomName => message => getDevice(message.name)
 let isDeviceType = deviceType => message => getDevice(message.name)
     .some(deviceHasType(deviceType))
 
-
 let setLight = enable => device => {
-    client.publish(config.baseTopic + "/" + device.name + "/set", '{"state": "' + (enable ? "on" : "off") + '"}', qos = 1)
+    client.publish(config.baseTopic + "/" + device.name + "/set", '{"state": "' + (enable ? "on" : "off") + '","brightness": ' + adaptiveBrigthness(device).toString() + "}", qos = 1)
 }
 
 let setLightsInRoom = room => enable => getLightsInRoom(room)
@@ -93,6 +97,27 @@ let roomMovementLightTrigger = room => roomOccupancy(room)
     .flatMapLatest(
         () => bacon.once(true).merge(bacon.later(90000, false))
     )
+
+
+let timeInNightTime = date => (getSunrise(50.6, 8.7) > date || date > getSunset(50.6, 8.7))
+let timeInSleepTime = date => timeInNightTime(date) && date.getHours() < 10
+let timeInDayTime = date => !timeInNightTime(date)
+let dayTime = () => timeInDayTime(new Date())
+let sleepTime = () => timeInSleepTime(new Date())
+
+let evaluateDayPhase = () => {
+    if(dayTime()) return "dayTime"
+    if(sleepTime()) return "sleepTime"
+    return "nightTime"
+}
+
+let adaptiveBrigthness = device => {
+    return matches(evaluateDayPhase()) (
+        (x = "dayTime") => 0,
+        (x = "nightTime") => 255,
+        (x = "sleepTime") => 5
+    )
+}
 
 getRoomsWithEnabledMotionLight.forEach(room => {
         roomMovementLightTrigger(room)
