@@ -46,10 +46,11 @@ let rooms = [
 
 let getRoomFromDevice = device => rooms.filter(room => room.name = device.room)
 
-let motionLightEnabled = room => room.motion_light.enabled == true
+let motionLightEnabled = room => room.motion_light.enabled
+let motionLightAdaptiveBrightness = room => room.motion_light.adaptiveBrigthness
 
 let deviceHasType = type => device => device.type === type
-let deviceIsInRoom = room => device => device.room === room
+let deviceIsInRoom = room => device => device.room === room.name
 
 let getDevice = deviceName => devices.filter(device => device.name === deviceName)
 let getDevicesInRoom = roomName => devices.filter(deviceIsInRoom(roomName))
@@ -59,24 +60,34 @@ let getPropertyOfMessage = property => message => message.payload[property]
 let getLightsInRoom = room => getDevicesInRoom(room)
     .filter(deviceHasType("light"))
 
+let getRoomsWithEnabledAdaptiveBrightness = rooms
+    .filter(motionLightAdaptiveBrightness)
+
 let getRoomsWithEnabledMotionLight = rooms
     .filter(motionLightEnabled)
-    .map(room => room.name)
 
-let inRoom = roomName => message => getDevice(message.name)
-    .some(deviceIsInRoom(roomName))
+let inRoom = room => message => getDevice(message.name)
+    .some(deviceIsInRoom(room))
 
 let isDeviceType = deviceType => message => getDevice(message.name)
     .some(deviceHasType(deviceType))
 
-let setLight = enable => device => {
-    client.publish(config.baseTopic + "/" + device.name + "/set", '{"state": "' + (enable ? "on" : "off") + '","brightness": ' + adaptiveBrigthness(device).toString() + "}", qos = 1)
+let setLight = (enable, brightness) => device => {
+    client.publish(config.baseTopic + "/" + device.name + "/set", '{"state": "' + (enable ? "on" : "off") + '","brightness": ' + brightness + "}", qos = 1)
 }
 
-let setLightsInRoom = room => enable => getLightsInRoom(room)
-    .forEach(setLight(enable))
+let setLightsInRoom = room => enable =>  {
+    let brigthness = matches(motionLightAdaptiveBrightness(room)) (
+        (x = true) => adaptiveBrigthness(),
+        (x = false) => 255
+    )
+    getLightsInRoom(room)
+        .forEach(setLight(enable, brigthness))
+}
 
 let occupancyDetected = message => getPropertyOfMessage("occupancy")(message)
+let illuminance = message => getPropertyOfMessage("illuminance")(message)
+
 let mqttTopic = device => config.baseTopic + "/" + device.name
 
 let devicesStream = bacon.fromBinder(function (sink) {
@@ -93,11 +104,14 @@ let roomOccupancy = room => roomStream(room)
     .filter(occupancyDetected)
     .map(true)
 
+let roomIlluminance = room => roomStream(room)
+    .filter(isDeviceType("motion_sensor"))
+    .map(illuminance)
+
 let roomMovementLightTrigger = room => roomOccupancy(room)
     .flatMapLatest(
         () => bacon.once(true).merge(bacon.later(90000, false))
     )
-
 
 let timeInNightTime = date => (getSunrise(50.6, 8.7) > date || date > getSunset(50.6, 8.7))
 let timeInSleepTime = date => timeInNightTime(date) && date.getHours() < 10
@@ -111,7 +125,7 @@ let evaluateDayPhase = () => {
     return "nightTime"
 }
 
-let adaptiveBrigthness = device => {
+let adaptiveBrigthness = () => {
     return matches(evaluateDayPhase()) (
         (x = "dayTime") => 0,
         (x = "nightTime") => 255,
@@ -126,3 +140,6 @@ getRoomsWithEnabledMotionLight.forEach(room => {
 )
 
 client.subscribe(devices.map(mqttTopic))
+
+
+console.log("Starting functional-reactive-smart-home.")
