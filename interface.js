@@ -145,7 +145,6 @@ let adaptiveBrigthness = () => {
 
 getRoomsWithEnabledMotionLight.forEach(room => {
         roomMovementLightTrigger(room)
-            .log()
             .onValue(setLightsInRoom(room))
     }
 )
