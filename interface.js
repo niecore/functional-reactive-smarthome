@@ -4,29 +4,40 @@ const notfication = require("./notifications")
 const {matches} = require('z')
 const {getSunrise, getSunset} = require('sunrise-sunset-js')
 
-const config = {
-    services: {
-        mqtt: {
-            address: "mqtt://192.168.0.158"
-        }
-    },
-    baseTopic: "zigbee2mqtt"
-}
+const address = "mqtt://192.168.0.158"
+const baseTopic = "zigbee2mqtt"
+const client = mqtt.connect(address)
 
-const client = mqtt.connect(config.services.mqtt.address)
+let mqttTopic = device => baseTopic + "/" + device.name
+let isPublishError = msg => msg.payload.type === "zigbee_publish_error"
+let friendlyDeviceName = msg => msg.payload.meta.entity.friendlyName
+let knownDeviceMessage = msg => devices.map(device => device.name).includes(msg.name)
+let logMessage = msg => msg.name.startsWith("bridge/log")
+
+let mqttStream = bacon.fromBinder(function (sink) {
+    client.on('message', function (topic, message) {
+        sink({name: topic.replace(baseTopic + "/", ""), payload: JSON.parse(message.toString())})
+    })
+})
+
+let logStream = mqttStream
+    .filter(logMessage)
+
+let devicesStream = mqttStream
+    .filter(knownDeviceMessage)
 
 const devices = [
-    {name: "motionsensor_aqara_1", type: "motion_sensor", room: "junk_room"},
-    {name: "motionsensor_aqara_2", type: "motion_sensor", room: "unused"},
-    {name: "motionsensor_aqara_3", type: "motion_sensor", room: "staircase"},
-    {name: "motionsensor_aqara_4", type: "motion_sensor", room: "staircase"},
-    {name: "motionsensor_aqara_5", type: "motion_sensor", room: "staircase"},
-    {name: "lightbulb_huew_1", type: "light", room: "junk_room"},
-    {name: "lightbulb_tradfriw_1", type: "light", room: "staircase"},
-    {name: "lightbulb_tradfriw_2", type: "light", room: "staircase"},
-    {name: "lightbulb_tradfriw_3", type: "light", room: "staircase"},
-    {name: "lightbulb_tradfriw_4", type: "light", room: "staircase"},
-    {name: "sensor_air_1", type: "air_sensor", room: "laundry_room"},
+    {name: "motionsensor_aqara_1", type: "motion_sensor", room: "junk_room", description: ""},
+    {name: "motionsensor_aqara_2", type: "motion_sensor", room: "unused", description: ""},
+    {name: "motionsensor_aqara_3", type: "motion_sensor", room: "staircase", description: ""},
+    {name: "motionsensor_aqara_4", type: "motion_sensor", room: "staircase", description: ""},
+    {name: "motionsensor_aqara_5", type: "motion_sensor", room: "staircase", description: ""},
+    {name: "lightbulb_huew_1", type: "light", room: "junk_room", description: "Lampe in Speisekammer"},
+    {name: "lightbulb_tradfriw_1", type: "light", room: "staircase", description: "Hängelampe Flur (Mitte)"},
+    {name: "lightbulb_tradfriw_2", type: "light", room: "staircase", description: "Hängelampe Flur (Oben)"},
+    {name: "lightbulb_tradfriw_3", type: "light", room: "staircase", description: "Wandlampe Flur (Oben)"},
+    {name: "lightbulb_tradfriw_4", type: "light", room: "staircase", description: "Wandlampe Flur (Mitte)"},
+    {name: "sensor_air_1", type: "air_sensor", room: "laundry_room", description: ""},
 ]
 
 const rooms = [
@@ -54,7 +65,7 @@ const automations = {
         delay: 90 * 1000
     },
     thresholdAlarms: [
-        {room: {name:"laundry_room"}, property: "humidity", limits: {max: 65}, delay: 600 * 1000}
+        {room: {name: "laundry_room"}, property: "humidity", limits: {max: 65}, delay: 600 * 1000}
     ]
 }
 
@@ -64,7 +75,7 @@ let motionLightEnabled = room => automations.motionLight.rooms.map(room => room.
 let deviceHasType = type => device => device.type === type
 let deviceIsInRoom = room => device => device.room === room.name
 
-let getDevice = deviceName => devices.filter(device => device.name === deviceName)
+let getDevice = deviceName => devices.find(device => device.name === deviceName)
 let getDevicesInRoom = roomName => devices.filter(deviceIsInRoom(roomName))
 let getDevicesOfType = deviceType => devices.filter(deviceHasType(deviceType))
 let getPropertyOfMessage = property => message => message.payload[property]
@@ -75,14 +86,11 @@ let getLightsInRoom = room => getDevicesInRoom(room)
 let getRoomsWithEnabledMotionLight = rooms
     .filter(motionLightEnabled)
 
-let inRoom = room => message => getDevice(message.name)
-    .some(deviceIsInRoom(room))
-
-let isDeviceType = deviceType => message => getDevice(message.name)
-    .some(deviceHasType(deviceType))
+let inRoom = room => message => deviceIsInRoom(room)(getDevice(message.name))
+let isDeviceType = deviceType => message => deviceHasType(deviceType)(getDevice(message.name))
 
 let setLight = (enable, brightness) => device => {
-    client.publish(config.baseTopic + "/" + device.name + "/set", '{"state": "' + (enable ? "on" : "off") + '","brightness": ' + brightness + "}", qos = 1)
+    client.publish(baseTopic + "/" + device.name + "/set", '{"state": "' + (enable ? "on" : "off") + '","brightness": ' + brightness + "}", qos = 1)
 }
 
 let setLightsInRoom = room => enable => {
@@ -93,14 +101,6 @@ let setLightsInRoom = room => enable => {
 let occupancyDetected = message => getPropertyOfMessage("occupancy")(message)
 let illuminance = message => getPropertyOfMessage("illuminance")(message)
 let humidity = message => getPropertyOfMessage("humidity")(message)
-
-let mqttTopic = device => config.baseTopic + "/" + device.name
-
-let devicesStream = bacon.fromBinder(function (sink) {
-    client.on('message', function (topic, message) {
-        sink({name: topic.replace(config.baseTopic + "/", ""), payload: JSON.parse(message.toString())})
-    })
-})
 
 let roomStream = room => devicesStream
     .filter(inRoom(room))
@@ -143,7 +143,8 @@ let adaptiveBrigthness = () => {
     )
 }
 
-getRoomsWithEnabledMotionLight.forEach(room => {
+
+automations.motionLight.rooms.forEach(room => {
         roomMovementLightTrigger(room)
             .onValue(setLightsInRoom(room))
     }
@@ -153,7 +154,7 @@ automations.thresholdAlarms.forEach(alarm => {
     roomStream(alarm.room)
         .map(getPropertyOfMessage(alarm.property))
         .flatMapLatest(value =>
-            bacon.later(alarm.delay,   {value: value, trigger: alarm.limits.min > value || value > alarm.limits.max})
+            bacon.later(alarm.delay, {value: value, trigger: alarm.limits.min > value || value > alarm.limits.max})
         )
         .filter(_ => _.trigger)
         .map(_ => `Threshold alarm in room ${alarm.room.name}: ${alarm.property} is ${_.value.toString()}`)
@@ -161,6 +162,15 @@ automations.thresholdAlarms.forEach(alarm => {
         .subscribe()
 })
 
+unreachableDeviceStream = logStream
+    .filter(isPublishError)
+    .map(friendlyDeviceName)
+    .map(getDevice)
+    .map(device => `Unreachable device: ${device.description} ${device.name}`)
+    .doAction(notfication.sendMessage)
+    .subscribe()
 
 client.subscribe(devices.map(mqttTopic))
+client.subscribe(baseTopic + "/bridge/log")
 console.log("Starting functional-reactive-smart-home.")
+
