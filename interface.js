@@ -90,12 +90,12 @@ let inRoom = room => message => deviceIsInRoom(room)(getDevice(message.name))
 let isDeviceType = deviceType => message => deviceHasType(deviceType)(getDevice(message.name))
 
 let setLight = (enable, brightness) => device => {
-    client.publish(baseTopic + "/" + device.name + "/set", '{"state": "' + (enable ? "on" : "off") + '","brightness": ' + brightness + "}", qos = 1)
+    client.publish(baseTopic + "/" + device + "/set", '{"state": "' + (enable ? "on" : "off") + '","brightness": ' + brightness + "}", qos = 1)
 }
 
+
 let setLightsInRoom = room => enable => {
-    getLightsInRoom(room)
-        .forEach(setLight(enable, adaptiveBrigthness()))
+    setLight(enable, adaptiveBrigthness())(room.name + "_" + "light")
 }
 
 let occupancyDetected = message => getPropertyOfMessage("occupancy")(message)
@@ -170,7 +170,29 @@ unreachableDeviceStream = logStream
     .doAction(notfication.sendMessage)
     .subscribe()
 
+let removeDeviceFromAllGroups = device => {
+    client.publish(baseTopic + "/bridge/group/remove_all", device.name, qos = 1)
+}
+
+let createGroup = device => {
+    client.publish(baseTopic + "/bridge/config/add_group", device.room + "_" + device.type, qos = 1)
+}
+
+let addToGroup = device => {
+    client.publish(baseTopic + "/bridge/group/" + device.room + "_" + device.type + "/add", device.name, qos = 1)
+}
+
+bacon.fromArray(devices)
+    .filter(isDeviceType("light"))
+    .bufferingThrottle(2000)
+    .doAction(removeDeviceFromAllGroups)
+    .doAction(createGroup)
+    .doAction(addToGroup)
+    .subscribe()
+
+
 client.subscribe(devices.map(mqttTopic))
 client.subscribe(baseTopic + "/bridge/log")
-console.log("Starting functional-reactive-smart-home.")
+logStream.log()
 
+console.log("Starting functional-reactive-smart-home.")
