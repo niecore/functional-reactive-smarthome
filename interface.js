@@ -8,7 +8,7 @@ const address = "mqtt://192.168.0.158"
 const baseTopic = "zigbee2mqtt"
 const client = mqtt.connect(address)
 
-let mqttTopic = device => baseTopic + "/" + device.name
+let getMqttTopic = device => baseTopic + "/" + device.name
 let isPublishError = msg => msg.payload.type === "zigbee_publish_error"
 let friendlyDeviceName = msg => msg.payload.meta.entity.friendlyName
 let knownDeviceMessage = msg => devices.map(device => device.name).includes(msg.name)
@@ -62,7 +62,7 @@ const automations = {
             {name: "junk_room"},
             {name: "staircase"},
         ],
-        delay: 90 * 1000
+        delay: 3 * 1000
     },
     thresholdAlarms: [
         {room: {name: "laundry_room"}, property: "humidity", limits: {max: 65}, delay: 600 * 1000}
@@ -170,28 +170,30 @@ unreachableDeviceStream = logStream
     .doAction(notfication.sendMessage)
     .subscribe()
 
+let groupFromDevice = device => device.room + "_" + device.type
+
 let removeDeviceFromAllGroups = device => {
     client.publish(baseTopic + "/bridge/group/remove_all", device.name, qos = 1)
 }
 
-let createGroup = device => {
-    client.publish(baseTopic + "/bridge/config/add_group", device.room + "_" + device.type, qos = 1)
+let createGroupForDevice = device => {
+    client.publish(baseTopic + "/bridge/config/add_group", groupFromDevice(device), qos = 1)
 }
 
-let addToGroup = device => {
-    client.publish(baseTopic + "/bridge/group/" + device.room + "_" + device.type + "/add", device.name, qos = 1)
+let addDeviceToGroup = device => {
+    client.publish(baseTopic + "/bridge/group/" + groupFromDevice(device) + "/add", device.name, qos = 1)
 }
 
 bacon.fromArray(devices)
     .filter(isDeviceType("light"))
     .bufferingThrottle(2000)
     .doAction(removeDeviceFromAllGroups)
-    .doAction(createGroup)
-    .doAction(addToGroup)
+    .doAction(createGroupForDevice)
+    .doAction(addDeviceToGroup)
     .subscribe()
 
 
-client.subscribe(devices.map(mqttTopic))
+client.subscribe(devices.map(getMqttTopic))
 client.subscribe(baseTopic + "/bridge/log")
 logStream.log()
 
