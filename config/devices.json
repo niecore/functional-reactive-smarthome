@@ -1,0 +1,70 @@
+{
+  "devices": [
+    {
+      "name": "motionsensor_aqara_1",
+      "type": "motion_sensor",
+      "room": "junk_room",
+      "description": ""
+    },
+    {
+      "name": "motionsensor_aqara_2",
+      "type": "motion_sensor",
+      "room": "unused",
+      "description": ""
+    },
+    {
+      "name": "motionsensor_aqara_3",
+      "type": "motion_sensor",
+      "room": "staircase",
+      "description": ""
+    },
+    {
+      "name": "motionsensor_aqara_4",
+      "type": "motion_sensor",
+      "room": "staircase",
+      "description": ""
+    },
+    {
+      "name": "motionsensor_aqara_5",
+      "type": "motion_sensor",
+      "room": "staircase",
+      "description": ""
+    },
+    {
+      "name": "lightbulb_huew_1",
+      "type": "light",
+      "room": "junk_room",
+      "description": "Lampe in Speisekammer"
+    },
+    {
+      "name": "lightbulb_tradfriw_1",
+      "type": "light",
+      "room": "staircase",
+      "description": "Hängelampe Flur (Mitte)"
+    },
+    {
+      "name": "lightbulb_tradfriw_2",
+      "type": "light",
+      "room": "staircase",
+      "description": "Hängelampe Flur (Oben)"
+    },
+    {
+      "name": "lightbulb_tradfriw_3",
+      "type": "light",
+      "room": "staircase",
+      "description": "Wandlampe Flur (Oben)"
+    },
+    {
+      "name": "lightbulb_tradfriw_4",
+      "type": "light",
+      "room": "staircase",
+      "description": "Wandlampe Flur (Mitte)"
+    },
+    {
+      "name": "sensor_air_1",
+      "type": "air_sensor",
+      "room": "laundry_room",
+      "description": ""
+    }
+  ]
+}

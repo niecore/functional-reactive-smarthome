@@ -3,64 +3,15 @@ const mqtt = require("mqtt");
 const notfication = require("./notifications");
 const {matches} = require('z');
 const {getSunrise, getSunset} = require('sunrise-sunset-js');
+const R = require('ramda');
 
-const address = "mqtt://192.168.0.158";
-const baseTopic = "zigbee2mqtt";
-const client = mqtt.connect(address);
 
-let getMqttTopic = device => baseTopic + "/" + device.name;
-let isPublishError = msg => msg.payload.type === "zigbee_publish_error";
-let friendlyDeviceName = msg => msg.payload.meta.entity.friendlyName;
-let knownDeviceMessage = msg => devices.map(device => device.name).includes(msg.name);
-let logMessage = msg => msg.name.startsWith("bridge/log");
-
-let mqttStream = bacon.fromBinder(function (sink) {
-    client.on('message', function (topic, message) {
-        sink({name: topic.replace(baseTopic + "/", ""), payload: JSON.parse(message.toString())})
-    })
-});
-
-let logStream = mqttStream
-    .filter(logMessage);
-
-let devicesStream = mqttStream
-    .filter(knownDeviceMessage);
-
-const devices = [
-    {name: "motionsensor_aqara_1", type: "motion_sensor", room: "junk_room", description: ""},
-    {name: "motionsensor_aqara_2", type: "motion_sensor", room: "unused", description: ""},
-    {name: "motionsensor_aqara_3", type: "motion_sensor", room: "staircase", description: ""},
-    {name: "motionsensor_aqara_4", type: "motion_sensor", room: "staircase", description: ""},
-    {name: "motionsensor_aqara_5", type: "motion_sensor", room: "staircase", description: ""},
-    {name: "lightbulb_huew_1", type: "light", room: "junk_room", description: "Lampe in Speisekammer"},
-    {name: "lightbulb_tradfriw_1", type: "light", room: "staircase", description: "Hängelampe Flur (Mitte)"},
-    {name: "lightbulb_tradfriw_2", type: "light", room: "staircase", description: "Hängelampe Flur (Oben)"},
-    {name: "lightbulb_tradfriw_3", type: "light", room: "staircase", description: "Wandlampe Flur (Oben)"},
-    {name: "lightbulb_tradfriw_4", type: "light", room: "staircase", description: "Wandlampe Flur (Mitte)"},
-    {name: "sensor_air_1", type: "air_sensor", room: "laundry_room", description: ""},
-];
-
-const rooms = [
-    {name: "front_door"},
-    {name: "hallway"},
-    {name: "server_room"},
-    {name: "bathroom_small"},
-    {name: "kitchen"},
-    {name: "living_room"},
-    {name: "junk_room"},
-    {name: "garden"},
-    {name: "staircase"},
-    {name: "office"},
-    {name: "bathroom"},
-    {name: "bedroom"},
-    {name: "laundry_room"},
-];
 
 const automations = {
     motionLight: {
         rooms: [
             {name: "junk_room"},
-            {name: "staircase"},
+            {name: "staircase", includeNight: ["lightbulb_tradfriw_1", "lightbulb_tradfriw_2"]},
         ],
         delay: 3 * 1000
     },
@@ -171,39 +122,47 @@ unreachableDeviceStream = logStream
     .subscribe();
 
 let groupFromDevice = device => device.room + "_" + device.type;
-let deviceRoomGroup = device => device.room + "_" + device.type
-let deviceNightLightGroup = device => device.room + "_" + device.type + "_nightlight"
+let deviceRoomGroup = device => device.room + "_" + device.type;
+let deviceNightLightGroup = device => device.room + "_" + device.type + "_nightlight";
 
-let removeDeviceFromAllGroups = device => {
-    client.publish(baseTopic + "/bridge/group/remove_all", device.name, qos = 1)
-};
-let removeDeviceFromAllGroups = device => client.publish(baseTopic + "/bridge/group/remove_all", device.name, qos = 1)
-let createGroup = name => client.publish(baseTopic + "/bridge/config/add_group", name, qos = 1)
-let addDeviceToGroup = name => device => client.publish(baseTopic + "/bridge/group/" + name + "/add", device.name, qos = 1)
+let removeDeviceFromAllGroups = device => client.publish(baseTopic + "/bridge/group/remove_all", device.name, qos = 1);
+let createGroup = name => client.publish(baseTopic + "/bridge/config/add_group", name, qos = 1);
+let addDeviceToGroup = name => device => client.publish(baseTopic + "/bridge/group/" + name + "/add", device.name, qos = 1);
 
-let createGroupForDevice = device => {
-    client.publish(baseTopic + "/bridge/config/add_group", groupFromDevice(device), qos = 1)
-};
 
-let addDeviceToGroup = device => {
-    client.publish(baseTopic + "/bridge/group/" + groupFromDevice(device) + "/add", device.name, qos = 1)
-};
-let createGroupForDevice = device => createGroup(deviceRoomGroup(device))
-let addDeviceToRoomGroup = device => addDeviceToGroup(deviceRoomGroup(device))(device)
-let createNightGroupForDevice = device => createGroup(deviceNightLightGroup(device))
-let addDeviceToNightLightGroup = device => addDeviceToGroup(deviceNightLightGroup(device))(device)
+let createGroupForDevice = device => createGroup(deviceRoomGroup(device));
+let addDeviceToRoomGroup = device => addDeviceToGroup(deviceRoomGroup(device))(device);
+let createNightGroupForDevice = device => createGroup(deviceNightLightGroup(device));
+let addDeviceToNightLightGroup = device => addDeviceToGroup(deviceNightLightGroup(device))(device);
 
 bacon.fromArray(devices)
     .filter(isDeviceType("light"))
     .bufferingThrottle(2000)
     .doAction(removeDeviceFromAllGroups)
+    .delay(1000)
     .doAction(createGroupForDevice)
+    .delay(1000)
     .doAction(addDeviceToGroup)
+    //.subscribe();
+
+
+let createGroupForDeviceList = name => list => list.forEach(addDeviceToRoomGroup(name));
+
+let excludedFromNightLight = room => bacon.fromArray(automations.motionLight.rooms)
+    .map(R.prop("name"))
+    .map(getDevicesInRoom)
+
+bacon.fromArray(automations.motionLight.rooms)
+    .map(getDevicesInRoom)
+    .doAction(devicelist => createGroupForDeviceList(devicelist[0].room.name + "_motion_light_group"))
     .subscribe();
 
 
-client.subscribe(devices.map(getMqttTopic));
-client.subscribe(baseTopic + "/bridge/log");
+
 logStream.log();
+
+
+excludedFromNightLight("staircase").log()
+
 
 console.log("Starting functional-reactive-smart-home.");

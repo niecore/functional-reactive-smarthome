@@ -1,0 +1,30 @@
+{
+  "automations": {
+    "motionLight": {
+      "rooms": [
+        {
+          "name": "junk_room"
+        },
+        {
+          "name": "staircase",
+          "includeNight": [
+            "lightbulb_tradfriw_1",
+            "lightbulb_tradfriw_2"
+          ]
+        }
+      ],
+      "delay": 90
+    },
+    "thresholdAlarms": [
+      {
+        "room": {
+          "name": "laundry_room"
+        },
+        "property": "humidity",
+        "limits": {
+          "max": 65
+        },
+        "delay": 600
+      }
+    ]
+  }
