@@ -5,6 +5,7 @@
     "baconjs": "^3.0.10",
     "mqtt": "^3.0.0",
     "node-telegram-bot-api": "^0.40.0",
+    "rambda": "^4.1.0",
     "ramda": "^0.26.1",
     "sunrise-sunset-js": "^2.1.1",
     "z": "^1.0.9"
