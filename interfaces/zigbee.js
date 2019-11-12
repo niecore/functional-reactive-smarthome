@@ -1,5 +1,5 @@
-const Bacon = require("baconjs");
 const Mqtt = require("mqtt");
+const Bacon = require("baconjs");
 const R = require('ramda');
 const Devices = require('../config/devices.json');
 const Interfaces = require('../config/interfaces.json');
@@ -11,11 +11,17 @@ const baseTopic = Interfaces.zigbee.baseTopic;
 // baseTopic :: String
 const address = Interfaces.zigbee.address;
 
+// isZigbeeDevice :: Device -> bool
+const isZigbeeDevice = R.propEq("interface", "zigbee");
+
 // knownDevices :: [Device]
-const knownDevices = Devices.devices;
+const knownDevices = Devices.devices.filter(isZigbeeDevice);
 
 // getName :: Device -> String
 const getName = R.prop('name');
+
+// isKnownDevice :: String -> bool
+const isKnownDevice = R.includes(R.__, knownDevices.map(getName));
 
 // prependBaseTopic :: String -> String
 const prependBaseTopic = R.concat(baseTopic + "/");
@@ -28,9 +34,6 @@ const removeBaseTopic = R.replace(baseTopic + "/", "");
 
 // deviceTopic :: Device -> String
 const deviceTopic = R.compose(prependBaseTopic, getName);
-
-// isKnownDevice :: String -> bool
-const isKnownDevice = R.includes(R.__, knownDevices.map(getName));
 
 // topicLense :: Lens s a
 const topicLense = R.lensProp("topic");
