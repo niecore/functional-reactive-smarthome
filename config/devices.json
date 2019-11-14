@@ -4,77 +4,66 @@
       "name": "motionsensor_aqara_1",
       "interface": "zigbee",
       "type": "motion_sensor",
-      "room": "junk_room",
       "description": ""
     },
     {
       "name": "motionsensor_aqara_2",
       "interface": "zigbee",
       "type": "motion_sensor",
-      "room": "unused",
       "description": ""
     },
     {
       "name": "motionsensor_aqara_3",
       "interface": "zigbee",
       "type": "motion_sensor",
-      "room": "staircase",
       "description": ""
     },
     {
       "name": "motionsensor_aqara_4",
       "interface": "zigbee",
       "type": "motion_sensor",
-      "room": "staircase",
       "description": ""
     },
     {
       "name": "motionsensor_aqara_5",
       "interface": "zigbee",
       "type": "motion_sensor",
-      "room": "staircase",
       "description": ""
     },
     {
       "name": "lightbulb_huew_1",
       "interface": "zigbee",
       "type": "light",
-      "room": "junk_room",
       "description": "Lampe in Speisekammer"
     },
     {
       "name": "lightbulb_tradfriw_1",
       "interface": "zigbee",
       "type": "light",
-      "room": "staircase",
       "description": "Hängelampe Flur (Mitte)"
     },
     {
       "name": "lightbulb_tradfriw_2",
       "interface": "zigbee",
       "type": "light",
-      "room": "staircase",
       "description": "Hängelampe Flur (Oben)"
     },
     {
       "name": "lightbulb_tradfriw_3",
       "interface": "zigbee",
       "type": "light",
-      "room": "staircase",
       "description": "Wandlampe Flur (Oben)"
     },
     {
       "name": "lightbulb_tradfriw_4",
       "interface": "zigbee",
       "type": "light",
-      "room": "staircase",
       "description": "Wandlampe Flur (Mitte)"
     },
     {
       "name": "sensor_air_1",
       "interface": "zigbee",
       "type": "air_sensor",
-      "room": "laundry_room",
       "description": ""
     }
   ]

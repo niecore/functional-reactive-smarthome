@@ -2,7 +2,7 @@ const Bacon = require("baconjs");
 const R = require('ramda');
 const Devices = require('../config/devices.json');
 const Automations = require('../config/automations.json');
-const Routes = require('../routes');
+const Routes = require('../router');
 
 const motionLight = Automations.automations.motionLight;
 const deviceStream = Routes.deviceInputStream;

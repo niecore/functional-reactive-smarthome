@@ -2,5 +2,8 @@
   "zigbee": {
     "address": "mqtt://192.168.0.158",
     "baseTopic": "zigbee2mqtt"
+  },
+  "tasmota": {
+
   }
 }
