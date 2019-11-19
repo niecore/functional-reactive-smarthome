@@ -15,3 +15,8 @@ const roomDeviceList = room => R.compose(getDevicesFromRoom, getKnownRoom(room))
 
 // isInRoom :: String -> Device -> bool
 const isInRoom = room => device => R.includes(device, roomDeviceList(room));
+
+module.exports = {
+    knownRooms: knownRooms,
+};
+

@@ -99,7 +99,7 @@ let setLight = (enable, brightness) => device => {
 
 let setLightsInRoom = room => enable => {
     setLight(enable, adaptiveBrigthness())(room.name + "_" + "light")
-}
+};
 
 let occupancyDetected = message => getPropertyOfMessage("occupancy")(message);
 let illuminance = message => getPropertyOfMessage("illuminance")(message);
