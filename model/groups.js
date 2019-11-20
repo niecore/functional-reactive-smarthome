@@ -1,5 +1,4 @@
 const R = require('ramda');
-const Devices = require('../config/devices.json');
 const Groups = require('../config/groups.json');
 const Rooms = require('../model/rooms.js');
 
@@ -10,23 +9,24 @@ const userGroups = Groups.groups;
 const nameLense = R.lensProp("name");
 
 // roomGroupName :: String => String
-const roomGroupName = R.append(R.__, "room_group_");
+const roomGroupName = R.concat("room_group_");
 
 // roomGroup :: String -> [Group]
-const roomGroup = room => Rooms.knownRooms
-    .filter(R.propEq("name", room))
-    .map(R.pick(["name", "devices"]))
-    .map(R.over(nameLense, roomGroupName));
+const roomGroup = room => Rooms.
 
 // typeGroupName :: String => String
-const typeGroupName = R.append(R.__, "type_group_");
-
-// deviceTypeGroup :: String -> [Group]
-const deviceTypeGroup = deviceType => Devices.devices
-    .filter(R.propEq("type", deviceType))
-    .map(R.prop("name"))
-    .map(R.objOf(typeGroupName(deviceType)));
+const typeGroupName = R.concat("type_group_");
 
 
-console.log(deviceTypeGroup('motion_sensor'));
+// createGroupOfDevices :: String -> [Device] -> [Group]
+const createGroupOfDevices = name => R.pipe(
+        R.map(R.prop("name")),
+        R.map(R.of),
+        R.map(R.objOf("devices")),
+        R.reduce(R.mergeWith(R.concat), []),
+        R.assoc("name", name)
+    );
+
+console.log(createGroupOfDevices('motion_sensor')( Devices.devices));
+
 console.log(roomGroup("staircase"));
