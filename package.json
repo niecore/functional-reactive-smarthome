@@ -12,5 +12,14 @@
   },
   "devDependencies": {
     "jest": "^24.9.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "rooms.json": "<rootDir>/config/tests/rooms.test.json",
+      "devices.json": "<rootDir>/config/tests/devices.test.json"
+    }
   }
 }

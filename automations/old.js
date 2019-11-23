@@ -4,94 +4,6 @@ const notfication = require("./notifications");
 const {matches} = require('z');
 const {getSunrise, getSunset} = require('sunrise-sunset-js');
 
-const address = "mqtt://192.168.0.158";
-const baseTopic = "zigbee2mqtt";
-const client = mqtt.connect(address);
-
-let getMqttTopic = device => baseTopic + "/" + device.name;
-let isPublishError = msg => msg.payload.type === "zigbee_publish_error";
-let friendlyDeviceName = msg => msg.payload.meta.entity.friendlyName;
-let knownDeviceMessage = msg => devices.map(device => device.name).includes(msg.name);
-let logMessage = msg => msg.name.startsWith("bridge/log");
-
-let mqttStream = bacon.fromBinder(function (sink) {
-    client.on('message', function (topic, message) {
-        sink({name: topic.replace(baseTopic + "/", ""), payload: JSON.parse(message.toString())})
-    })
-});
-
-let logStream = mqttStream
-    .filter(logMessage);
-
-let devicesStream = mqttStream
-    .filter(knownDeviceMessage);
-
-const devices = [
-    {name: "motionsensor_aqara_1", type: "motion_sensor", room: "junk_room", description: ""},
-    {name: "motionsensor_aqara_2", type: "motion_sensor", room: "unused", description: ""},
-    {name: "motionsensor_aqara_3", type: "motion_sensor", room: "staircase", description: ""},
-    {name: "motionsensor_aqara_4", type: "motion_sensor", room: "staircase", description: ""},
-    {name: "motionsensor_aqara_5", type: "motion_sensor", room: "staircase", description: ""},
-    {name: "lightbulb_huew_1", type: "light", room: "junk_room", description: "Lampe in Speisekammer"},
-    {name: "lightbulb_tradfriw_1", type: "light", room: "staircase", description: "Hängelampe Flur (Mitte)"},
-    {name: "lightbulb_tradfriw_2", type: "light", room: "staircase", description: "Hängelampe Flur (Oben)"},
-    {name: "lightbulb_tradfriw_3", type: "light", room: "staircase", description: "Wandlampe Flur (Oben)"},
-    {name: "lightbulb_tradfriw_4", type: "light", room: "staircase", description: "Wandlampe Flur (Mitte)"},
-    {name: "sensor_air_1", type: "air_sensor", room: "laundry_room", description: ""},
-];
-
-const rooms = [
-    {name: "front_door"},
-    {name: "hallway"},
-    {name: "server_room"},
-    {name: "bathroom_small"},
-    {name: "kitchen"},
-    {name: "living_room"},
-    {name: "junk_room"},
-    {name: "garden"},
-    {name: "staircase"},
-    {name: "office"},
-    {name: "bathroom"},
-    {name: "bedroom"},
-    {name: "laundry_room"},
-];
-
-const automations = {
-    motionLight: {
-        rooms: [
-            {name: "junk_room"},
-            {name: "staircase"},
-        ],
-        nightlights: [
-            "lightbulb_tradfriw_3",
-            "lightbulb_tradfriw_4",
-        ],
-        delay: 90 * 1000
-    },
-    thresholdAlarms: [
-        {room: {name: "laundry_room"}, property: "humidity", limits: {max: 65}, delay: 600 * 1000}
-    ]
-};
-
-let getRoomFromDevice = device => rooms.filter(room => room.name = device.room);
-let motionLightEnabled = room => automations.motionLight.rooms.map(room => room.name).includes(room.name);
-
-let deviceHasType = type => device => device.type === type;
-let deviceIsInRoom = room => device => device.room === room.name;
-
-let getDevice = deviceName => devices.find(device => device.name === deviceName);
-let getDevicesInRoom = roomName => devices.filter(deviceIsInRoom(roomName));
-let getDevicesOfType = deviceType => devices.filter(deviceHasType(deviceType));
-let getPropertyOfMessage = property => message => message.payload[property];
-
-let getLightsInRoom = room => getDevicesInRoom(room)
-    .filter(deviceHasType("light"));
-
-let getRoomsWithEnabledMotionLight = rooms
-    .filter(motionLightEnabled);
-
-let inRoom = room => message => deviceIsInRoom(room)(getDevice(message.name));
-let isDeviceType = deviceType => message => deviceHasType(deviceType)(getDevice(message.name));
 
 let setLight = (enable, brightness) => device => {
     client.publish(baseTopic + "/" + device + "/set", '{"state": "' + (enable ? "on" : "off") + '", "brightness": ' + brightness + "}", qos = 1)
@@ -145,7 +57,6 @@ let adaptiveBrigthness = () => {
         (x = "sleepTime") => 1
     )
 };
-
 
 automations.motionLight.rooms.forEach(room => {
         roomMovementLightTrigger(room)

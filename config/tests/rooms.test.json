@@ -1,0 +1,13 @@
+{
+  "rooms": [
+    {
+      "name": "empty_room"
+    },
+    {
+      "name": "first_room",
+      "devices": [
+        "device_id_1"
+      ]
+    }
+  ]
+}

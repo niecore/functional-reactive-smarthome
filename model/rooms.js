@@ -1,29 +1,33 @@
 const R = require('ramda');
 const Rooms = require('../config/rooms.json');
-const Devices = require('../config/devices.json');
+const Devices = require('../model/devices');
 
 // knownRooms
 const knownRooms = Rooms.rooms;
 
-// getKnownRoom :: String => Room | undefined
-const getKnownRoom = room => R.find(R.propEq('name', room), knownRooms);
+// getRoomByName :: String => Room | undefined
+const getRoomByName = room => R.find(R.propEq('name', room), knownRooms);
 
-// getDevicesFromRoom :: Room => [String]
-const getDevicesFromRoom = R.pipe(
-        R.prop("devices"),
-        R.map(getDeviceByName)
+// getDevicesInRoom :: String => [Devices]
+const getDevicesInRoom = R.pipe(
+        getRoomByName,
+        R.propOr([], "devices"),
+        R.map(Devices.getDeviceByName)
     );
 
-// roomDeviceList :: String => [String]
-const roomDeviceList = R.pipe(
-        getKnownRoom,
-        getDevicesFromRoom,
-    );
+// getRoomOfDevice :: Device => Room | undefined
+const getRoomOfDevice = R.pipe(
+    R.prop("name"),
+
+);
 
 // isInRoom :: String -> Device -> bool
-const isInRoom = room => device => R.includes(device, roomDeviceList(room));
+const isInRoom = room => device => R.find(R.propEq('name', device.name))(getDevicesInRoom(room)); // todo: beautify
+
 
 module.exports = {
-    knownRooms: knownRooms,
+    getRoomByName,
+    getDevicesInRoom,
+    isInRoom
 };
 

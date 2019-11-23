@@ -5,6 +5,15 @@ const Rooms = require('../model/rooms.js');
 // usergroups :: [Group]
 const userGroups = Groups.groups;
 
+// createGroupOfDevices :: String -> [Device] -> [Group]
+const createGroupOfDevices = name => R.pipe(
+    R.map(R.prop("name")),
+    R.map(R.of),
+    R.map(R.objOf("devices")),
+    R.reduce(R.mergeWith(R.concat), []),
+    R.assoc("name", name)
+);
+
 // topicLense :: Lens s a
 const nameLense = R.lensProp("name");
 
@@ -12,21 +21,14 @@ const nameLense = R.lensProp("name");
 const roomGroupName = R.concat("room_group_");
 
 // roomGroup :: String -> [Group]
-const roomGroup = room => Rooms.
+const roomGroup = room => R.pipe(
+    Rooms.getDevicesInRoom,
+    createGroupOfDevices
+);
 
 // typeGroupName :: String => String
 const typeGroupName = R.concat("type_group_");
 
 
-// createGroupOfDevices :: String -> [Device] -> [Group]
-const createGroupOfDevices = name => R.pipe(
-        R.map(R.prop("name")),
-        R.map(R.of),
-        R.map(R.objOf("devices")),
-        R.reduce(R.mergeWith(R.concat), []),
-        R.assoc("name", name)
-    );
-
-console.log(createGroupOfDevices('motion_sensor')( Devices.devices));
 
 console.log(roomGroup("staircase"));
