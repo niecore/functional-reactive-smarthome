@@ -1,6 +1,7 @@
 const R = require('ramda');
 const Groups = require('../config/groups.json');
 const Rooms = require('../model/rooms.js');
+const Devices = require('../model/devices.js');
 
 // usergroups :: [Group]
 const userGroups = Groups.groups;
@@ -14,21 +15,25 @@ const createGroupOfDevices = name => R.pipe(
     R.assoc("name", name)
 );
 
-// topicLense :: Lens s a
+// nameLense :: Lens s a
 const nameLense = R.lensProp("name");
 
-// roomGroupName :: String => String
-const roomGroupName = R.concat("room_group_");
+// devicesLense :: Lens s a
+const devicesLense = R.lensProp("devices");
+
+// groupPrefix :: String => String
+const groupPrefix = R.concat("group_");
 
 // roomGroup :: String -> [Group]
-const roomGroup = room => R.pipe(
-    Rooms.getDevicesInRoom,
-    createGroupOfDevices
-);
+const roomGroup = room => R.of(createGroupOfDevices(groupPrefix(room))(Rooms.getDevicesInRoom(room))); // todo: beautify
+
+// typeGroup :: String -> [Group]
+const typeGroup = type => R.of(createGroupOfDevices(groupPrefix(type))(Devices.getDevicesOfType(type))); // todo: beautify
 
 // typeGroupName :: String => String
-const typeGroupName = R.concat("type_group_");
+const roomTypeGroupName = (room, type) => type + "_in_" + room;
 
-
-
-console.log(roomGroup("staircase"));
+// roomGroupOfType :: String, String -> [Group]
+const roomGroupOfType = (room, type) => roomGroup(room)
+    .map(R.over(devicesLense, R.filter(Devices.deviceHasType(type))))
+    .map(R.over(nameLense, R.always(groupPrefix(roomTypeGroupName(room, type)))));

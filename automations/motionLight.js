@@ -7,8 +7,6 @@ const Routes = require('../router');
 const motionLight = Automations.automations.motionLight;
 const deviceStream = Routes.deviceInputStream;
 
-
-
 motionLight.rooms.forEach(room => {
         roomMovementLightTrigger(room)
             .onValue(setLightsInRoom(room))
