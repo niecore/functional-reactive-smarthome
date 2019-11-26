@@ -3,10 +3,17 @@ const ZigbeeInterface = require('./interfaces/zigbee');
 
 const deviceOutputStream = new Bacon.Bus();
 
-deviceOutputStream.plug(ZigbeeInterface.deviceOutputStream);
+deviceOutputStream.plug(
+    ZigbeeInterface.deviceOutputStream)
+;
 
-exports.deviceInputStream = Bacon.mergeAll(
+const deviceInputStream = Bacon.mergeAll(
     ZigbeeInterface.deviceInputStream
 );
 
-exports.deviceOutputStream = deviceOutputStream;
+module.exports = {
+    deviceInputStream,
+    deviceOutputStream,
+};
+
+console.log("Starting functional-reactive-smart-home.");

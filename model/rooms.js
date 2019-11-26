@@ -24,7 +24,6 @@ const getRoomOfDevice = R.pipe(
 // isInRoom :: String -> Device -> bool
 const isInRoom = room => device => R.find(R.propEq('name', device.name))(getDevicesInRoom(room)); // todo: beautify
 
-
 module.exports = {
     getRoomByName,
     getDevicesInRoom,

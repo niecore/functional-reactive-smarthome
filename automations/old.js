@@ -84,28 +84,6 @@ unreachableDeviceStream = logStream
     .doAction(notfication.sendMessage)
     .subscribe();
 
-let groupFromDevice = device => device.room + "_" + device.type;
-let deviceRoomGroup = device => device.room + "_" + device.type
-let deviceNightLightGroup = device => device.room + "_" + device.type + "_nightlight"
-
-let removeDeviceFromAllGroups = device => {
-    client.publish(baseTopic + "/bridge/group/remove_all", device.name, qos = 1)
-};
-let removeDeviceFromAllGroups = device => client.publish(baseTopic + "/bridge/group/remove_all", device.name, qos = 1)
-let createGroup = name => client.publish(baseTopic + "/bridge/config/add_group", name, qos = 1)
-let addDeviceToGroup = name => device => client.publish(baseTopic + "/bridge/group/" + name + "/add", device.name, qos = 1)
-
-let createGroupForDevice = device => {
-    client.publish(baseTopic + "/bridge/config/add_group", groupFromDevice(device), qos = 1)
-};
-
-let addDeviceToGroup = device => {
-    client.publish(baseTopic + "/bridge/group/" + groupFromDevice(device) + "/add", device.name, qos = 1)
-};
-let createGroupForDevice = device => createGroup(deviceRoomGroup(device))
-let addDeviceToRoomGroup = device => addDeviceToGroup(deviceRoomGroup(device))(device)
-let createNightGroupForDevice = device => createGroup(deviceNightLightGroup(device))
-let addDeviceToNightLightGroup = device => addDeviceToGroup(deviceNightLightGroup(device))(device)
 
 bacon.fromArray(devices)
     .filter(isDeviceType("light"))
@@ -118,8 +96,4 @@ bacon.fromArray(devices)
     .subscribe();
 
 
-client.subscribe(devices.map(getMqttTopic));
-client.subscribe(baseTopic + "/bridge/log");
-logStream.log();
 
-console.log("Starting functional-reactive-smart-home.");

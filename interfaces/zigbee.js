@@ -42,8 +42,40 @@ const topicLense = R.lensProp("topic");
 const payloadLense = R.lensProp("payload");
 
 // renameToDeviceStream :: Message -> DeviceState
-const deviceStreamRenaming = RenameKeys.renameKeys({topic: "device", payload: "state"});
-const mqttStreamRenaming = RenameKeys.renameKeys({device: "topic", state: "payload"});
+const renameToDeviceStream = RenameKeys.renameKeys({topic: "device", payload: "state"});
+
+// renameToMqttStream :: DeviceState -> Message
+const renameToMqttStream = RenameKeys.renameKeys({device: "topic", state: "payload"});
+
+// isLogTopic :: String -> bool
+const isLogTopic = R.endsWith("bridge/log");
+
+// isLogMessage ::  Message -> bool
+const isLogMessage = R.propSatisfies(isLogTopic, "topic");
+
+// createGroupTopic :: String
+const createGroupTopic = prependBaseTopic("bridge/config/add_group");
+
+// groupTopic :: String
+const groupTopic = R.pipe(
+    R.concat("bridge/group/"),
+    prependBaseTopic
+);
+
+// removeFromAllGroupsTopic :: String
+const removeFromAllGroupsTopic = groupTopic("/remove_all");
+
+// addDeviceToGroupTopic :: String -> String
+const addToGroupTopic = R.pipe(
+    R.concat(R.__, "/add"),
+    groupTopic
+);
+
+// removeFromGroupTopic :: String -> String
+const removeFromGroupTopic = R.pipe(
+    R.concat(R.__, "/remove"),
+    groupTopic
+);
 
 const client = Mqtt.connect(address);
 client.subscribe(knownDevices.map(deviceTopic));
@@ -63,17 +95,37 @@ const processedStream = rawStream
 
 const deviceInputStream = processedStream
     .filter(!isKnownDevice(R.view(topicLense)))
-    .map(deviceStreamRenaming);
+    .map(renameToDeviceStream);
 
 const deviceOutputStream = new Bacon.Bus();
 
 deviceOutputStream
-    .map(mqttStreamRenaming)
+    .map(renameToMqttStream)
     .map(R.over(topicLense, R.pipe(prependBaseTopic, appendSetTopic)))
     .map(R.over(payloadLense, JSON.stringify))
+    .map(R.props("topic", "payload"))
     .onValue(input =>
-        client.publish(input.topic, input.payload)
+        publishTopic(input.topic, input.payload)
     );
 
-exports.deviceInputStream = deviceInputStream;
-exports.deviceOutputStream = deviceOutputStream;
+const logStream = processedStream
+    .filter(isLogMessage);
+
+const publishTopic = topic => payload => new Promise((resolve) => client.publish(topic, payload, resolve));
+const createGroup = publishTopic(createGroupTopic);
+const addDeviceToGroup = group => device => publishTopic(addToGroupTopic(group), device);
+const removeDeviceFromGroup = group => device => publishTopic(removeFromGroupTopic(group), device);
+const removeDeviceFromAllGroups = device => publishTopic(removeFromAllGroupsTopic, device);
+
+const createGroups = R.pipe(
+    R.identity,
+    /*removeDevicesFromGroups,
+    createGroups,
+    addDevicesToGroups*/
+);
+
+module.exports = {
+    deviceInputStream,
+    deviceOutputStream,
+    createGroups,
+};
