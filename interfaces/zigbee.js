@@ -54,28 +54,16 @@ const isLogTopic = R.endsWith("bridge/log");
 const isLogMessage = R.propSatisfies(isLogTopic, "topic");
 
 // createGroupTopic :: String
-const createGroupTopic = prependBaseTopic("bridge/config/add_group");
-
-// groupTopic :: String
-const groupTopic = R.pipe(
-    R.concat("bridge/group/"),
-    prependBaseTopic
-);
+const createGroupTopic = baseTopic + "/bridge/config/add_group";
 
 // removeFromAllGroupsTopic :: String
-const removeFromAllGroupsTopic = groupTopic("/remove_all");
+const removeFromAllGroupsTopic = baseTopic + "/bridge/group/remove_all";
 
 // addDeviceToGroupTopic :: String -> String
-const addToGroupTopic = R.pipe(
-    R.concat(R.__, "/add"),
-    groupTopic
-);
+const addToGroupTopic = deviceName => baseTopic + "/bridge/group/" + deviceName + "/add";
 
 // removeFromGroupTopic :: String -> String
-const removeFromGroupTopic = R.pipe(
-    R.concat(R.__, "/remove"),
-    groupTopic
-);
+const removeFromGroupTopic = deviceName => baseTopic + "/bridge/group/" + deviceName + "/remove";
 
 const client = Mqtt.connect(address);
 client.subscribe(knownDevices.map(deviceTopic));
