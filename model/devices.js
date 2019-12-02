@@ -18,6 +18,7 @@ const deviceHasType = type => R.pipe(
 );
 
 module.exports = {
+    knownDevices,
     getDeviceByName,
     getDevicesOfType,
     deviceHasType

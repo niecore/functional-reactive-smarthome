@@ -1,7 +1,8 @@
 const Mqtt = require("mqtt");
 const Bacon = require("baconjs");
 const R = require('ramda');
-const Devices = require('../config/devices.json');
+const Devices = require('../model/devices');
+const Groups = require('../model/groups');
 const Interfaces = require('../config/interfaces.json');
 const RenameKeys = require('../util/renameKeys');
 
@@ -14,14 +15,14 @@ const address = Interfaces.zigbee.address;
 // isZigbeeDevice :: Device -> bool
 const isZigbeeDevice = R.propEq("interface", "zigbee");
 
-// knownDevices :: [Device]
-const knownDevices = Devices.devices.filter(isZigbeeDevice);
+// zigbeeDevices :: [Device]
+const zigbeeDevices = Devices.knownDevices.filter(isZigbeeDevice);
 
-// getName :: Device -> String
-const getName = R.prop('name');
+// getDeviceName :: Device -> String
+const getDeviceName = R.prop('name');
 
 // isKnownDevice :: String -> bool
-const isKnownDevice = R.includes(R.__, knownDevices.map(getName));
+const isKnownDevice = R.includes(R.__, zigbeeDevices.map(getDeviceName));
 
 // prependBaseTopic :: String -> String
 const prependBaseTopic = R.concat(baseTopic + "/");
@@ -33,7 +34,7 @@ const appendSetTopic = R.concat(R.__, "/set");
 const removeBaseTopic = R.replace(baseTopic + "/", "");
 
 // deviceTopic :: Device -> String
-const deviceTopic = R.compose(prependBaseTopic, getName);
+const deviceTopic = R.compose(prependBaseTopic, getDeviceName);
 
 // topicLense :: Lens s a
 const topicLense = R.lensProp("topic");
@@ -66,7 +67,7 @@ const addToGroupTopic = deviceName => baseTopic + "/bridge/group/" + deviceName 
 const removeFromGroupTopic = deviceName => baseTopic + "/bridge/group/" + deviceName + "/remove";
 
 const client = Mqtt.connect(address);
-client.subscribe(knownDevices.map(deviceTopic));
+client.subscribe(zigbeeDevices.map(deviceTopic));
 client.subscribe(baseTopic + "/bridge/log");
 
 const rawStream = Bacon.fromBinder(function (sink) {
@@ -101,16 +102,26 @@ const logStream = processedStream
 
 const publishTopic = topic => payload => new Promise((resolve) => client.publish(topic, payload, resolve));
 const createGroup = publishTopic(createGroupTopic);
-const addDeviceToGroup = group => device => publishTopic(addToGroupTopic(group), device);
-const removeDeviceFromGroup = group => device => publishTopic(removeFromGroupTopic(group), device);
-const removeDeviceFromAllGroups = device => publishTopic(removeFromAllGroupsTopic, device);
+const addDeviceToGroup = group => device => publishTopic(addToGroupTopic(group))(device);
+const removeDeviceFromGroup = group => device => publishTopic(removeFromGroupTopic(group))(device);
+const removeDeviceFromAllGroups = device => publishTopic(removeFromAllGroupsTopic)(device);
 
-const createGroups = R.pipe(
-    R.identity,
-    /*removeDevicesFromGroups,
-    createGroups,
-    addDevicesToGroups*/
+const createGroups = R.forEach(group =>
+    createGroup(group.name)
+        .then(
+            R.forEach(
+                addDeviceToGroup(group.name)
+            )(Groups.devicesInGroup(group))
+        )
 );
+
+R.forEach(
+    removeDeviceFromAllGroups
+)(R.map(getDeviceName, zigbeeDevices));
+
+
+
+logStream.doLog().subscribe();
 
 module.exports = {
     deviceInputStream,

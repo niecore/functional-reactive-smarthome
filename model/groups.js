@@ -3,8 +3,8 @@ const Groups = require('../config/groups.json');
 const Rooms = require('../model/rooms.js');
 const Devices = require('../model/devices.js');
 
-// usergroups :: [Group]
-const userGroups = Groups.groups;
+// knownGroups :: [Group]
+const knownGroups = Groups.groups;
 
 // createGroupOfDevices :: String -> [Device] -> [Group]
 const createGroupOfDevices = name => R.pipe(
@@ -33,7 +33,19 @@ const typeGroup = type => R.of(createGroupOfDevices(groupPrefix(type))(Devices.g
 // typeGroupName :: String => String
 const roomTypeGroupName = (room, type) => type + "_in_" + room;
 
+// devicesInGroup :: Group -> [String]
+const devicesInGroup = R.prop("devices");
+
 // roomGroupOfType :: String, String -> [Group]
 const roomGroupOfType = (room, type) => roomGroup(room)
     .map(R.over(devicesLense, R.filter(Devices.deviceHasType(type))))
     .map(R.over(nameLense, R.always(groupPrefix(roomTypeGroupName(room, type)))));
+
+module.exports = {
+    knownGroups,
+    createGroupOfDevices,
+    roomGroupOfType,
+    typeGroup,
+    roomGroup,
+    devicesInGroup,
+};

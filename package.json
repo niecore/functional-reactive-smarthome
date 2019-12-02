@@ -7,6 +7,7 @@
     "node-telegram-bot-api": "^0.40.0",
     "rambda": "^4.1.0",
     "ramda": "^0.26.1",
+    "ramda-adjunct": "^2.23.0",
     "sunrise-sunset-js": "^2.1.1",
     "z": "^1.0.9"
   },
@@ -19,7 +20,8 @@
   "jest": {
     "moduleNameMapper": {
       "rooms.json": "<rootDir>/config/tests/rooms.test.json",
-      "devices.json": "<rootDir>/config/tests/devices.test.json"
+      "devices.json": "<rootDir>/config/tests/devices.test.json",
+      "groups.json": "<rootDir>/config/tests/groups.test.json"
     }
   }
 }
