@@ -1,7 +1,6 @@
 const Bacon = require("baconjs");
-const ZigbeeInterface = require('./interfaces/zigbee');
+const Zigbee = require('./interfaces/zigbee');
 const RA = require('ramda-adjunct');
-
 
 const Rooms = require('./model/rooms.js');
 const Devices = require('./model/devices.js');
@@ -10,11 +9,11 @@ const Groups = require('./model/groups.js');
 const deviceOutputStream = new Bacon.Bus();
 
 deviceOutputStream.plug(
-    ZigbeeInterface.deviceOutputStream)
+    Zigbee.deviceOutputStream)
 ;
 
 const deviceInputStream = Bacon.mergeAll(
-    ZigbeeInterface.deviceInputStream
+    Zigbee.deviceInputStream
 );
 
 module.exports = {
@@ -24,7 +23,7 @@ module.exports = {
 
 
 // To be expanded for multiple interfaces
-ZigbeeInterface.createGroups(
+Zigbee.createGroups(
     RA.concatAll([
         Groups.roomGroupOfType("staircase", "light"), // to be created by automations
         Groups.knownGroups

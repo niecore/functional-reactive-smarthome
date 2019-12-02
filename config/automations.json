@@ -3,18 +3,16 @@
     "motionLight": {
       "rooms": [
         {
-          "name": "junk_room"
+          "name": "junk_room",
+          "delay": 90,
         },
         {
           "name": "staircase",
-          "includeNight": [
-            "lightbulb_tradfriw_1",
-            "lightbulb_tradfriw_2"
-          ]
+          "delay": 90
         }
-      ],
-      "delay": 90
-    },
+      ]
+    }
+  },
     "thresholdAlarms": [
       {
         "room": {
