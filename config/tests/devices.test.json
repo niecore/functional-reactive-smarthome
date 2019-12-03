@@ -1,16 +1,14 @@
 {
-  "devices": [
-    {
-      "name": "device_id_1",
+  "devices": {
+    "device_id_1": {
       "interface": "interface_1",
       "type": "type_1",
       "description": "description_1"
     },
-    {
-      "name": "device_id_2",
+    "device_id_2": {
       "interface": "interface_2",
       "type": "type_2",
       "description": "description_2"
     }
-  ]
+  }
 }

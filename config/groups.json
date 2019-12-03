@@ -1,11 +1,10 @@
 {
-  "groups": [
-    {
-      "name": "nightlights_hallway",
+  "groups": {
+    "nightlights_hallway": {
       "devices": [
         "lightbulb_tradfriw_3",
         "lightbulb_tradfriw_4"
       ]
     }
-  ]
+  }
 }

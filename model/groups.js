@@ -6,13 +6,10 @@ const Devices = require('../model/devices.js');
 // knownGroups :: [Group]
 const knownGroups = Groups.groups;
 
-// createGroupOfDevices :: String -> [Device] -> [Group]
-const createGroupOfDevices = name => R.pipe(
-    R.map(R.prop("name")),
-    R.map(R.of),
-    R.map(R.objOf("devices")),
-    R.reduce(R.mergeWith(R.concat), []),
-    R.assoc("name", name)
+// createGroupOfDevices :: String -> [String] -> [Group]
+const createGroupOfDevices = name =>  R.pipe(
+    R.objOf("devices"),
+    R.objOf(name)
 );
 
 // nameLense :: Lens s a
@@ -25,10 +22,10 @@ const devicesLense = R.lensProp("devices");
 const groupPrefix = R.concat("group_");
 
 // roomGroup :: String -> [Group]
-const roomGroup = room => R.of(createGroupOfDevices(groupPrefix(room))(Rooms.getDevicesInRoom(room))); // todo: beautify
+const roomGroup = room => createGroupOfDevices(groupPrefix(room))(Rooms.getDevicesInRoom(room)); // todo: beautify
 
 // typeGroup :: String -> [Group]
-const typeGroup = type => R.of(createGroupOfDevices(groupPrefix(type))(Devices.getDevicesOfType(type))); // todo: beautify
+const typeGroup = type => createGroupOfDevices(groupPrefix(type))(Devices.getDevicesOfType(type)); // todo: beautify
 
 // typeGroupName :: String => String
 const roomTypeGroupName = (room, type) => type + "_in_" + room;

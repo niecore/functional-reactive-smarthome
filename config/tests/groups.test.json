@@ -1,11 +1,10 @@
 {
-  "groups": [
-    {
-      "name": "test_group_1",
+  "groups": {
+    "test_group_1": {
       "devices": [
         "device_id_1",
         "device_id_2"
       ]
     }
-  ]
+  }
 }

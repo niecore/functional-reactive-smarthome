@@ -4,7 +4,6 @@ const R = require('ramda');
 const Devices = require('../model/devices');
 const Groups = require('../model/groups');
 const Interfaces = require('../config/interfaces.json');
-const RenameKeys = require('../util/renameKeys');
 
 // baseTopic :: String
 const baseTopic = Interfaces.zigbee.baseTopic;
@@ -16,13 +15,13 @@ const address = Interfaces.zigbee.address;
 const isZigbeeDevice = R.propEq("interface", "zigbee");
 
 // zigbeeDevices :: [Device]
-const zigbeeDevices = Devices.knownDevices.filter(isZigbeeDevice);
+const zigbeeDevices = R.pickBy(isZigbeeDevice, Devices.knownDevices);
 
 // getDeviceName :: Device -> String
 const getDeviceName = R.prop('name');
 
 // isKnownDevice :: String -> bool
-const isKnownDevice = R.includes(R.__, zigbeeDevices.map(getDeviceName));
+const isKnownDevice = R.includes(R.__, R.keys(zigbeeDevices));
 
 // prependBaseTopic :: String -> String
 const prependBaseTopic = R.concat(baseTopic + "/");
@@ -33,20 +32,11 @@ const appendSetTopic = R.concat(R.__, "/set");
 // removeBaseTopic :: String -> String
 const removeBaseTopic = R.replace(baseTopic + "/", "");
 
-// deviceTopic :: Device -> String
-const deviceTopic = R.compose(prependBaseTopic, getDeviceName);
-
 // topicLense :: Lens s a
 const topicLense = R.lensProp("topic");
 
 // payloadLense :: Lens s a
 const payloadLense = R.lensProp("payload");
-
-// renameToDeviceStream :: Message -> DeviceState
-const renameToDeviceStream = RenameKeys.renameKeys({topic: "device", payload: "state"});
-
-// renameToMqttStream :: DeviceState -> Message
-const renameToMqttStream = RenameKeys.renameKeys({device: "topic", state: "payload"});
 
 // isLogTopic :: String -> bool
 const isLogTopic = R.endsWith("bridge/log");
@@ -67,7 +57,7 @@ const addToGroupTopic = deviceName => baseTopic + "/bridge/group/" + deviceName 
 const removeFromGroupTopic = deviceName => baseTopic + "/bridge/group/" + deviceName + "/remove";
 
 const client = Mqtt.connect(address);
-client.subscribe(zigbeeDevices.map(deviceTopic));
+client.subscribe(R.map(prependBaseTopic, R.keys(zigbeeDevices)));
 client.subscribe(baseTopic + "/bridge/log");
 
 const rawStream = Bacon.fromBinder(function (sink) {
@@ -79,20 +69,30 @@ const rawStream = Bacon.fromBinder(function (sink) {
 const processedStream = rawStream
     .map(R.over(topicLense, removeBaseTopic))
     .map(R.over(payloadLense, R.toString))
-    .map(R.over(payloadLense, JSON.parse));
-
+    .map(R.over(payloadLense, JSON.parse))
 
 const deviceInputStream = processedStream
     .filter(!isKnownDevice(R.view(topicLense)))
-    .map(renameToDeviceStream);
+    .map(obj => R.objOf(obj.topic)(obj.payload));
+
 
 const deviceOutputStream = new Bacon.Bus();
 
+const transform = R.pipe(
+    R.toPairs,
+    R.map(obj => {
+            return {
+                topic: obj[0],
+                payload: obj[1]
+            }
+        }
+    )
+);
+
 deviceOutputStream
-    .map(renameToMqttStream)
+    .map(transform)
     .map(R.over(topicLense, R.pipe(prependBaseTopic, appendSetTopic)))
     .map(R.over(payloadLense, JSON.stringify))
-    .map(R.props("topic", "payload"))
     .onValue(input =>
         publishTopic(input.topic, input.payload)
     );
@@ -118,7 +118,6 @@ const createGroups = R.forEach(group =>
 R.forEach(
     removeDeviceFromAllGroups
 )(R.map(getDeviceName, zigbeeDevices));
-
 
 
 logStream.doLog().subscribe();

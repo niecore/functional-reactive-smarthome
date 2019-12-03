@@ -1,13 +1,10 @@
 {
-  "rooms": [
-    {
-      "name": "empty_room"
-    },
-    {
-      "name": "first_room",
+  "rooms": {
+    "empty_room": {},
+    "first_room": {
       "devices": [
         "device_id_1"
       ]
     }
-  ]
+  }
 }

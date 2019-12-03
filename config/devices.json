@@ -1,75 +1,64 @@
 {
-  "devices": [
-    {
-      "name": "motionsensor_aqara_1",
+  "devices": {
+    "motionsensor_aqara_1": {
       "interface": "zigbee",
       "type": "motion_sensor",
       "description": ""
     },
-    {
-      "name": "motionsensor_aqara_2",
+    "motionsensor_aqara_2": {
       "interface": "zigbee",
       "type": "motion_sensor",
       "description": ""
     },
-    {
-      "name": "motionsensor_aqara_3",
+    "motionsensor_aqara_3": {
       "interface": "zigbee",
       "type": "motion_sensor",
       "description": ""
     },
-    {
-      "name": "motionsensor_aqara_4",
+    "motionsensor_aqara_4": {
       "interface": "zigbee",
       "type": "motion_sensor",
       "description": ""
     },
-    {
-      "name": "motionsensor_aqara_5",
+    "motionsensor_aqara_5": {
       "interface": "zigbee",
       "type": "motion_sensor",
       "description": ""
     },
-    {
-      "name": "lightbulb_huew_1",
+    "lightbulb_huew_1": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "direct",
       "description": "Lampe in Speisekammer"
     },
-    {
-      "name": "lightbulb_tradfriw_1",
+    "lightbulb_tradfriw_1": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "direct",
       "description": "Hängelampe Flur (Mitte)"
     },
-    {
-      "name": "lightbulb_tradfriw_2",
+    "lightbulb_tradfriw_2": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "direct",
       "description": "Hängelampe Flur (Oben)"
     },
-    {
-      "name": "lightbulb_tradfriw_3",
+    "lightbulb_tradfriw_3": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "indirect",
       "description": "Wandlampe Flur (Oben)"
     },
-    {
-      "name": "lightbulb_tradfriw_4",
+    "lightbulb_tradfriw_4": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "indirect",
       "description": "Wandlampe Flur (Mitte)"
     },
-    {
-      "name": "sensor_air_1",
+    "sensor_air_1": {
       "interface": "zigbee",
       "type": "air_sensor",
       "description": ""
     }
-  ]
+  }
 }

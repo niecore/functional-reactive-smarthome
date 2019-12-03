@@ -5,7 +5,7 @@ const Devices = require('../config/devices.json');
 const knownDevices = Devices.devices;
 
 // getDeviceByName :: String => Device | undefined
-const getDeviceByName = device => R.find(R.propEq('name', device), Devices.devices);
+const getDeviceByName = R.prop(R.__, Devices.devices);
 
 // getDevicesOfType :: String >= [Device]
 const getDevicesOfType = type => knownDevices

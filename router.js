@@ -9,8 +9,8 @@ const Groups = require('./model/groups.js');
 const deviceOutputStream = new Bacon.Bus();
 
 deviceOutputStream.plug(
-    Zigbee.deviceOutputStream)
-;
+    Zigbee.deviceOutputStream
+);
 
 const deviceInputStream = Bacon.mergeAll(
     Zigbee.deviceInputStream
@@ -21,13 +21,26 @@ module.exports = {
     deviceOutputStream,
 };
 
+deviceInputStream
+    .doLog()
+    .subscribe();
+
 
 // To be expanded for multiple interfaces
-Zigbee.createGroups(
-    RA.concatAll([
-        Groups.roomGroupOfType("staircase", "light"), // to be created by automations
-        Groups.knownGroups
-    ])
-);
+// Zigbee.createGroups(
+//     RA.concatAll([
+//         Groups.roomGroupOfType("staircase", "light"), // to be created by automations
+//         Groups.knownGroups
+//     ])
+// );
+
+console.log(Devices.knownDevices);
+
+// console.log(
+//     RA.concatAll([
+//         Groups.roomGroupOfType("staircase", "light"), // to be created by automations
+//         Groups.knownGroups
+//     ])
+// )
 
 console.log("Starting functional-reactive-smart-home.");

@@ -1,35 +1,19 @@
 {
-  "rooms": [
-    {
-      "name": "front_door"
-    },
-    {
-      "name": "hallway"
-    },
-    {
-      "name": "server_room"
-    },
-    {
-      "name": "bathroom_small"
-    },
-    {
-      "name": "kitchen"
-    },
-    {
-      "name": "living_room"
-    },
-    {
-      "name": "junk_room",
+  "rooms": {
+    "front_door": {},
+    "hallway": {},
+    "server_room": {},
+    "bathroom_small": {},
+    "kitchen": {},
+    "living_room": {},
+    "junk_room": {
       "devices": [
         "motionsensor_aqara_1",
         "lightbulb_huew_1"
       ]
     },
-    {
-      "name": "garden"
-    },
-    {
-      "name": "staircase",
+    "garden": {},
+    "staircase": {
       "devices": [
         "motionsensor_aqara_3",
         "motionsensor_aqara_4",
@@ -40,20 +24,13 @@
         "lightbulb_tradfriw_4"
       ]
     },
-    {
-      "name": "office"
-    },
-    {
-      "name": "bathroom"
-    },
-    {
-      "name": "bedroom"
-    },
-    {
-      "name": "laundry_room",
+    "office": {},
+    "bathroom": {},
+    "bedroom": {},
+    "laundry_room": {
       "devices": [
         "sensor_air_1"
       ]
     }
-  ]
+  }
 }
