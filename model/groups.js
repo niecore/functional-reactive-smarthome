@@ -33,10 +33,26 @@ const roomTypeGroupName = (room, type) => type + "_in_" + room;
 // devicesInGroup :: Group -> [String]
 const devicesInGroup = R.prop("devices");
 
+// filterDevicesInGroup :: (a => bool) => Groups => Groups
+const filterDevicesInGroups = func => R.pipe(
+    R.toPairs,
+    R.map(R.adjust(1, R.over(devicesLense, R.filter(func)))),
+    R.fromPairs
+);
+
+const filterDevicesInGroupByType = type => filterDevicesInGroups(Devices.deviceHasType(type));
+
+const renameGroup = name => R.pipe(
+    R.toPairs,
+    R.map(R.update(0, name)),
+    R.fromPairs
+);
+
 // roomGroupOfType :: String, String -> [Group]
-const roomGroupOfType = (room, type) => roomGroup(room)
-    .map(R.over(devicesLense, R.filter(Devices.deviceHasType(type))))
-    .map(R.over(nameLense, R.always(groupPrefix(roomTypeGroupName(room, type)))));
+const roomGroupOfType = (room, type) => R.pipe(
+    filterDevicesInGroupByType(type),
+    renameGroup(groupPrefix(roomTypeGroupName(room, type))),
+)(roomGroup(room));
 
 module.exports = {
     knownGroups,

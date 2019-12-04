@@ -1,46 +1,26 @@
 const Bacon = require("baconjs");
 const Zigbee = require('./interfaces/zigbee');
 const RA = require('ramda-adjunct');
+const R = require('ramda');
 
-const Rooms = require('./model/rooms.js');
-const Devices = require('./model/devices.js');
-const Groups = require('./model/groups.js');
+const output = new Bacon.Bus();
 
-const deviceOutputStream = new Bacon.Bus();
-
-deviceOutputStream.plug(
+output.plug(
     Zigbee.deviceOutputStream
 );
 
-const deviceInputStream = Bacon.mergeAll(
-    Zigbee.deviceInputStream
-);
+const update = Bacon.mergeAll(Zigbee.deviceInputStream);
+const state = update.scan({}, R.mergeDeepRight);
+const input = state.zip(update, (state, input) => [state, input]);
 
-module.exports = {
-    deviceInputStream,
-    deviceOutputStream,
-};
-
-deviceInputStream
+input
     .doLog()
     .subscribe();
 
 
-// To be expanded for multiple interfaces
-// Zigbee.createGroups(
-//     RA.concatAll([
-//         Groups.roomGroupOfType("staircase", "light"), // to be created by automations
-//         Groups.knownGroups
-//     ])
-// );
-
-console.log(Devices.knownDevices);
-
-// console.log(
-//     RA.concatAll([
-//         Groups.roomGroupOfType("staircase", "light"), // to be created by automations
-//         Groups.knownGroups
-//     ])
-// )
-
 console.log("Starting functional-reactive-smart-home.");
+
+module.exports = {
+    output,
+    input,
+};

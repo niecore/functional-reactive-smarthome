@@ -67,16 +67,16 @@ const rawStream = Bacon.fromBinder(function (sink) {
 const processedStream = rawStream
     .map(R.over(topicLense, removeBaseTopic))
     .map(R.over(payloadLense, R.toString))
-    .map(R.over(payloadLense, JSON.parse))
+    .map(R.over(payloadLense, JSON.parse));
 
 const deviceInputStream = processedStream
-    .filter(!isKnownDevice(R.view(topicLense)))
+    .filter(msg => isKnownDevice(msg.topic))
     .map(obj => R.objOf(obj.topic)(obj.payload));
 
 
 const deviceOutputStream = new Bacon.Bus();
 
-// convertToOutput ::
+// convertToOutput :: {a:A} => [{key:a, value: A}]
 const convertToArray = R.pipe(R.toPairs, R.map(R.zipObj(['key', 'value'])));
 
 deviceOutputStream
@@ -91,6 +91,7 @@ deviceOutputStream
 const logStream = processedStream
     .filter(isLogMessage);
 
+
 const publishTopic = topic => payload => new Promise((resolve) => client.publish(topic, payload, resolve));
 const createGroup = publishTopic(createGroupTopic);
 const addDeviceToGroup = group => device => publishTopic(addToGroupTopic(group))(device);
@@ -98,19 +99,23 @@ const removeDeviceFromGroup = group => device => publishTopic(removeFromGroupTop
 const removeDeviceFromAllGroups = device => publishTopic(removeFromAllGroupsTopic)(device);
 
 const createGroups = R.pipe(
-    R.map(convertToArray),
+    convertToArray,
     R.map(RA.renameKeys({ key: 'name', value: 'payload'})),
     R.forEach(group =>
         createGroup(group.name)
             .then(
                 R.forEach(
-                    addDeviceToGroup(group.topic)
+                    addDeviceToGroup(group.name)
                 )(Groups.devicesInGroup(group.payload))
             )
     )
 );
 
-logStream.doLog().subscribe();
+R.pipe(
+    convertToArray,
+    R.map(R.prop("key")),
+    R.forEach(removeDeviceFromAllGroups)
+)(zigbeeDevices);
 
 module.exports = {
     deviceInputStream,

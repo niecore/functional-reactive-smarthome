@@ -1,6 +1,8 @@
 const Automations = require('../config/automations.json');
 const Routes = require('../router');
 const motionLight = Automations.automations.motionLight;
+const Zigbee = require('./interfaces/zigbee');
+const Groups = require('./model/groups');
 
 motionLight.rooms.forEach(room => {
         roomMovementLightTrigger(room)
@@ -8,4 +10,10 @@ motionLight.rooms.forEach(room => {
     }
 );
 
-const setLight
+// To be expanded for multiple interfaces
+Zigbee.createGroups(
+    R.mergeAll([
+        Groups.roomGroupOfType("staircase", "light"), // to be created by automations
+        Groups.knownGroups,
+    ])
+);
