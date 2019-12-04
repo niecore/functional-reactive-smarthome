@@ -1,6 +1,7 @@
 const Mqtt = require("mqtt");
 const Bacon = require("baconjs");
 const R = require('ramda');
+const RA = require('ramda-adjunct');
 const Devices = require('../model/devices');
 const Groups = require('../model/groups');
 const Interfaces = require('../config/interfaces.json');
@@ -16,9 +17,6 @@ const isZigbeeDevice = R.propEq("interface", "zigbee");
 
 // zigbeeDevices :: [Device]
 const zigbeeDevices = R.pickBy(isZigbeeDevice, Devices.knownDevices);
-
-// getDeviceName :: Device -> String
-const getDeviceName = R.prop('name');
 
 // isKnownDevice :: String -> bool
 const isKnownDevice = R.includes(R.__, R.keys(zigbeeDevices));
@@ -78,19 +76,12 @@ const deviceInputStream = processedStream
 
 const deviceOutputStream = new Bacon.Bus();
 
-const transform = R.pipe(
-    R.toPairs,
-    R.map(obj => {
-            return {
-                topic: obj[0],
-                payload: obj[1]
-            }
-        }
-    )
-);
+// convertToOutput ::
+const convertToArray = R.pipe(R.toPairs, R.map(R.zipObj(['key', 'value'])));
 
 deviceOutputStream
-    .map(transform)
+    .map(convertToArray)
+    .map(RA.renameKeys({ key: 'topic', value: 'payload'}))
     .map(R.over(topicLense, R.pipe(prependBaseTopic, appendSetTopic)))
     .map(R.over(payloadLense, JSON.stringify))
     .onValue(input =>
@@ -106,19 +97,18 @@ const addDeviceToGroup = group => device => publishTopic(addToGroupTopic(group))
 const removeDeviceFromGroup = group => device => publishTopic(removeFromGroupTopic(group))(device);
 const removeDeviceFromAllGroups = device => publishTopic(removeFromAllGroupsTopic)(device);
 
-const createGroups = R.forEach(group =>
-    createGroup(group.name)
-        .then(
-            R.forEach(
-                addDeviceToGroup(group.name)
-            )(Groups.devicesInGroup(group))
-        )
+const createGroups = R.pipe(
+    R.map(convertToArray),
+    R.map(RA.renameKeys({ key: 'name', value: 'payload'})),
+    R.forEach(group =>
+        createGroup(group.name)
+            .then(
+                R.forEach(
+                    addDeviceToGroup(group.topic)
+                )(Groups.devicesInGroup(group.payload))
+            )
+    )
 );
-
-R.forEach(
-    removeDeviceFromAllGroups
-)(R.map(getDeviceName, zigbeeDevices));
-
 
 logStream.doLog().subscribe();
 
