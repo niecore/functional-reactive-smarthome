@@ -9,6 +9,11 @@ output.plug(
     Zigbee.deviceOutputStream
 );
 
+const inputNameLens = R.lens(R.pipe(R.head, R.keys, R.head), R.identity);   // setter not implemented
+const inputDataLens = R.lens(R.pipe(R.head, R.values, R.head), R.identity); // setter not implemented
+const stateLens = R.lens(R.nth(1), R.identity);                             // setter not implemented
+
+
 const update = Bacon.mergeAll(Zigbee.deviceInputStream);
 const state = update.scan({}, R.mergeDeepRight);
 const input = state.zip(update, (state, input) => [state, input]);
@@ -23,4 +28,7 @@ console.log("Starting functional-reactive-smart-home.");
 module.exports = {
     output,
     input,
+    inputNameLens,
+    inputDataLens,
+    stateLens,
 };
