@@ -14,6 +14,9 @@ const getDevicesInRoom = R.pipe(
         R.propOr([], "devices")
     );
 
+// getRoomOfDevice :: String -> String | undefined
+const getRoomOfDevice = R.T
+
 module.exports = {
     getRoomByName,
     getDevicesInRoom

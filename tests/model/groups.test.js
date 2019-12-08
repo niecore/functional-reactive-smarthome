@@ -1,5 +1,5 @@
-const Groups = require('../model/groups');
-const Rooms = require('../model/rooms');
+const Groups = require('../../model/groups');
+const Rooms = require('../../model/rooms');
 const R = require("ramda");
 
 test('devices in group returns a list of devices', () => {

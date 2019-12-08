@@ -1,28 +1,26 @@
 {
   "automations": {
     "motionLight": {
-      "rooms": [
-        {
-          "name": "junk_room",
-          "delay": 90,
+      "rooms": {
+        "junk_room": {
+          "delay": 90
         },
-        {
-          "name": "staircase",
+        "staircase": {
           "delay": 90
         }
-      ]
+      }
     }
   },
-    "thresholdAlarms": [
-      {
-        "room": {
-          "name": "laundry_room"
-        },
-        "property": "humidity",
-        "limits": {
-          "max": 65
-        },
-        "delay": 600
-      }
-    ]
-  }
+  "thresholdAlarms": [
+    {
+      "room": {
+        "name": "laundry_room"
+      },
+      "property": "humidity",
+      "limits": {
+        "max": 65
+      },
+      "delay": 600
+    }
+  ]
+}
