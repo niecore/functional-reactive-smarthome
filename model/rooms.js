@@ -10,15 +10,19 @@ const getRoomByName = R.prop(R.__, knownRooms);
 
 // getDevicesInRoom :: String => [Devices]
 const getDevicesInRoom = R.pipe(
-        getRoomByName,
-        R.propOr([], "devices")
-    );
+    getRoomByName,
+    R.propOr([], "devices")
+);
 
 // getRoomOfDevice :: String -> String | undefined
-const getRoomOfDevice = R.T
+const getRoomOfDevice = device => R.head(R.keys(R.filter(
+    R.includes(device),
+    R.reject(R.isNil, R.map(R.prop("devices"), knownRooms))
+)));
 
 module.exports = {
     getRoomByName,
-    getDevicesInRoom
+    getDevicesInRoom,
+    getRoomOfDevice
 };
 

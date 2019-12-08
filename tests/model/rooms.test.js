@@ -18,3 +18,7 @@ test('get devices on non empty room returns device array', () => {
         ['device_id_1']
     );
 });
+
+test('getRoomOfDevice returns the room of a a test device', () => {
+    expect(Rooms.getRoomOfDevice("device_id_1")).toEqual("first_room");
+});
