@@ -13,18 +13,7 @@ const update = Bacon.mergeAll(Zigbee.deviceInputStream);
 const state = update.scan({}, R.mergeDeepRight);
 const input = state.zip(update, (state, input) => [input, state]);
 
-input
-    .log("input: ")
-    .subscribe();
-
-output
-    .log("output: ")
-    .subscribe();
-
-
 Zigbee.deviceOutputStream.plug(output);
-
-console.log("Starting functional-reactive-smart-home.");
 
 module.exports = {
     output,
