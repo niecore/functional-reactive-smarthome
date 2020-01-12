@@ -3,10 +3,12 @@
     "motionLight": {
       "rooms": {
         "junk_room": {
-          "delay": 90
+          "delay": 90,
+          "nightLight": false
         },
         "staircase": {
-          "delay": 90
+          "delay": 90,
+          "nightLight": true
         }
       }
     }

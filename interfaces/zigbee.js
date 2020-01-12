@@ -112,11 +112,12 @@ const createGroups = R.pipe(
     )
 );
 
-R.pipe(
-    convertToArray,
-    R.map(R.prop("key")),
-    R.forEach(removeDeviceFromAllGroups)
-)(zigbeeDevices);
+// Manual group configuration
+// R.pipe(
+//     convertToArray,
+//     R.map(R.prop("key")),
+//     R.forEach(removeDeviceFromAllGroups)
+// )(zigbeeDevices);
 
 module.exports = {
     deviceInputStream,
