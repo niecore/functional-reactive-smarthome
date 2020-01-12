@@ -9,6 +9,11 @@
       "interface": "interface_2",
       "type": "type_2",
       "description": "description_2"
+    },
+    "light_1": {
+      "interface": "interface_1",
+      "type": "light",
+      "description": "description_2"
     }
   }
 }

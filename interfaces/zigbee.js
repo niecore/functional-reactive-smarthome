@@ -81,11 +81,12 @@ const convertToArray = R.pipe(R.toPairs, R.map(R.zipObj(['key', 'value'])));
 
 deviceOutputStream
     .map(convertToArray)
-    .map(RA.renameKeys({ key: 'topic', value: 'payload'}))
-    .map(R.over(topicLense, R.pipe(prependBaseTopic, appendSetTopic)))
-    .map(R.over(payloadLense, JSON.stringify))
-    .onValue(input =>
-        publishTopic(input.topic, input.payload)
+    .map(R.map(RA.renameKeys({ key: 'topic', value: 'payload'})))
+    .map(R.map(R.over(topicLense, R.pipe(prependBaseTopic, appendSetTopic))))
+    .map(R.map(R.over(payloadLense, JSON.stringify)))
+    .onValue(array => array.forEach( input =>
+            publishTopic(input.topic)(input.payload)
+        )
     );
 
 const logStream = processedStream

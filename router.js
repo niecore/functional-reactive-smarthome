@@ -5,10 +5,6 @@ const R = require('ramda');
 
 const output = new Bacon.Bus();
 
-output.plug(
-    Zigbee.deviceOutputStream
-);
-
 const inputNameLens = R.lens(R.pipe(R.head, R.keys, R.head), R.identity);   // setter not implemented
 const inputDataLens = R.lens(R.pipe(R.head, R.values, R.head), R.identity); // setter not implemented
 const stateLens = R.lens(R.nth(1), R.identity);                             // setter not implemented
@@ -18,9 +14,15 @@ const state = update.scan({}, R.mergeDeepRight);
 const input = state.zip(update, (state, input) => [input, state]);
 
 input
-    .doLog()
+    .log("input: ")
     .subscribe();
 
+output
+    .log("output: ")
+    .subscribe();
+
+
+Zigbee.deviceOutputStream.plug(output);
 
 console.log("Starting functional-reactive-smart-home.");
 

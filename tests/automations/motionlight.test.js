@@ -2,7 +2,7 @@ const MotionLight = require("../../automations/motionLight");
 const R = require("ramda");
 
 test('correct data is generated for set brightness', () => {
-    expect(MotionLight.setBrightnessForDevice(255)("test_device")).toBe(
+    expect(MotionLight.setBrightnessForDevice(255)("test_device")).toStrictEqual(
         {
             "test_device": {
                 "state": "on",
@@ -12,7 +12,7 @@ test('correct data is generated for set brightness', () => {
     );
 });
 
-test('motionligt', () => {
+test('test movement detection', () => {
     expect(MotionLight.movementDetected(
         [
             {
@@ -23,4 +23,17 @@ test('motionligt', () => {
             {}
         ]
     )).toBe(true);
+});
+
+test('test set brightness in room', () => {
+    expect(MotionLight.setBrightnessInRoom(
+        [
+            {
+                light_1: {
+                    occupancy: true
+                }
+            },
+            {}
+        ]
+    )).toStrictEqual({"group_light_in_light_room": {"brightness": 255, "state": "on"}});
 });
