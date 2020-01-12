@@ -12,3 +12,15 @@ test('correct data is generated for set brightness', () => {
     );
 });
 
+test('motionligt', () => {
+    expect(MotionLight.movementDetected(
+        [
+            {
+                motion_light: {
+                    occupancy: true
+                }
+            },
+            {}
+        ]
+    )).toBe(true);
+});

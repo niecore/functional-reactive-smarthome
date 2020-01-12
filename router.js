@@ -13,10 +13,9 @@ const inputNameLens = R.lens(R.pipe(R.head, R.keys, R.head), R.identity);   // s
 const inputDataLens = R.lens(R.pipe(R.head, R.values, R.head), R.identity); // setter not implemented
 const stateLens = R.lens(R.nth(1), R.identity);                             // setter not implemented
 
-
 const update = Bacon.mergeAll(Zigbee.deviceInputStream);
 const state = update.scan({}, R.mergeDeepRight);
-const input = state.zip(update, (state, input) => [state, input]);
+const input = state.zip(update, (state, input) => [input, state]);
 
 input
     .doLog()

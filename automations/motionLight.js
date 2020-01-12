@@ -6,22 +6,26 @@ const Devices = require("../model/devices");
 const Rooms = require("../model/rooms");
 const R = require("ramda");
 
-
 const occupancyLens = R.compose(Routes.inputDataLens, R.lensPath(["occupancy"]));
 
-const movementDetected = R.map(R.view(occupancyLens));
 
-const isMotionSensorMessage = R.pipe(
+const movementDetected = R.view(occupancyLens);
+
+const isMessageFromMotionSensor = R.pipe(
     R.view(Routes.inputNameLens),
     Devices.deviceHasType("motion_sensor")
 );
 
-const motionLightEnabledRoom = R.includes(R.__, R.keys(Automations.automations.motionLight.rooms));
-
-const isMessageFromEnabledRoom = R.pipe(
+const isMessagefromRoomWithMotionLight = R.pipe(
     R.view(Routes.inputNameLens),
     Rooms.getRoomOfDevice,
-    motionLightEnabledRoom
+    R.includes(R.__, R.keys(Automations.automations.motionLight.rooms))
+);
+
+const motionLight = R.pipe(
+    R.filter(isMessageFromMotionSensor),
+    R.filter(isMessagefromRoomWithMotionLight),
+    R.filter(movementDetected),
 );
 
 //////////////////////////////////////////////
@@ -38,7 +42,7 @@ const setBrightness = brightnessTarget => {
         state: "on",
         brightness: brightnessTarget
     };
-};
+}
 
 
 // To be expanded for multiple interfaces
@@ -49,7 +53,23 @@ Zigbee.createGroups(
     ])
 );
 
+
+console.log(
+
+    motionLight(
+        [{
+            motionsensor_aqara_1: {
+                occupancy: true
+            }
+        },{}]
+    )
+);
+
 module.exports = {
     setBrightnessForDevice,
+    isMessageFromMotionSensor,
+    isMessagefromRoomWithMotionLight,
+    movementDetected,
+    motionLight,
 };
 
