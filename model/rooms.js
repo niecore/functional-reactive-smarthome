@@ -20,9 +20,16 @@ const getRoomOfDevice = device => R.head(R.keys(R.filter(
     R.reject(R.isNil, R.map(R.prop("devices"), knownRooms))
 )));
 
+// deviceIsInRoom :: String -> String -> Boolean
+const deviceIsInRoom = room => R.pipe(
+    getRoomOfDevice,
+    R.equals(room)
+);
+
 module.exports = {
     getRoomByName,
     getDevicesInRoom,
-    getRoomOfDevice
+    getRoomOfDevice,
+    deviceIsInRoom
 };
 

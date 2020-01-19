@@ -17,7 +17,7 @@ test('test movement detection', () => {
     expect(MotionLight.movementDetected(
         [
             {
-                motion_light: {
+                motion_sensor_1: {
                     occupancy: true
                 }
             },
@@ -25,3 +25,44 @@ test('test movement detection', () => {
         ]
     )).toBe(true);
 });
+
+test('test is getStateOfDeviceInSameRoom', () => {
+    expect(
+        MotionLight.getStateOfDeviceInSameRoom(
+        [
+                {
+                    motion_sensor_1: {
+                        occupancy: true
+                    }
+                },
+                {
+                    light_1: {
+                        state: "off"
+                    }
+                }
+            ]
+        )
+    ).toEqual(
+        {light_1: {state: "off"}}
+        );
+});
+
+test('test is isMessageFromRoomWithLightOn', () => {
+    expect(
+        MotionLight.isMessageFromRoomWithLightOn(
+            [
+                {
+                    motion_sensor_1: {
+                        occupancy: true
+                    }
+                },
+                {
+                    light_1: {
+                        state: "off"
+                    }
+                }
+            ]
+        )
+    ).toBeTruthy();
+});
+

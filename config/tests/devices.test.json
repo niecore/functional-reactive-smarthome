@@ -14,6 +14,11 @@
       "interface": "interface_1",
       "type": "light",
       "description": "description_2"
+    },
+    "motion_sensor_1": {
+      "interface": "interface_1",
+      "type": "motion_sensor",
+      "description": "description_2"
     }
   }
 }

@@ -8,7 +8,8 @@
     },
     "light_room": {
       "devices": [
-        "light_1"
+        "light_1",
+        "motion_sensor_1"
       ]
     }
   }

@@ -30,6 +30,37 @@ const isMessagefromRoomWithNightLight = R.pipe(
     R.propOr(false, "nightLight")
 );
 
+
+
+
+const getStateOfDeviceInSameRoom = input => {
+    return getStatesOfDevicesInRoom(
+        R.pipe(
+            R.view(Routes.inputNameLens),
+            Rooms.getRoomOfDevice
+        )(input)
+    )(R.view(Routes.stateLens)(input))
+};
+
+// getStateOfDevicesInRoom :: String => String => {device: state}
+const getStatesOfDevicesInRoom = room => R.pickBy((k, v) => Rooms.deviceIsInRoom(room)(v));
+
+const stateToBoolean = state => state.toUpperCase() === "OFF"? false : true;
+
+// :: Boolean
+const isMessageFromRoomWithLightOff = R.pipe(
+    getStateOfDeviceInSameRoom,
+    R.pickBy((k, v) => Devices.deviceHasType("light")(v)),
+    R.tap(x => console.log('devices in same room ' + x)),
+    R.map(R.prop("state")),
+    R.map(stateToBoolean),
+    R.values,
+    R.reduce(R.or, false),
+    R.not,
+    R.tap(x => console.log('isMessageFromRoomWithLightOff ' + x))
+);
+
+
 //////////////////////////////////////////////
 //
 // Section has to be moved to light controller
@@ -71,11 +102,7 @@ const illuminanceBasedBrightness = R.pipe(
     ),
 );
 
-const dayPeriodBasedBrightness = R.ifElse(
-    R.always(nightTime()),
-    R.always(1),
-    R.always(255)
-);
+const dayPeriodBasedBrightness = () => nightTime() ? 1: 255;
 
 const combinedBrightness = R.pipe(
     illuminanceBasedBrightness,
@@ -92,8 +119,16 @@ const getAdaptiveBrightness =  R.ifElse(
 //     R.always(illuminanceBasedBrightness)
 
 const setBrightnessInRoom = (input) => {
-    return timedLightOnStream(90)(getAdaptiveBrightness(input))(getLightGroupOfRoom(input))
+    return timedLightOnStream(
+        getMotionLightDuration(input)
+    )(
+        getAdaptiveBrightness(input)
+    )(
+        getLightGroupOfRoom(input)
+    )
 };
+
+const getMotionLightDuration = R.always(90);
 
 // To be expanded for multiple interfaces
 // Zigbee.createGroups(
@@ -108,6 +143,7 @@ const motionLight = Routes.input
     .filter(isMessageFromMotionSensor)
     .filter(isMessagefromRoomWithMotionLight)
     .filter(movementDetected)
+    .filter(isMessageFromRoomWithLightOff)
     .flatMapLatest(setBrightnessInRoom);
 
 Routes.output.plug(motionLight);
@@ -117,6 +153,8 @@ module.exports = {
     setBrightnessInRoom,
     isMessageFromMotionSensor,
     isMessagefromRoomWithMotionLight,
+    isMessageFromRoomWithLightOn: isMessageFromRoomWithLightOff,
+    getStateOfDeviceInSameRoom,
     movementDetected,
     motionLight,
 };
