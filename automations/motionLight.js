@@ -137,14 +137,22 @@ const getMotionLightDuration = R.always(90);
 //         Groups.knownGroups,
 //     ])
 // );
-
+const getRoomOfMessage = R.pipe(
+    R.view(Routes.inputNameLens),
+    Rooms.getRoomOfDevice
+);
 
 const motionLight = Routes.input
     .filter(isMessageFromMotionSensor)
     .filter(isMessagefromRoomWithMotionLight)
     .filter(movementDetected)
     .filter(isMessageFromRoomWithLightOff)
-    .flatMapLatest(setBrightnessInRoom);
+    .groupBy(getRoomOfMessage)
+    .flatMap(function(groupedStream) {
+        // console.log(groupedStream);
+        return groupedStream.flatMapLatest(setBrightnessInRoom)
+    });
+
 
 Routes.output.plug(motionLight);
 
@@ -153,7 +161,7 @@ module.exports = {
     setBrightnessInRoom,
     isMessageFromMotionSensor,
     isMessagefromRoomWithMotionLight,
-    isMessageFromRoomWithLightOn: isMessageFromRoomWithLightOff,
+    isMessageFromRoomWithLightOff,
     getStateOfDeviceInSameRoom,
     movementDetected,
     motionLight,
