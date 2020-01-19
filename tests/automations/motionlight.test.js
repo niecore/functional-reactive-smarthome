@@ -49,7 +49,7 @@ test('test is getStateOfDeviceInSameRoom', () => {
 
 test('test is isMessageFromRoomWithLightOn', () => {
     expect(
-        MotionLight.isMessageFromRoomWithLightOn(
+        MotionLight.isMessageFromRoomWithLightOff(
             [
                 {
                     motion_sensor_1: {

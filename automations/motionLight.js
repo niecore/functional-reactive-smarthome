@@ -1,5 +1,4 @@
 const Automations = require('../config/automations.json');
-const Zigbee = require("../interfaces/zigbee");
 const Groups = require("../model/groups");
 const Devices = require("../model/devices");
 const Rooms = require("../model/rooms");
@@ -30,11 +29,8 @@ const isMessagefromRoomWithNightLight = R.pipe(
     R.propOr(false, "nightLight")
 );
 
-
-
-
 const getStateOfDeviceInSameRoom = input => {
-    return getStatesOfDevicesInRoom(
+    return filterStateByDevicesRoom(
         R.pipe(
             R.view(Routes.inputNameLens),
             Rooms.getRoomOfDevice
@@ -42,22 +38,17 @@ const getStateOfDeviceInSameRoom = input => {
     )(R.view(Routes.stateLens)(input))
 };
 
-// getStateOfDevicesInRoom :: String => String => {device: state}
-const getStatesOfDevicesInRoom = room => R.pickBy((k, v) => Rooms.deviceIsInRoom(room)(v));
+// filterStateByDevicesRoom :: String => String => {device: state}
+const filterStateByDevicesRoom = room => R.pickBy((k, v) => Rooms.deviceIsInRoom(room)(v));
 
-const stateToBoolean = state => state.toUpperCase() === "OFF"? false : true;
-
-// :: Boolean
 const isMessageFromRoomWithLightOff = R.pipe(
     getStateOfDeviceInSameRoom,
     R.pickBy((k, v) => Devices.deviceHasType("light")(v)),
-    R.tap(x => console.log('devices in same room ' + x)),
     R.map(R.prop("state")),
-    R.map(stateToBoolean),
+    R.map(state => state.toUpperCase() === "OFF"? false : true),
     R.values,
     R.reduce(R.or, false),
     R.not,
-    R.tap(x => console.log('isMessageFromRoomWithLightOff ' + x))
 );
 
 
@@ -69,7 +60,6 @@ const isMessageFromRoomWithLightOff = R.pipe(
 
 const timeInNightTime = date => date < getSunrise(50.6, 8.7, date);
 const nightTime = R.always(timeInNightTime(new Date()));
-
 
 // setBrightnessForDevice :: Number => String =>String
 const setBrightnessForDevice = level => device => R.objOf(device, setBrightness(level));
@@ -115,12 +105,9 @@ const getAdaptiveBrightness =  R.ifElse(
         illuminanceBasedBrightness
     );
 
-// R.min(illuminanceBasedBrightness, dayPeriodBasedBrightness),
-//     R.always(illuminanceBasedBrightness)
-
 const setBrightnessInRoom = (input) => {
     return timedLightOnStream(
-        getMotionLightDuration(input)
+        R.always(90)(input)
     )(
         getAdaptiveBrightness(input)
     )(
@@ -128,15 +115,6 @@ const setBrightnessInRoom = (input) => {
     )
 };
 
-const getMotionLightDuration = R.always(90);
-
-// To be expanded for multiple interfaces
-// Zigbee.createGroups(
-//     R.mergeAll([
-//         Groups.roomGroupOfType("staircase", "light"), // to be created by automations
-//         Groups.knownGroups,
-//     ])
-// );
 const getRoomOfMessage = R.pipe(
     R.view(Routes.inputNameLens),
     Rooms.getRoomOfDevice
@@ -149,7 +127,6 @@ const motionLight = Routes.input
     .filter(isMessageFromRoomWithLightOff)
     .groupBy(getRoomOfMessage)
     .flatMap(function(groupedStream) {
-        // console.log(groupedStream);
         return groupedStream.flatMapLatest(setBrightnessInRoom)
     });
 
@@ -162,6 +139,7 @@ module.exports = {
     isMessageFromMotionSensor,
     isMessagefromRoomWithMotionLight,
     isMessageFromRoomWithLightOff,
+    filterStateByDevicesRoom,
     getStateOfDeviceInSameRoom,
     movementDetected,
     motionLight,
