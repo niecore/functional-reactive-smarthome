@@ -1,0 +1,19 @@
+{
+  "scenes": {
+    "remote_tradfri_1": [
+      {
+        "lightbulb_tint_1": {"state":"OFF"}
+      },
+      {
+        "lightbulb_tint_1": {"state":"ON", "brightness": 255,"color_temp": 400}
+      },
+      {
+        "lightbulb_tint_1": {"state":"ON", "brightness": 255, "color": {"hue": 290, "saturation": 100}}
+      },
+      {
+        "lightbulb_tint_1": {"state":"ON", "brightness": 255, "color": {"hue": 360, "saturation": 100}}
+      }
+    ]
+  }
+
+}

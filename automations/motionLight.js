@@ -45,7 +45,7 @@ const isMessageFromRoomWithLightOff = R.pipe(
     getStateOfDeviceInSameRoom,
     R.pickBy((k, v) => Devices.deviceHasType("light")(v)),
     R.map(R.prop("state")),
-    R.map(state => state.toUpperCase() === "OFF"? false : true),
+    R.map(state => state.toLowerCase() === "off" ? false : true),
     R.values,
     R.reduce(R.or, false),
     R.not,
@@ -66,7 +66,7 @@ const setBrightnessForDevice = level => device => R.objOf(device, setBrightness(
 
 const setBrightness = level => {
     return {
-        state: "on",
+        state: "ON",
         brightness: level,
         transition: 1,
     };

@@ -59,6 +59,18 @@
       "interface": "zigbee",
       "type": "air_sensor",
       "description": ""
+    },
+    "remote_tradfri_1": {
+      "interface": "zigbee",
+      "type": "remote",
+      "description": "Light Remote Wohnzimmer"
+    },
+    "lightbulb_tint_1": {
+      "interface": "zigbee",
+      "type": "light",
+      "sub_type": "indirect",
+      "description": "Tischlampe Schreibmaschine"
     }
+
   }
 }
