@@ -5,7 +5,7 @@ test('correct data is generated for set brightness', () => {
     expect(MotionLight.setBrightnessForDevice(255)("test_device")).toStrictEqual(
         {
             "test_device": {
-                "state": "on",
+                "state": "ON",
                 "brightness": 255,
                 "transition": 1,
             }
@@ -37,13 +37,13 @@ test('test is getStateOfDeviceInSameRoom', () => {
                 },
                 {
                     light_1: {
-                        state: "off"
+                        state: "OFF"
                     }
                 }
             ]
         )
     ).toEqual(
-        {light_1: {state: "off"}}
+        {light_1: {state: "OFF"}}
         );
 });
 
@@ -58,7 +58,7 @@ test('test is isMessageFromRoomWithLightOn', () => {
                 },
                 {
                     light_1: {
-                        state: "off"
+                        state: "OFF"
                     }
                 }
             ]
