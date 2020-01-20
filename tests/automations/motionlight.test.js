@@ -1,17 +1,7 @@
 const MotionLight = require("../../automations/motionLight");
+const Rooms = require("../../model/rooms");
+const Light = require("../../model/light");
 const R = require("ramda");
-
-test('correct data is generated for set brightness', () => {
-    expect(MotionLight.setBrightnessForDevice(255)("test_device")).toStrictEqual(
-        {
-            "test_device": {
-                "state": "ON",
-                "brightness": 255,
-                "transition": 1,
-            }
-        }
-    );
-});
 
 test('test movement detection', () => {
     expect(MotionLight.movementDetected(
@@ -28,7 +18,7 @@ test('test movement detection', () => {
 
 test('test is getStateOfDeviceInSameRoom', () => {
     expect(
-        MotionLight.getStateOfDeviceInSameRoom(
+        Rooms.getStateOfDeviceInSameRoom(
         [
                 {
                     motion_sensor_1: {
@@ -49,7 +39,7 @@ test('test is getStateOfDeviceInSameRoom', () => {
 
 test('test is isMessageFromRoomWithLightOn', () => {
     expect(
-        MotionLight.isMessageFromRoomWithLightOff(
+        Light.isMessageFromRoomWithLightOff(
             [
                 {
                     motion_sensor_1: {

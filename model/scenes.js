@@ -2,6 +2,7 @@ const R = require('ramda');
 const Scenes = require('../config/scenes.json');
 const Routes = require('../router');
 const Devices = require('../model/devices');
+const Lenses = require('../lenses');
 
 // knownScenes
 const knownScenes = Scenes.scenes;
@@ -11,19 +12,19 @@ const getSceneByName = R.prop(R.__, knownScenes);
 
 // isMessageFromRemoteSensor :: Msg => Boolean
 const isMessageFromRemoteSensor = R.pipe(
-    R.view(Routes.inputNameLens),
+    R.view(Lenses.inputNameLens),
     Devices.deviceHasType("remote")
 );
 
 // isToggleAction :: Msg => Boolean
 const isToggleAction = R.pipe(
-    R.view(Routes.inputDataLens),
+    R.view(Lenses.inputDataLens),
     R.propEq("action", "toggle")
 );
 
 // isSceneSelect :: Msg => Boolean
 const isSceneSelect = R.pipe(
-    R.view(Routes.inputDataLens),
+    R.view(Lenses.inputDataLens),
     R.anyPass(
         [R.propEq("action", "arrow_left_click"),
         R.propEq("action", "arrow_right_click")]
@@ -39,7 +40,7 @@ const sceneIsActive = scene => input => {
 
 // getSceneFromMsg :: Msg => [Scene] | undefined
 const getSceneFromMsg = R.pipe(
-    R.view(Routes.inputNameLens),
+    R.view(Lenses.inputNameLens),
     getSceneByName
 );
 
@@ -47,7 +48,7 @@ const getSceneFromMsg = R.pipe(
 const getSelectedScene = R.pipe(
     R.ifElse(
         R.pipe(
-            R.view(Routes.inputDataLens),
+            R.view(Lenses.inputDataLens),
             R.propEq("action", "arrow_left_click"),
         ),
         R.pipe(
@@ -65,7 +66,7 @@ const getSelectedScene = R.pipe(
 const toogleDefaultScene = input => {
     const scene_off = getSceneFromMsg(input)[0];
     const scene_on = getSceneFromMsg(input)[1];
-    const off = sceneIsActive(scene_off)(R.view(Routes.stateLens,input));
+    const off = sceneIsActive(scene_off)(R.view(Lenses.stateLens,input));
     return off ? scene_on: scene_off;
 };
 
