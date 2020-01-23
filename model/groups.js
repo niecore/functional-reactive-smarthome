@@ -28,7 +28,8 @@ const roomGroup = room => createGroupOfDevices(groupPrefix(room))(Rooms.getDevic
 const typeGroup = type => createGroupOfDevices(groupPrefix(type))(Devices.getDevicesOfType(type)); // todo: beautify
 
 // typeGroupName :: String => String
-const roomTypeGroupName = (room, type) => type + "_in_" + room;
+const roomTypeGroupName = type => room =>  groupPrefix(type + "_in_" + room);
+
 
 // devicesInGroup :: Group -> [String]
 const devicesInGroup = R.prop("devices");
@@ -51,7 +52,7 @@ const renameGroup = name => R.pipe(
 // roomGroupOfType :: String, String -> [Group]
 const roomGroupOfType = (room, type) => R.pipe(
     filterDevicesInGroupByType(type),
-    renameGroup(groupPrefix(roomTypeGroupName(room, type))),
+    renameGroup(roomTypeGroupName(room)(type)),
 )(roomGroup(room));
 
 module.exports = {
@@ -60,5 +61,6 @@ module.exports = {
     roomGroupOfType,
     typeGroup,
     roomGroup,
+    roomTypeGroupName,
     devicesInGroup,
 };

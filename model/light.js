@@ -20,7 +20,7 @@ const setAdaptiveBrightnessInRoom = (input) => {
     )(
         getAdaptiveBrightness(input)
     )(
-        getLightGroupOfRoom(input)
+        getLightGroup(input)
     )
 };
 
@@ -46,10 +46,24 @@ const timedLightOnStream = duration => brightness => device => Bacon.once(setBri
 const getLightGroupOfRoom = R.pipe(
     R.view(Lenses.inputNameLens),
     Rooms.getRoomOfDevice,
-    R.flip(Groups.roomGroupOfType)("light"),
-    R.keys,
-    R.head,
+    Groups.roomTypeGroupName("light"),
 );
+
+// getNightLightGroupOfRoom :: Msg => String
+const getNightLightGroupOfRoom = R.pipe(
+    R.view(Lenses.inputNameLens),
+    Rooms.getRoomOfDevice,
+    Groups.roomTypeGroupName("nightlight"),
+);
+
+// getLightGroup :: Msg => String
+const getLightGroup = msg => {
+    if(DayPeriod.itsNightTime() && isMessageFromRoomWithNightLight(msg)){
+        return getNightLightGroupOfRoom(msg);
+    }else {
+        return getLightGroupOfRoom(msg);
+    }
+};
 
 // roomToDark :: Msg => Boolean
 const roomToDark = R.pipe(
