@@ -85,3 +85,7 @@ const sceneAction = Routes.input
 
 Routes.output.plug(toggleAction);
 Routes.output.plug(sceneAction);
+
+module.exports = {
+    getSceneByName,
+};

@@ -65,11 +65,26 @@
       "type": "remote",
       "description": "Light Remote Wohnzimmer"
     },
+    "remote_tradfri_2": {
+      "interface": "zigbee",
+      "type": "remote",
+      "description": "Light Remote Schlafzimmer"
+    },
     "lightbulb_tint_1": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "indirect",
       "description": "Tischlampe Schreibmaschine"
+    },
+    "lightbulb_tint_2": {
+      "interface": "zigbee",
+      "type": "light",
+      "description": "Nachtischlampe Her"
+    },
+    "lightbulb_tint_3": {
+      "interface": "zigbee",
+      "type": "light",
+      "description": "Nachtischlampe Me"
     }
 
   }

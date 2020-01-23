@@ -13,6 +13,26 @@
       {
         "lightbulb_tint_1": {"state":"ON", "brightness": 255, "color": {"hue": 360, "saturation": 100}}
       }
+    ],
+    "remote_tradfri_2": [
+      {
+        "lightbulb_tint_2": {"state":"OFF"}, "lightbulb_tint_3": {"state":"OFF"}
+      },
+      {
+        "lightbulb_tint_2": {"state":"ON"}, "lightbulb_tint_3": {"state":"ON"}
+      },
+      {
+        "lightbulb_tint_2": {"state":"ON"}, "lightbulb_tint_3": {"state":"ON"}
+      },
+      {
+        "lightbulb_tint_2": {"state":"ON"}, "lightbulb_tint_3": {"state":"ON"}
+      }
+    ],
+    "wake_up_bed_room": [
+      {
+        "lightbulb_tint_2": {"state": "on", "brightness": 1, "brightness_move": 1, "color_temp": 400},
+        "lightbulb_tint_3": {"state": "on", "brightness": 1, "brightness_move": 1, "color_temp": 400}
+      }
     ]
   }
 
