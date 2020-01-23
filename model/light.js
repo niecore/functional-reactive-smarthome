@@ -69,7 +69,7 @@ const getLightGroup = msg => {
 const roomToDark = R.pipe(
     R.view(Lenses.inputDataLens),
     R.propOr(0,"illuminance"),
-    R.gt(20)
+    R.gt(9)
 );
 
 // isMessageFromRoomWithNightLight :: Msg => Boolean
