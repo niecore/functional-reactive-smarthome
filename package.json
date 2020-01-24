@@ -16,7 +16,8 @@
     "jest": "^24.9.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node main.js"
   },
   "jest": {
     "moduleNameMapper": {
