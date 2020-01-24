@@ -4,8 +4,19 @@
     "hallway": {},
     "server_room": {},
     "bathroom_small": {},
-    "kitchen": {},
-    "living_room": {},
+    "kitchen": {
+      "devices": [
+        "led_driver_tradfri_1",
+        "led_driver_tradfri_2",
+        "remote_tradfri_3"
+      ]
+    },
+    "living_room": {
+      "devices": [
+        "remote_tradfri_1",
+        "lightbulb_tint_1"
+      ]
+    },
     "junk_room": {
       "devices": [
         "motionsensor_aqara_1",
@@ -26,7 +37,13 @@
     },
     "office": {},
     "bathroom": {},
-    "bedroom": {},
+    "bedroom": {
+      "devices" : [
+        "lightbulb_tint_1",
+        "lightbulb_tint_2",
+        "remote_tradfri_1"
+      ]
+    },
     "laundry_room": {
       "devices": [
         "sensor_air_1"

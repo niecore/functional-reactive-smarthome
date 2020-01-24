@@ -85,7 +85,21 @@
       "interface": "zigbee",
       "type": "light",
       "description": "Nachtischlampe Me"
+    },
+    "led_driver_tradfri_1": {
+      "interface": "zigbee",
+      "type": "light",
+      "description": "Küchenunterschrankbeleuchtung Links"
+    },
+    "led_driver_tradfri_2": {
+      "interface": "zigbee",
+      "type": "light",
+      "description": "Küchenunterschrankbeleuchtung Rechts"
+    },
+    "remote_tradfri_3": {
+      "interface": "zigbee",
+      "type": "remote",
+      "description": "Light Remote Küche"
     }
-
   }
 }
