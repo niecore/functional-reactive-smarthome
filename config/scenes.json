@@ -1,53 +1,89 @@
 {
-  "scenes": {
-    "remote_tradfri_1": [
-      {
-        "lightbulb_tint_1": {"state":"OFF"}
-      },
-      {
-        "lightbulb_tint_1": {"state":"ON", "brightness": 255,"color_temp": 400}
-      },
-      {
-        "lightbulb_tint_1": {"state":"ON", "brightness": 255, "color": {"hue": 290, "saturation": 100}}
-      },
-      {
-        "lightbulb_tint_1": {"state":"ON", "brightness": 255, "color": {"hue": 360, "saturation": 100}}
+  "livingroom_desk_lamp_on": {
+    "lightbulb_tint_1": {
+      "state": "ON",
+      "brightness": 255,
+      "color_temp": 400
+    }
+  },
+  "livingroom_desk_lamp_off": {
+    "lightbulb_tint_1": {
+      "state": "OFF"
+    }
+  },
+  "livingroom_desk_lamp_purple": {
+    "lightbulb_tint_1": {
+      "state": "ON",
+      "brightness": 255,
+      "color": {
+        "hue": 290,
+        "saturation": 100
       }
-    ],
-    "remote_tradfri_2": [
-      {
-        "lightbulb_tint_2": {"state":"OFF"}, "lightbulb_tint_3": {"state":"OFF"}
-      },
-      {
-        "lightbulb_tint_2": {"state":"ON"}, "lightbulb_tint_3": {"state":"ON"}
-      },
-      {
-        "lightbulb_tint_2": {"state":"ON"}, "lightbulb_tint_3": {"state":"ON"}
-      },
-      {
-        "lightbulb_tint_2": {"state":"ON"}, "lightbulb_tint_3": {"state":"ON"}
+    }
+  },
+  "livingroom_desk_lamp_red": {
+    "lightbulb_tint_1": {
+      "state": "ON",
+      "brightness": 255,
+      "color": {
+        "hue": 360,
+        "saturation": 100
       }
-    ],
-    "remote_tradfri_3": [
-      {
-        "group_light_in_kitchen": {"state":"OFF"}
+    }
+  },
+  "bedroom_nightstand_on": {
+    "lightbulb_tint_2": {
+      "state": "ON"
+    },
+    "lightbulb_tint_3": {
+      "state": "OFF"
+    }
+  },
+  "bedroom_nightstand_off": {
+    "lightbulb_tint_2": {
+      "state": "OFF"
+    },
+    "lightbulb_tint_3": {
+      "state": "OFF"
+    }
+  },
+  "kitchen_off": {
+    "group_light_in_kitchen": {
+      "state": "OFF"
+    }
+  },
+  "kitchen_on_normal": {
+    "group_light_in_kitchen": {
+      "state": "ON",
+      "brightness": 180
+    }
+  },
+  "kitchen_on_dimmed": {
+    "group_light_in_kitchen": {
+      "state": "ON",
+      "brightness": 10
+    }
+  },
+  "kitchen_on_full": {
+    "group_light_in_kitchen": {
+      "state": "ON",
+      "brightness": 255
+    }
+  },
+  "wake_up_bed_room": [
+    {
+      "lightbulb_tint_2": {
+        "state": "on",
+        "brightness": 1,
+        "brightness_move": 1,
+        "color_temp": 400
       },
-      {
-        "group_light_in_kitchen": {"state":"ON", "brightness":  180}
-      },
-      {
-        "group_light_in_kitchen": {"state":"ON", "brightness":  10}
-      },
-      {
-        "group_light_in_kitchen": {"state":"ON", "brightness":  255}
+      "lightbulb_tint_3": {
+        "state": "on",
+        "brightness": 1,
+        "brightness_move": 1,
+        "color_temp": 400
       }
-    ],
-    "wake_up_bed_room": [
-      {
-        "lightbulb_tint_2": {"state": "on", "brightness": 1, "brightness_move": 1, "color_temp": 400},
-        "lightbulb_tint_3": {"state": "on", "brightness": 1, "brightness_move": 1, "color_temp": 400}
-      }
-    ]
-  }
-
+    }
+  ]
 }

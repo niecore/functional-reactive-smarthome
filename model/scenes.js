@@ -1,13 +1,20 @@
 const R = require('ramda');
 const Scenes = require('../config/scenes.json');
+const Remotes = require('../config/remotes');
 const Routes = require('../router');
 const Devices = require('../model/devices');
 const Lenses = require('../lenses');
 
-// knownScenes
-const knownScenes = Scenes.scenes;
+// knownRemotes
+const knownRemotes = Remotes;
 
-// getSceneByName :: String => Device | undefined
+// getRemoteByName :: String => Remotes | undefined
+const getRemoteByName = R.prop(R.__, knownRemotes);
+
+// knownScenes
+const knownScenes = Scenes;
+
+// getSceneByName :: String => Scene | undefined
 const getSceneByName = R.prop(R.__, knownScenes);
 
 // isMessageFromRemoteSensor :: Msg => Boolean
@@ -16,75 +23,56 @@ const isMessageFromRemoteSensor = R.pipe(
     Devices.deviceHasType("remote")
 );
 
-// isToggleAction :: Msg => Boolean
-const isToggleAction = R.pipe(
-    R.view(Lenses.inputDataLens),
-    R.propEq("action", "toggle")
-);
-
-// isSceneSelect :: Msg => Boolean
-const isSceneSelect = R.pipe(
-    R.view(Lenses.inputDataLens),
-    R.anyPass(
-        [R.propEq("action", "arrow_left_click"),
-        R.propEq("action", "arrow_right_click")]
-    )
+// isMessageFromConfiguredRemote :: Msg => Boolean
+const isMessageFromConfiguredRemote = R.pipe(
+    R.view(Lenses.inputNameLens),
+    R.includes(R.__, R.keys(Remotes))
 );
 
 // isSceneSelect :: Scene => Msg => Boolean
-const sceneIsActive = scene => input => {
-  return R.reduce(R.and, true)(R.values(R.mapObjIndexed(
-      (num, key, obj) => R.whereEq(num)(R.propOr({},key)(input))
-  )(scene)));
+const sceneIsActive = input => scene => {
+    return R.reduce(R.and, true)(R.values(R.mapObjIndexed(
+        (num, key, obj) => R.whereEq(num)(R.propOr({}, key)(input))
+    )(scene)));
 };
 
-// getSceneFromMsg :: Msg => [Scene] | undefined
-const getSceneFromMsg = R.pipe(
-    R.view(Lenses.inputNameLens),
-    getSceneByName
-);
+const getScenesRemoteConfiguration = input => {
+    const remote = getRemoteByName(R.view(Lenses.inputNameLens)(input));
+    const action = R.prop("action")(R.view(Lenses.inputDataLens)(input));
+    const scenes = R.prop(action, remote);
 
-// getSelectedScene :: Msg => Scene
-const getSelectedScene = R.pipe(
-    R.ifElse(
-        R.pipe(
-            R.view(Lenses.inputDataLens),
-            R.propEq("action", "arrow_left_click"),
-        ),
-        R.pipe(
-            getSceneFromMsg,
-            R.nth(2)
-        ),
-        R.pipe(
-            getSceneFromMsg,
-            R.nth(3)
-        )
-    )
-);
-
-// toogleDefaultScene :: Msg => Scene
-const toogleDefaultScene = input => {
-    const scene_off = getSceneFromMsg(input)[0];
-    const scene_on = getSceneFromMsg(input)[1];
-    const off = sceneIsActive(scene_off)(R.view(Lenses.stateLens,input));
-    return off ? scene_on: scene_off;
+    return scenes;
 };
 
-// Automation for toggle button
-const toggleAction = Routes.input
+const selectSceneFromArray = scenes => input => {
+    if(R.equals(1, R.length(scenes))){
+        return R.head(scenes)
+    }
+
+    const active_scene_index = R.findIndex(sceneIsActive(R.view(Lenses.stateLens, input)), scenes);
+
+    if(active_scene_index != -1){
+        return R.nth(R.modulo(active_scene_index + 1, R.length(scenes)))(scenes);
+    }else {
+        return R.head(scenes);
+    }
+
+};
+
+const getNextScene = input => {
+    const remote = getScenesRemoteConfiguration(input);
+    const scenes = R.map(getSceneByName)(remote);
+    const selected = selectSceneFromArray(scenes)(input);
+
+    return selected;
+};
+
+const remoteAction = Routes.input
     .filter(isMessageFromRemoteSensor)
-    .filter(isToggleAction)
-    .map(toogleDefaultScene);
+    .filter(isMessageFromConfiguredRemote)
+    .map(getNextScene);
 
-// Automation for scene select button
-const sceneAction = Routes.input
-    .filter(isMessageFromRemoteSensor)
-    .filter(isSceneSelect)
-    .map(getSelectedScene);
-
-
-Routes.output.plug(toggleAction);
-Routes.output.plug(sceneAction);
+Routes.output.plug(remoteAction);
 
 module.exports = {
     getSceneByName,

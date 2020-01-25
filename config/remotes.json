@@ -1,0 +1,17 @@
+{
+  "remote_tradfri_1": {
+    "toggle": ["livingroom_desk_lamp_on", "livingroom_desk_lamp_off"],
+    "arrow_left_click": ["livingroom_desk_lamp_purple"],
+    "arrow_right_click": ["livingroom_desk_lamp_red"]
+  },
+
+  "remote_tradfri_2": {
+    "toggle": ["bedroom_nightstand_on", "bedroom_nightstand_off"]
+  },
+
+  "remote_tradfri_3": {
+    "toggle": ["kitchen_off", "kitchen_on_normal"],
+    "arrow_left_click": ["kitchen_on_dimmed"],
+    "arrow_right_click": ["kitchen_on_full"]
+  }
+}
