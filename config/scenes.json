@@ -70,20 +70,29 @@
       "brightness": 255
     }
   },
-  "wake_up_bed_room": [
-    {
-      "lightbulb_tint_2": {
-        "state": "on",
-        "brightness": 1,
-        "brightness_move": 1,
-        "color_temp": 400
-      },
-      "lightbulb_tint_3": {
-        "state": "on",
-        "brightness": 1,
-        "brightness_move": 1,
-        "color_temp": 400
-      }
+  "wake_up_bed_room": {
+    "lightbulb_tint_2": {
+      "state": "on",
+      "brightness": 1,
+      "brightness_move": 1,
+      "color_temp": 400
+    },
+    "lightbulb_tint_3": {
+      "state": "on",
+      "brightness": 1,
+      "brightness_move": 1,
+      "color_temp": 400
     }
-  ]
+  },
+  "staircase_off": {
+    "group_light_in_staircase": {
+      "state": "off"
+    }
+  },
+  "staircase_on": {
+    "group_light_in_staircase": {
+      "state": "on", "brightness": 255
+    }
+  }
 }
+

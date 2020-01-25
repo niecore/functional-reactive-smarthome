@@ -39,7 +39,9 @@ const sceneIsActive = input => scene => {
 const getScenesRemoteConfiguration = input => {
     const remote = getRemoteByName(R.view(Lenses.inputNameLens)(input));
     const action = R.prop("action")(R.view(Lenses.inputDataLens)(input));
-    const scenes = R.prop(action, remote);
+    const click = R.prop("click")(R.view(Lenses.inputDataLens)(input));
+
+    const scenes = R.prop(R.defaultTo(action)(click), remote);
 
     return scenes;
 };

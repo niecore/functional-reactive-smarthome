@@ -100,6 +100,11 @@
       "interface": "zigbee",
       "type": "remote",
       "description": "Light Remote Küche"
+    },
+    "remote_aqara_1": {
+      "interface": "zigbee",
+      "type": "remote",
+      "description": "Light Remote Staircase"
     }
   }
 }
