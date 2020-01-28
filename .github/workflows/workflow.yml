@@ -25,6 +25,7 @@ jobs:
 
   push:
     runs-on: ubuntu-latest
+    needs: [test]
     steps:
       - uses: actions/checkout@master
       - name: Publish to Registry
@@ -37,7 +38,7 @@ jobs:
   deploy:
     name: Deploy to docker swarm
     runs-on: ubuntu-latest
-
+    needs: [push]
     steps:
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
