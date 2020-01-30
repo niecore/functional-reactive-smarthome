@@ -1,0 +1,44 @@
+name: Deploy
+
+on: ['deployment']
+
+jobs:
+
+  deployment:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: 'deployment pending'
+        uses: 'deliverybot/deployment-status@master'
+        with:
+          state: 'pending'
+          token: '${{ github.token }}'
+
+      - name: deploy
+        run: |
+          echo "environment - ${{ github.event.deployment.task }}"
+          echo "payload - ${{ github.event.deployment.payload }}"
+
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DOCKER_SWARM_SSH_URL }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          passphrase: ${{ secrets.DOCKER_PASSPHRASE }}
+          port: ${{ secrets.DOCKER_SWARM_PORT }}
+          key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY}}
+          script: docker service update --image niecore/functional-reactive-smarthome:latest functional-reactive-smarthome
+
+      - name: 'deployment success'
+        if: success()
+        uses: 'deliverybot/deployment-status@master'
+        with:
+          state: 'success'
+          token: '${{ github.token }}'
+
+      - name: 'deployment failure'
+        if: failure()
+        uses: 'deliverybot/deployment-status@master'
+        with:
+          state: 'failure'
+          token: '${{ github.token }}'
