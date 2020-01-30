@@ -19,14 +19,7 @@ jobs:
           echo "environment - ${{ github.event.deployment.task }}"
           echo "payload - ${{ github.event.deployment.payload }}"
 
-      - name: Publish to Registry
-        uses: elgohr/Publish-Docker-Github-Action@master
-        with:
-          name: niecore/functional-reactive-smarthome
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: executing remote ssh commands using password
+      - name: 'Deploy ${{ github.event.deployment.environment }} - ${{ github.event.deployment.ref }}'
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DOCKER_SWARM_SSH_URL }}
@@ -34,7 +27,7 @@ jobs:
           passphrase: ${{ secrets.DOCKER_PASSPHRASE }}
           port: ${{ secrets.DOCKER_SWARM_PORT }}
           key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY}}
-          script: docker service update --image niecore/functional-reactive-smarthome:latest functional-reactive-smarthome
+          script: docker service update --image niecore/functional-reactive-smarthome:${{ github.event.deployment.ref }} functional-reactive-smarthome
 
       - name: 'deployment success'
         if: success()

@@ -1,4 +1,15 @@
-staging:
+production:
   auto_deploy_on: refs/heads/master
-  required_contexts: ["CI"]
-  environment: staging
+  production_environment: true
+  required_contexts: ["test", "publish"]
+  environment: production
+
+review:
+  # Set the transient environment flag to let GitHub and Deliverybot know that
+  # this environment should be destroyed when the PR is closed.
+  transient_environment: true
+  production_environment: true
+
+  # Dynamic environment name. The environment will look like pr123.
+  environment: production
+  required_contexts: ["test", "publish"]

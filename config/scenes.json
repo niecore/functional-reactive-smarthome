@@ -26,7 +26,7 @@
       "state": "ON",
       "brightness": 255,
       "color": {
-        "hue": 360,
+        "hue": 40,
         "saturation": 100
       }
     }
