@@ -1,4 +1,4 @@
 staging:
   auto_deploy_on: refs/heads/master
-  required_contexts: ["ci"]
+  required_contexts: ["CI"]
   environment: staging
