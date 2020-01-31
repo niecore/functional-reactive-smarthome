@@ -1,7 +1,7 @@
 production:
   auto_deploy_on: refs/heads/master
   production_environment: true
-  required_contexts: ["test", "publish"]
+  required_contexts: ["test"]
   environment: production
 
 review:
@@ -12,4 +12,4 @@ review:
 
   # Dynamic environment name. The environment will look like pr123.
   environment: production
-  required_contexts: ["test", "publish"]
+  required_contexts: ["test"]
