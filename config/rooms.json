@@ -36,10 +36,14 @@
         "remote_aqara_1"
       ]
     },
-    "office": {},
+    "office": {
+      "devices": [
+        "shellydimmer-F3AB9C"
+      ]
+    },
     "bathroom": {},
     "bedroom": {
-      "devices" : [
+      "devices": [
         "lightbulb_tint_1",
         "lightbulb_tint_2",
         "remote_tradfri_1"
