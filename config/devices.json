@@ -105,6 +105,18 @@
       "interface": "zigbee",
       "type": "remote",
       "description": "Light Remote Staircase"
+    },
+    "led_dimmer_shelly1": {
+      "interface": "shelly",
+      "type": "light",
+      "id": "shellydimmer-F3AB9C",
+      "description": "Dimmer"
+    },
+    "button_shelly1": {
+      "interface": "shelly",
+      "type": "remote",
+      "id": "shellydimmer-F3AB9C",
+      "description": "Dimmer"
     }
   }
 }
