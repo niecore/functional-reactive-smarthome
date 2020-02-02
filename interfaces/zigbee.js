@@ -70,7 +70,7 @@ deviceOutputStream
     .map(R.map(R.over(MqttStream.topicLense, R.pipe(prependBaseTopic, appendSetTopic))))
     .map(R.map(R.over(MqttStream.payloadLense, JSON.stringify)))
     .onValue(array => array.forEach(input =>
-            publishTopic(input.topic)(input.payload)
+            MqttStream.publishTopic(client)(input.topic)(input.payload)
         )
     );
 
