@@ -109,13 +109,13 @@
     "led_dimmer_shelly1": {
       "interface": "shelly",
       "type": "light",
-      "id": "shellydimmer-F3AB9C",
+      "id": "shellydimmer-F3AB9C/light/0",
       "description": "Dimmer"
     },
     "button_shelly1": {
       "interface": "shelly",
       "type": "remote",
-      "id": "shellydimmer-F3AB9C",
+      "id": "shellydimmer-F3AB9C/input/0",
       "description": "Dimmer"
     }
   }
