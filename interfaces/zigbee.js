@@ -5,6 +5,7 @@ const R = require('ramda');
 const RA = require('ramda-adjunct');
 const Devices = require('../model/devices');
 const Interfaces = require('../config/interfaces.json');
+const Util = require('../model/util');
 
 // baseTopic :: String
 const baseTopic = Interfaces.zigbee.baseTopic;
@@ -61,11 +62,8 @@ const deviceInputStream = MqttStream.inputStream(client)
 
 const deviceOutputStream = new Bacon.Bus();
 
-// convertToOutput :: {a:A} => [{key:a, value: A}]
-const convertToArray = R.pipe(R.toPairs, R.map(R.zipObj(['key', 'value'])));
-
 deviceOutputStream
-    .map(convertToArray)
+    .map(Util.convertToArray)
     .map(R.map(RA.renameKeys({key: 'topic', value: 'payload'})))
     .map(R.map(R.over(MqttStream.topicLense, R.pipe(prependBaseTopic, appendSetTopic))))
     .map(R.map(R.over(MqttStream.payloadLense, JSON.stringify)))

@@ -5,6 +5,7 @@ const Interfaces = require('../config/interfaces.json');
 const Mqtt = require("mqtt");
 const MqttStream = require("../interfaces/mqtt_stream");
 const Devices = require('../model/devices');
+const Util = require('../model/util');
 
 // baseTopic :: String
 const baseTopic = Interfaces.shelly.baseTopic;
@@ -20,9 +21,6 @@ const shellyTopics = R.pipe(
     R.map(topic => topic + "/#")
 )(Devices.knownDevices);
 
-const client = Mqtt.connect(address);
-client.subscribe(shellyTopics);
-
 const getDeviceByTopic = topic => R.pipe(
     R.filter(R.propEq("interface", "shelly")),
     R.filter(R.propSatisfies(R.startsWith(R.__, topic),"id")),
@@ -30,8 +28,10 @@ const getDeviceByTopic = topic => R.pipe(
     R.head
 )(Devices.knownDevices);
 
+const brightnessScalingIn =  input => input * 255 / 100;
+const brightnessScalingOut =  input => input * 100 / 255;
 
-const transformData = data => {
+const fromShellyData = data => {
     const device_name = getDeviceByTopic(data.topic);
     const device = Devices.getDeviceByName(device_name);
     const typeOfDevice = R.prop("type", device);
@@ -41,7 +41,7 @@ const transformData = data => {
         if(sub_topic === "") {
             return {topic: device_name, payload: {state: data.payload.toUpperCase()}};
         } else if (sub_topic === "/status") {
-            return {topic: device_name, payload: {brightness: R.prop("brightness", JSON.parse(data.payload))}};
+            return {topic: device_name, payload: {brightness: brightnessScalingIn(R.prop("brightness", JSON.parse(data.payload)))}};
         } else if (sub_topic === "/power") {
             return {topic: device_name, payload: {power: JSON.parse(data.payload)}};
         } else if (sub_topic === "/energy") {
@@ -60,16 +60,42 @@ const transformData = data => {
     }
 };
 
+const toShellyData = data => {
+    const device = Devices.getDeviceByName(data.key);
+    const typeOfDevice = R.prop("type", device);
 
+    if(typeOfDevice === "light") {
+        const payload = R.pipe(
+            R.pick(["state", "brightness"]),
+            R.over(R.lensProp("brightness"), brightnessScalingOut),
+            RA.renameKeys({state: 'turn'})
+        )(data.value);
+
+        return {topic: device.id + "/set", payload: payload}
+    }
+
+    return data;
+};
+
+const client = Mqtt.connect(address);
+client.subscribe(shellyTopics);
 const deviceInputStream = MqttStream.inputStream(client)
     .map(R.over(MqttStream.topicLense, R.replace(baseTopic + "/", "")))
     .map(R.over(MqttStream.payloadLense, R.toString))
-    .map(transformData);
-
-
-deviceInputStream.doLog().subscribe();
+    .map(fromShellyData)
+    .map(obj => R.objOf(obj.topic)(obj.payload));
 
 const deviceOutputStream = new Bacon.Bus();
+
+deviceOutputStream
+    .map(Util.convertToArray)
+    .map(R.map(toShellyData))
+    .map(R.map(R.over(MqttStream.topicLense, topic => baseTopic + "/" + topic)))
+    .map(R.map(R.over(MqttStream.payloadLense, JSON.stringify)))
+    .onValue(array => array.forEach(input =>
+            MqttStream.publishTopic(client)(input.topic)(input.payload)
+        )
+    );
 
 module.exports = {
     deviceInputStream,
