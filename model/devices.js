@@ -28,6 +28,6 @@ module.exports = {
     getDeviceByName,
     getDevicesOfType,
     deviceHasType,
-    deviceHasInterface
+    deviceHasInterface,
 };
 
