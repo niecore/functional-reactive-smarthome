@@ -72,13 +72,13 @@
   },
   "wake_up_bed_room": {
     "lightbulb_tint_2": {
-      "state": "on",
+      "state": "ON",
       "brightness": 1,
       "brightness_move": 1,
       "color_temp": 400
     },
     "lightbulb_tint_3": {
-      "state": "on",
+      "state": "ON",
       "brightness": 1,
       "brightness_move": 1,
       "color_temp": 400
@@ -86,13 +86,21 @@
   },
   "staircase_off": {
     "group_light_in_staircase": {
-      "state": "off"
+      "state": "OFF"
     }
   },
   "staircase_on": {
     "group_light_in_staircase": {
-      "state": "on", "brightness": 255
+      "state": "ON", "brightness": 255
     }
+  },
+  "office_light_on": {
+    "plug_osram_1": {"state":  "ON"},
+    "led_dimmer_shelly1": {"state":  "ON", "brightness": 255}
+  },
+  "office_light_off": {
+    "plug_osram_1": {"state":  "OFF"},
+    "led_dimmer_shelly1": {"state":  "OFF", "brightness": 0}
   }
 }
 

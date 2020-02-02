@@ -15,6 +15,12 @@
     "arrow_right_click": ["kitchen_on_full"]
   },
 
+  "remote_tradfri_4": {
+    "toggle": ["office_light_on", "office_light_off"],
+    "arrow_left_click": ["office_light_on"],
+    "arrow_right_click": ["office_light_on"]
+  },
+
   "remote_aqara_1": {
     "left": ["staircase_off"],
     "right": ["staircase_on"]

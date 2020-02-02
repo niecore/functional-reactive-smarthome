@@ -47,7 +47,7 @@ const fromShellyData = data => {
         } else if (sub_topic === "/energy") {
             return {topic: device_name, payload: {energy: JSON.parse(data.payload)}};
         } else {
-            return {topic: device_name, payload: {}};
+            return {};
         }
     }
 
@@ -55,7 +55,7 @@ const fromShellyData = data => {
         if(sub_topic === "") {
             return {topic: device_name, payload: {action: data.payload === "1"? "ON": "OFF"}};
         } else {
-            return {topic: device_name, payload: {}};
+            return {};
         }
     }
 };
@@ -68,6 +68,7 @@ const toShellyData = data => {
         const payload = R.pipe(
             R.pick(["state", "brightness"]),
             R.over(R.lensProp("brightness"), brightnessScalingOut),
+            R.over(R.lensProp("state"), R.toLower),
             RA.renameKeys({state: 'turn'})
         )(data.value);
 
@@ -82,6 +83,7 @@ client.subscribe(shellyTopics);
 const deviceInputStream = MqttStream.inputStream(client)
     .map(R.over(MqttStream.topicLense, R.replace(baseTopic + "/", "")))
     .map(R.over(MqttStream.payloadLense, R.toString))
+    .filter(input => !input.topic.endsWith("/set"))
     .map(fromShellyData)
     .map(obj => R.objOf(obj.topic)(obj.payload));
 
