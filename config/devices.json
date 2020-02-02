@@ -101,6 +101,11 @@
       "type": "remote",
       "description": "Light Remote Küche"
     },
+    "remote_tradfri_4": {
+      "interface": "zigbee",
+      "type": "remote",
+      "description": "Light Remote Office"
+    },
     "remote_aqara_1": {
       "interface": "zigbee",
       "type": "remote",
@@ -117,6 +122,11 @@
       "type": "remote",
       "id": "shellydimmer-F3AB9C/input/0",
       "description": "Dimmer"
+    },
+    "plug_osram_1": {
+      "interface": "zigbee",
+      "type": "plug",
+      "description": "Plug for lights in Office"
     }
   }
 }
