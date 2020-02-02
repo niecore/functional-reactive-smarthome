@@ -30,7 +30,6 @@ const typeGroup = type => createGroupOfDevices(groupPrefix(type))(Devices.getDev
 // typeGroupName :: String => String
 const roomTypeGroupName = type => room =>  groupPrefix(type + "_in_" + room);
 
-
 // devicesInGroup :: Group -> [String]
 const devicesInGroup = R.prop("devices");
 
@@ -55,6 +54,9 @@ const roomGroupOfType = (room, type) => R.pipe(
     renameGroup(roomTypeGroupName(room)(type)),
 )(roomGroup(room));
 
+// isKnownGroup :: String -> bool
+const isKnownGroup = R.includes(R.__, R.keys(knownGroups));
+
 module.exports = {
     knownGroups,
     createGroupOfDevices,
@@ -63,4 +65,5 @@ module.exports = {
     roomGroup,
     roomTypeGroupName,
     devicesInGroup,
+    isKnownGroup,
 };
