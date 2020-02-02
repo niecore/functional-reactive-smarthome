@@ -17,10 +17,17 @@ const deviceHasType = type => R.pipe(
     R.propEq("type", type)
 );
 
+// deviceHasInterface :: String => String -> bool
+const deviceHasInterface = type => R.pipe(
+    getDeviceByName,
+    R.propEq("interface", type)
+);
+
 module.exports = {
     knownDevices,
     getDeviceByName,
     getDevicesOfType,
-    deviceHasType
+    deviceHasType,
+    deviceHasInterface
 };
 
