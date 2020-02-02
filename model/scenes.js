@@ -41,7 +41,7 @@ const getScenesRemoteConfiguration = input => {
     const action = R.prop("action")(R.view(Lenses.inputDataLens)(input));
     const click = R.prop("click")(R.view(Lenses.inputDataLens)(input));
 
-    const scenes = R.prop(R.defaultTo(action)(click), remote);
+    const scenes = R.prop(R.defaultTo(action)(click),remote);
 
     return scenes;
 };
@@ -63,6 +63,11 @@ const selectSceneFromArray = scenes => input => {
 
 const getNextScene = input => {
     const remote = getScenesRemoteConfiguration(input);
+
+    if(R.isNil(remote)) {
+        return {}
+    }
+
     const scenes = R.map(getSceneByName)(remote);
     const selected = selectSceneFromArray(scenes)(input);
 
