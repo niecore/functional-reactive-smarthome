@@ -1,10 +1,31 @@
 {
   "groups": {
-    "nightlights_hallway": {
+    "group_light_in_staircase": {
+      "devices": [
+        "lightbulb_tradfriw_1",
+        "lightbulb_tradfriw_2",
+        "lightbulb_tradfriw_3",
+        "lightbulb_tradfriw_4"
+      ]
+    },
+    "group_light_in_junk_room": {
+      "devices": [
+        "lightbulb_huew_1"
+      ]
+    },
+    "group_nightlight_in_staircase": {
       "devices": [
         "lightbulb_tradfriw_3",
         "lightbulb_tradfriw_4"
       ]
+    },
+    "group_light_in_kitchen": {
+      "devices": [
+        "led_driver_tradfri_1",
+        "led_driver_tradfri_2"
+      ]
     }
   }
 }
+
+
