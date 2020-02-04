@@ -1,7 +1,8 @@
 const Routes = require('./router');
 const MotionLight = require('./automations/motionLight.js');
 const Alarm = require('./automations/alarm.js');
-const SceneSwitching = require('./automations/sceneSwitching.js');
+const SceneSwitching = require('./automations/sceneControl.js');
+const BrightnessControl = require('./automations/brightnessControl.js');
 
 console.log("Starting functional-reactive-smart-home.");
 

@@ -28,8 +28,8 @@ const getDeviceByTopic = topic => R.pipe(
     R.head
 )(Devices.knownDevices);
 
-const brightnessScalingIn =  input => input * 255 / 100;
-const brightnessScalingOut =  input => input * 100 / 255;
+const brightnessScalingIn =  input => RA.round(input * 255 / 100);
+const brightnessScalingOut =  input => RA.round(input * 100 / 255);
 
 const fromShellyData = data => {
     const device_name = getDeviceByTopic(data.topic);
@@ -65,14 +65,28 @@ const toShellyData = data => {
     const typeOfDevice = R.prop("type", device);
 
     if(typeOfDevice === "light") {
-        const payload = R.pipe(
-            R.pick(["state", "brightness"]),
-            R.over(R.lensProp("brightness"), brightnessScalingOut),
-            R.over(R.lensProp("state"), R.toLower),
-            RA.renameKeys({state: 'turn'})
+        const adaptBrightness = R.ifElse(
+            R.has("brightness"),
+            R.pipe(
+                R.pick(["brightness"]),
+                R.over(R.lensProp("brightness"), brightnessScalingOut),
+                R.over(R.lensProp("brightness"), R.max(1)), // brightness of "0" is not allowed
+                R.over(R.lensProp("brightness"), R.min(255)), // brightness larger "255" is not allowed
+            ),
+            R.always({})
         )(data.value);
 
-        return {topic: device.id + "/set", payload: payload}
+        const adaptState = R.ifElse(
+            R.has("state"),
+            R.pipe(
+                R.pick(["state"]),
+                R.over(R.lensProp("state"), R.toLower),
+                RA.renameKeys({state: 'turn'})
+            ),
+            R.always({})
+        )(data.value);
+
+        return {topic: device.id + "/set", payload: R.mergeLeft(adaptState, adaptBrightness)}
     }
 
     return data;
