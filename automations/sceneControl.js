@@ -1,9 +1,9 @@
 const R = require('ramda');
 const Routes = require('../router');
+const Lenses = require('../lenses');
 const Devices = require('../model/devices');
 const Remotes = require('../model/remotes');
 const Scenes = require('../model/scenes');
-const Lenses = require('../lenses');
 
 // isMessageFromRemoteSensor :: Msg => Boolean
 const isMessageFromRemoteSensor = R.pipe(
@@ -20,10 +20,13 @@ const isMessageFromConfiguredRemote = R.pipe(
 );
 
 const getNextScene = input => {
-    const scenesFromRemote = R.pipe(
-        Remotes.getSceneNamesFromRemoteAction,
-        R.map(Scenes.getSceneByName)
-    )(input);
+    const sceneNamesFromRemote = Remotes.getSceneNamesFromRemoteAction(input);
+
+    if(R.isNil(sceneNamesFromRemote)){
+        return {}
+    }
+
+    const scenesFromRemote = R.map(Scenes.getSceneByName, sceneNamesFromRemote);
 
     const defaultScene = R.head(scenesFromRemote);
     const active_scene_index = R.findIndex(Scenes.sceneIsActive(R.view(Lenses.stateLens, input)), scenesFromRemote);
