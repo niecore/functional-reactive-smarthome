@@ -3,7 +3,7 @@
 ![Deploy](https://github.com/niecore/functional-reactive-smart-home/workflows/Deploy/badge.svg?branch=master)
 ![Test](https://github.com/niecore/functional-reactive-smart-home/workflows/Test/badge.svg?branch=master)
 
-A stateless smart home system which is sometimes deployed in P but also very often disabled because of the bugs discovered by beta testers (me & s.o.).
+A stateless, stream oriented, automation framework whith focus on smart home use cases.
 
 ## motivation
 
