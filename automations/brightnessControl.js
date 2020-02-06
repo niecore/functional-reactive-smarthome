@@ -25,7 +25,9 @@ const adjustBrightnessInRoom = input => {
         Rooms.getStateOfDeviceInSameRoom,
         R.pickBy((k, v) => Devices.deviceHasType("light")(v)),
         R.map(R.pick(["brightness"])),
-        R.map(R.map(R.add(factor)))
+        R.map(R.map(R.add(factor))),
+        R.map(R.map(R.max(0))),
+        R.map(R.map(R.min(255))),
     )(input);
 
     return other_devices;

@@ -44,9 +44,9 @@
     "bathroom": {},
     "bedroom": {
       "devices": [
-        "lightbulb_tint_1",
+        "lightbulb_tint_3",
         "lightbulb_tint_2",
-        "remote_tradfri_1"
+        "remote_tradfri_2"
       ]
     },
     "laundry_room": {
