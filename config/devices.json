@@ -127,6 +127,21 @@
       "interface": "zigbee",
       "type": "plug",
       "description": "Plug for lights in Office"
+    },
+    "sensor_air_2": {
+      "interface": "zigbee",
+      "type": "air_sensor",
+      "description": "Sensor in Bad"
+    },
+    "sensor_air_3": {
+      "interface": "zigbee",
+      "type": "air_sensor",
+      "description": "Sensor in Schlafzimmer"
+    },
+    "motionsensor_aqara_6": {
+      "interface": "zigbee",
+      "type": "motion_sensor",
+      "description": ""
     }
   }
 }
