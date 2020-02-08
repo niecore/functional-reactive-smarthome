@@ -38,7 +38,10 @@
     },
     "office": {
       "devices": [
-        "shellydimmer-F3AB9C"
+        "button_shelly1",
+        "led_dimmer_shelly1",
+        "remote_tradfri_4",
+        "plug_osram_1"
       ]
     },
     "bathroom": {},
