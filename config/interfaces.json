@@ -9,5 +9,9 @@
   "shelly": {
     "address": "mqtt://192.168.0.158",
     "baseTopic": "shellies"
+  },
+  "influxdb": {
+    "address": "192.168.0.101",
+    "db": "frs"
   }
 }
