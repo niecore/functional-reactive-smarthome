@@ -142,6 +142,30 @@
       "interface": "zigbee",
       "type": "motion_sensor",
       "description": ""
+    },
+    "led_dimmer_shelly2": {
+      "interface": "shelly",
+      "type": "light",
+      "id": "shellydimmer-DB338B/light/0",
+      "description": "Dimmer für Deckenlampe Wohnzimmer"
+    },
+    "button_shelly2": {
+      "interface": "shelly",
+      "type": "remote",
+      "id": "shellydimmer-DB338B/input/0",
+      "description": "Schalter für Deckenlampe Wohnzimmer"
+    },
+    "led_dimmer_shelly3": {
+      "interface": "shelly",
+      "type": "light",
+      "id": "shellydimmer-DB33DF/light/0",
+      "description": "Dimmer für Deckenlampe Esstisch"
+    },
+    "button_shelly3": {
+      "interface": "shelly",
+      "type": "remote",
+      "id": "shellydimmer-DB33DF/input/0",
+      "description": "Schalter für Deckenlampe Esstisch"
     }
   }
 }

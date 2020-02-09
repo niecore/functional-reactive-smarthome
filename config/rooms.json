@@ -14,7 +14,11 @@
     "living_room": {
       "devices": [
         "remote_tradfri_1",
-        "lightbulb_tint_1"
+        "lightbulb_tint_1",
+        "led_dimmer_shelly3",
+        "led_dimmer_shelly2",
+        "button_shelly3",
+        "button_shelly2"
       ]
     },
     "junk_room": {
