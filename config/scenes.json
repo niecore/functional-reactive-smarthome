@@ -110,11 +110,13 @@
   },
   "office_light_on": {
     "plug_osram_1": {"state":  "ON"},
-    "led_dimmer_shelly1": {"state":  "ON", "brightness": 255}
+    "led_dimmer_shelly1": {"state":  "ON", "brightness": 255},
+    "lightbulb_hue_2": {"state":  "ON", "brightness": 255}
   },
   "office_light_off": {
     "plug_osram_1": {"state":  "OFF"},
-    "led_dimmer_shelly1": {"state":  "OFF", "brightness": 0}
+    "led_dimmer_shelly1": {"state":  "OFF"},
+    "lightbulb_hue_2": {"state":  "OFF"}
   }
 }
 
