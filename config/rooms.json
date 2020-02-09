@@ -53,19 +53,19 @@
       "devices": [
         "sensor_air_2"
       ]
+    },
+    "bedroom": {
+      "devices": [
+        "lightbulb_tint_3",
+        "lightbulb_tint_2",
+        "remote_tradfri_2",
+        "sensor_air_3"
+      ]
+    },
+    "laundry_room": {
+      "devices": [
+        "sensor_air_1"
+      ]
     }
-  },
-  "bedroom": {
-    "devices": [
-      "lightbulb_tint_3",
-      "lightbulb_tint_2",
-      "remote_tradfri_2",
-      "sensor_air_3"
-    ]
-  },
-  "laundry_room": {
-    "devices": [
-      "sensor_air_1"
-    ]
   }
 }
