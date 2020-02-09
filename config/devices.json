@@ -166,6 +166,12 @@
       "type": "remote",
       "id": "shellydimmer-DB33DF/input/0",
       "description": "Schalter für Deckenlampe Esstisch"
+    },
+    "lightbulb_hue_2": {
+      "interface": "zigbee",
+      "type": "light",
+      "sub_type": "direct",
+      "description": "Stehlampe neben Schreibtisch"
     }
   }
 }
