@@ -1,17 +1,31 @@
 {
-  "livingroom_desk_lamp_on": {
+  "livingroom_on": {
     "lightbulb_tint_1": {
       "state": "ON",
       "brightness": 255,
       "color_temp": 400
+    },
+    "led_dimmer_shelly2": {
+      "state": "ON",
+      "brightness": 255
+    },
+    "led_dimmer_shelly3": {
+      "state": "ON",
+      "brightness": 255
     }
   },
-  "livingroom_desk_lamp_off": {
+  "livingroom_off": {
     "lightbulb_tint_1": {
+      "state": "OFF"
+    },
+    "led_dimmer_shelly2": {
+      "state": "OFF"
+    },
+    "led_dimmer_shelly3": {
       "state": "OFF"
     }
   },
-  "livingroom_desk_lamp_purple": {
+  "livingroom_chill_1": {
     "lightbulb_tint_1": {
       "state": "ON",
       "brightness": 255,
@@ -21,7 +35,7 @@
       }
     }
   },
-  "livingroom_desk_lamp_red": {
+  "livingroom_chill_2": {
     "lightbulb_tint_1": {
       "state": "ON",
       "brightness": 255,

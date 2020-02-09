@@ -1,8 +1,8 @@
 {
   "remote_tradfri_1": {
-    "toggle": ["livingroom_desk_lamp_on", "livingroom_desk_lamp_off"],
-    "arrow_left_click": ["livingroom_desk_lamp_purple"],
-    "arrow_right_click": ["livingroom_desk_lamp_red"]
+    "toggle": ["livingroom_on", "livingroom_off"],
+    "arrow_left_click": ["livingroom_chill_1"],
+    "arrow_right_click": ["livingroom_chill_2"]
   },
 
   "remote_tradfri_2": {
