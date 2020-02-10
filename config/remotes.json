@@ -17,8 +17,8 @@
 
   "remote_tradfri_4": {
     "toggle": ["office_light_on", "office_light_off"],
-    "arrow_left_click": ["office_light_on"],
-    "arrow_right_click": ["office_light_on"]
+    "arrow_left_click": ["office_light_color_2"],
+    "arrow_right_click": ["office_light_color_1"]
   },
 
   "remote_aqara_1": {
