@@ -105,18 +105,77 @@
   },
   "staircase_on": {
     "group_light_in_staircase": {
-      "state": "ON", "brightness": 255
+      "state": "ON",
+      "brightness": 255
     }
   },
   "office_light_on": {
-    "plug_osram_1": {"state":  "ON"},
-    "led_dimmer_shelly1": {"state":  "ON", "brightness": 255},
-    "lightbulb_hue_2": {"state":  "ON", "brightness": 255}
+    "plug_osram_1": {
+      "state": "ON"
+    },
+    "led_dimmer_shelly1": {
+      "state": "ON",
+      "brightness": 255
+    },
+    "lightbulb_hue_2": {
+      "state": "ON",
+      "brightness": 255
+    },
+    "lightbulb_hue_3": {
+      "state": "ON",
+      "brightness": 255
+    }
   },
   "office_light_off": {
-    "plug_osram_1": {"state":  "OFF"},
-    "led_dimmer_shelly1": {"state":  "OFF"},
-    "lightbulb_hue_2": {"state":  "OFF"}
+    "plug_osram_1": {
+      "state": "OFF"
+    },
+    "led_dimmer_shelly1": {
+      "state": "OFF"
+    },
+    "lightbulb_hue_2": {
+      "state": "OFF"
+    },
+    "lightbulb_hue_3": {
+      "state": "OFF"
+    }
+  },
+  "office_light_color_1": {
+    "lightbulb_hue_2": {
+      "state": "ON",
+      "brightness": 255,
+      "color": {
+        "hue": 9,
+        "saturation": 52
+      }
+    },
+    "lightbulb_hue_3": {
+      "state": "ON",
+      "brightness": 255,
+      "color": {
+        "hue": 261,
+        "saturation": 42
+      }
+    }
+  },
+  "office_light_color_2": {
+    "lightbulb_hue_2": {
+      "state": "ON",
+      "brightness": 255,
+      "color": {
+        "hue": 27,
+        "saturation": 90
+      }
+    },
+    "lightbulb_hue_3": {
+      "state": "ON",
+      "brightness": 255,
+      "color": {
+        "hue": 299,
+        "saturation": 90
+      }
+    }
   }
 }
+
 

@@ -47,7 +47,8 @@
         "remote_tradfri_4",
         "plug_osram_1",
         "motionsensor_aqara_6",
-        "lightbulb_hue_2"
+        "lightbulb_hue_2",
+        "lightbulb_hue_3"
       ]
     },
     "bathroom": {
@@ -60,7 +61,8 @@
         "lightbulb_tint_3",
         "lightbulb_tint_2",
         "remote_tradfri_2",
-        "sensor_air_3"
+        "sensor_air_3",
+        "plug_osram_2"
       ]
     },
     "laundry_room": {
