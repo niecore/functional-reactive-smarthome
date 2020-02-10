@@ -4,7 +4,7 @@ const MotionLight = require('./automations/motionLight.js');
 const Alarm = require('./automations/alarm.js');
 const SceneSwitching = require('./automations/sceneControl.js');
 const BrightnessControl = require('./automations/brightnessControl.js');
-const InfluxDb = require('./interfaces/influxdb');
+const InfluxDb = require('./automations/influxdbLogger');
 
 console.log("Starting functional-reactive-smart-home.");
 
