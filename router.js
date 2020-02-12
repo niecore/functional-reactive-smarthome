@@ -2,6 +2,7 @@ const Bacon = require("baconjs");
 const R = require('ramda');
 const Zigbee = require('./interfaces/zigbee');
 const Shelly = require('./interfaces/shelly');
+const EasyControl = require('./interfaces/easy_control');
 const Devices = require("./model/devices");
 const Util = require('./model/util');
 const Groups = require("./model/groups");
@@ -25,7 +26,7 @@ const filterMsgIsDevice = R.pipe(
 );
 
 const output = new Bacon.Bus();
-const update = Bacon.mergeAll(Zigbee.deviceInputStream, Shelly.deviceInputStream);
+const update = Bacon.mergeAll(Zigbee.deviceInputStream, Shelly.deviceInputStream, EasyControl.deviceInputStream);
 const state = update.scan({}, R.mergeDeepRight);
 const input = state.zip(update, (state, input) => [input, state]);
 

@@ -183,6 +183,30 @@
       "type": "light",
       "sub_type": "direct",
       "description": "Stehlampe neben Schrank in Office"
+    },
+    "etrv-laundryroom": {
+      "interface": "easy_control",
+      "type": "etrv"
+    },
+    "etrv-bedroom": {
+      "interface": "easy_control",
+      "type": "etrv"
+    },
+    "etrv-bathroom": {
+      "interface": "easy_control",
+      "type": "etrv"
+    },
+    "etrv-bedroom2": {
+      "interface": "easy_control",
+      "type": "etrv"
+    },
+    "etrv-livingroom": {
+      "interface": "easy_control",
+      "type": "etrv"
+    },
+    "etrv-kitchen": {
+      "interface": "easy_control",
+      "type": "etrv"
     }
   }
 }
