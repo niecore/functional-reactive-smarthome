@@ -18,7 +18,9 @@
         "led_dimmer_shelly3",
         "led_dimmer_shelly2",
         "button_shelly3",
-        "button_shelly2"
+        "button_shelly2",
+        "etrv-livingroom",
+        "etrv-kitchen"
       ]
     },
     "junk_room": {
@@ -53,7 +55,8 @@
     },
     "bathroom": {
       "devices": [
-        "sensor_air_2"
+        "sensor_air_2",
+        "etrv-bathroom"
       ]
     },
     "bedroom": {
@@ -62,12 +65,14 @@
         "lightbulb_tint_2",
         "remote_tradfri_2",
         "sensor_air_3",
-        "plug_osram_2"
+        "plug_osram_2",
+        "etrv-bedroom"
       ]
     },
     "laundry_room": {
       "devices": [
-        "sensor_air_1"
+        "sensor_air_1",
+        "etrv-laundryroom"
       ]
     }
   }
