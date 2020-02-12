@@ -55,7 +55,7 @@ const getEtrvIds = client.get('/devices/list')
 client.connect().then();
 
 const deviceInputStream = Bacon.fromBinder(function (sink) {
-    schedule.scheduleJob("*/10 * * * * *", function () {
+    schedule.scheduleJob("*/5 * * * *", function () {
         getEtrvIds
             .then(
                 R.pipe(
