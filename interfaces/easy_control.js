@@ -57,29 +57,19 @@ client.connect().then();
 const deviceInputStream = Bacon.fromBinder(function (sink) {
     schedule.scheduleJob("*/5 * * * *", function () {
         getEtrvIds
+            .then(ids => Promise.all(
+                ids.map(id => Promise.all(
+                    getDataFromDevice(id)
+                ))
+            ))
             .then(
                 R.pipe(
-                    R.map(
-                        R.pipe(
-                            getDataFromDevice,
-                            prs => Promise.all(prs)
-                        )
-                    ),
-                    prs => Promise.all(prs)
-                )
-            )
-            .then(
-                R.map(R.zipObj(["temperature", "device", "zone"]))
-            )
-            .then(
-                R.pipe(
+                    R.map(R.zipObj(["temperature", "device", "zone"])),
                     R.map(obj => R.objOf(obj.device)(obj)),
                     R.map(R.map(R.dissoc("device"))),
-                    R.forEach(
-                        sink
-                    )
-                )
+                ) // [temperature, device, zone] => {device = {temperature: val, zone: val }}
             )
+            .then(R.forEach(sink))
     });
 });
 
