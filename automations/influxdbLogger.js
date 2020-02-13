@@ -19,7 +19,7 @@ Routes.input.onValue(value => {
     const room = Rooms.getRoomOfDevice(device);
     const data = R.view(Lenses.inputDataLens)(value);
 
-    const isValidType = v => (R.type(v) === 'Number' || R.type(v) === 'String' || R.type === 'Boolean');
+    const isValidType = v => (R.type(v) === 'Number' || R.type(v) === 'String' || R.type(v) === 'Boolean');
 
     influx.writePoints([
         {
