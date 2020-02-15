@@ -25,13 +25,24 @@ const filterMsgIsDevice = R.pipe(
     Util.convertFromArray
 );
 
+
 const output = new Bacon.Bus();
-const update = Bacon.mergeAll(Zigbee.deviceInputStream, Shelly.deviceInputStream, EasyControl.deviceInputStream);
+const update = new Bacon.Bus();
+
+update.plug(Zigbee.deviceInputStream);
+update.plug(Shelly.deviceInputStream);
+
+EasyControl.deviceInputStream.then(function (stream) {
+    update.plug(stream)
+});
+
+
 const state = update.scan({}, R.mergeDeepRight);
 const input = state.zip(update, (state, input) => [input, state]);
 
 const devices = output.map(filterMsgIsDevice);
 const groups = output.map(filterMsgIsGroup);
+
 
 Zigbee.deviceOutputStream.plug(devices.map(filterMsgByDeviceInterface("zigbee")));
 Zigbee.deviceOutputStream.plug(groups); // currently only zigbee is handleing groups
