@@ -13,5 +13,9 @@
   "influxdb": {
     "address": "192.168.0.101",
     "db": "frs"
+  },
+  "miscale": {
+    "address": "mqtt://192.168.0.158",
+    "baseTopic": "miscale"
   }
 }

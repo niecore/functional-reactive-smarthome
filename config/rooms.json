@@ -56,7 +56,8 @@
     "bathroom": {
       "devices": [
         "sensor_air_2",
-        "etrv-bathroom"
+        "etrv-bathroom",
+        "miscale"
       ]
     },
     "bedroom": {
