@@ -207,6 +207,10 @@
     "etrv-kitchen": {
       "interface": "easy_control",
       "type": "etrv"
+    },
+    "miscale": {
+      "interface": "miscale",
+      "type": "scale"
     }
   }
 }
