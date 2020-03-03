@@ -33,6 +33,12 @@
         "hue": 290,
         "saturation": 100
       }
+    },
+    "led_dimmer_shelly2": {
+      "state": "OFF"
+    },
+    "led_dimmer_shelly3": {
+      "state": "OFF"
     }
   },
   "livingroom_chill_2": {
@@ -43,6 +49,14 @@
         "hue": 360,
         "saturation": 100
       }
+    },
+    "led_dimmer_shelly2": {
+      "state": "ON",
+      "brightness": 50
+    },
+    "led_dimmer_shelly3": {
+      "state": "ON",
+      "brightness": 50
     }
   },
   "bedroom_nightstand_on": {
