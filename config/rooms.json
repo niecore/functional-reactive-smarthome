@@ -1,6 +1,10 @@
 {
   "rooms": {
-    "front_door": {},
+    "front_door": {
+      "devices": [
+        "contact_aqara_3"
+      ]
+    },
     "hallway": {},
     "server_room": {},
     "bathroom_small": {},
@@ -8,7 +12,8 @@
       "devices": [
         "led_driver_tradfri_1",
         "led_driver_tradfri_2",
-        "remote_tradfri_3"
+        "remote_tradfri_3",
+        "contact_aqara_2"
       ]
     },
     "living_room": {
@@ -20,7 +25,8 @@
         "button_shelly3",
         "button_shelly2",
         "etrv-livingroom",
-        "etrv-kitchen"
+        "etrv-kitchen",
+        "contact_aqara_1"
       ]
     },
     "junk_room": {
