@@ -1,6 +1,6 @@
 {
   "livingroom_on": {
-    "lightbulb_tint_1": {
+    "lightbulb_tradfriw_5": {
       "state": "ON",
       "brightness": 255,
       "color_temp": 400
@@ -15,7 +15,7 @@
     }
   },
   "livingroom_off": {
-    "lightbulb_tint_1": {
+    "lightbulb_tradfriw_5": {
       "state": "OFF"
     },
     "led_dimmer_shelly2": {
@@ -26,13 +26,10 @@
     }
   },
   "livingroom_chill_1": {
-    "lightbulb_tint_1": {
+    "lightbulb_tradfriw_5": {
       "state": "ON",
-      "brightness": 255,
-      "color": {
-        "hue": 290,
-        "saturation": 100
-      }
+      "brightness": 100,
+      "color_temp": 500
     },
     "led_dimmer_shelly2": {
       "state": "OFF"
@@ -42,13 +39,10 @@
     }
   },
   "livingroom_chill_2": {
-    "lightbulb_tint_1": {
+    "lightbulb_tradfriw_5": {
       "state": "ON",
       "brightness": 255,
-      "color": {
-        "hue": 360,
-        "saturation": 100
-      }
+      "color_temp": 500
     },
     "led_dimmer_shelly2": {
       "state": "ON",
