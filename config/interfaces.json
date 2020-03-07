@@ -17,5 +17,8 @@
   "miscale": {
     "address": "mqtt://192.168.0.158",
     "baseTopic": "miscale"
+  },
+  "tasmota": {
+    "address": "mqtt://192.168.0.158"
   }
 }
