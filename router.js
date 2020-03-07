@@ -4,6 +4,7 @@ const Zigbee = require('./interfaces/zigbee');
 const Shelly = require('./interfaces/shelly');
 const EasyControl = require('./interfaces/easy_control');
 const XiaomiScale = require('./interfaces/xiaomi_scale');
+const Tasmota = require('./interfaces/tasmota');
 const Devices = require("./model/devices");
 const Util = require('./model/util');
 const Groups = require("./model/groups");
@@ -33,6 +34,7 @@ const update = new Bacon.Bus();
 update.plug(Zigbee.deviceInputStream);
 update.plug(Shelly.deviceInputStream);
 update.plug(XiaomiScale.deviceInputStream);
+update.plug(Tasmota.deviceInputStream);
 
 EasyControl.deviceInputStream.then(function (stream) {
     update.plug(stream)
@@ -49,6 +51,7 @@ const groups = output.map(filterMsgIsGroup);
 Zigbee.deviceOutputStream.plug(devices.map(filterMsgByDeviceInterface("zigbee")));
 Zigbee.deviceOutputStream.plug(groups); // currently only zigbee is handleing groups
 Shelly.deviceOutputStream.plug(devices.map(filterMsgByDeviceInterface("shelly")));
+Tasmota.deviceOutputStream.plug(devices.map(filterMsgByDeviceInterface("tasmota")));
 
 module.exports = {
     output,
