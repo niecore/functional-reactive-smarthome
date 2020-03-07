@@ -232,6 +232,11 @@
       "type": "contact",
       "description": "Unassigned"
     },
+    "plug_tasmota_5": {
+      "interface": "tasmota",
+      "type": "plug",
+      "description": "Lamp sideboard livingroom"
+    },
     "lightbulb_tradfriw_5": {
       "interface": "zigbee",
       "type": "light",

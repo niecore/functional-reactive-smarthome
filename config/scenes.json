@@ -1,5 +1,6 @@
 {
   "livingroom_on": {
+    "plug_tasmota_5": {"state":  "ON"},
     "lightbulb_tradfriw_5": {
       "state": "ON",
       "brightness": 255,
@@ -15,6 +16,7 @@
     }
   },
   "livingroom_off": {
+    "plug_tasmota_5": {"state":  "OFF"},
     "lightbulb_tradfriw_5": {
       "state": "OFF"
     },
@@ -26,6 +28,7 @@
     }
   },
   "livingroom_chill_1": {
+    "plug_tasmota_5": {"state":  "ON"},
     "lightbulb_tradfriw_5": {
       "state": "ON",
       "brightness": 100,
@@ -39,6 +42,7 @@
     }
   },
   "livingroom_chill_2": {
+    "plug_tasmota_5": {"state":  "ON"},
     "lightbulb_tradfriw_5": {
       "state": "ON",
       "brightness": 255,

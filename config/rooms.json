@@ -26,7 +26,8 @@
         "button_shelly2",
         "etrv-livingroom",
         "etrv-kitchen",
-        "contact_aqara_1"
+        "contact_aqara_1",
+        "plug_tasmota_5"
       ]
     },
     "junk_room": {
