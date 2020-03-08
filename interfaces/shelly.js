@@ -6,6 +6,7 @@ const Mqtt = require("mqtt");
 const MqttStream = require("../interfaces/mqtt_stream");
 const Devices = require('../model/devices');
 const Util = require('../model/util');
+const Groups = require("../model/groups");
 
 // baseTopic :: String
 const baseTopic = Interfaces.shelly.baseTopic;
@@ -58,6 +59,14 @@ const fromShellyData = data => {
             return {};
         }
     }
+
+    if(typeOfDevice === "relay"){
+        if(sub_topic === "") {
+            return {topic: device_name, payload: {action: R.toUpper(data.payload)}};
+        } else {
+            return {};
+        }
+    }
 };
 
 const toShellyData = data => {
@@ -86,7 +95,20 @@ const toShellyData = data => {
             R.always({})
         )(data.value);
 
-        return {topic: device.id + "/set", payload: R.mergeLeft(adaptState, adaptBrightness)}
+        return {topic: device.id + "/set", payload: JSON.stringify(R.mergeLeft(adaptState, adaptBrightness))}
+    }
+
+    if(typeOfDevice === "relay") {
+        const adaptState = R.ifElse(
+            R.has("state"),
+            R.pipe(
+                R.prop("state"),
+                R.toLower
+            ),
+            R.always({})
+        )(data.value);
+
+        return {topic: device.id + "/command", payload: adaptState}
     }
 
     return data;
@@ -98,16 +120,23 @@ const deviceInputStream = MqttStream.inputStream(client)
     .map(R.over(MqttStream.topicLense, R.replace(baseTopic + "/", "")))
     .map(R.over(MqttStream.payloadLense, R.toString))
     .filter(input => !input.topic.endsWith("/set"))
+    .filter(input => !input.topic.endsWith("/command"))
     .map(fromShellyData)
     .map(obj => R.objOf(obj.topic)(obj.payload));
 
 const deviceOutputStream = new Bacon.Bus();
+const groupOutputStream = new Bacon.Bus();
+
+const expanededGroupStream = groupOutputStream
+    .map(Groups.expandGroupMsg)
+    .map(Devices.filterMsgByDeviceInterface("shelly"));
+
+deviceOutputStream.plug(expanededGroupStream);
 
 deviceOutputStream
     .map(Util.convertToArray)
     .map(R.map(toShellyData))
     .map(R.map(R.over(MqttStream.topicLense, topic => baseTopic + "/" + topic)))
-    .map(R.map(R.over(MqttStream.payloadLense, JSON.stringify)))
     .onValue(array => array.forEach(input =>
             MqttStream.publishTopic(client)(input.topic)(input.payload)
         )
@@ -116,4 +145,5 @@ deviceOutputStream
 module.exports = {
     deviceInputStream,
     deviceOutputStream,
+    groupOutputStream
 };

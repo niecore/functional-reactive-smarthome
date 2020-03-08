@@ -18,3 +18,12 @@ test('room group returns a group in the correct formst', () => {
         }
     )
 });
+
+test('expand groups', () => {
+    expect(Groups.expandGroupMsg({"test_group_1": 42})).toEqual(
+        {
+            "device_id_1": 42,
+            "device_id_2": 42,
+        }
+    )
+});

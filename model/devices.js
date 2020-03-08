@@ -1,5 +1,6 @@
 const R = require('ramda');
 const Devices = require('../config/devices.json');
+const Util = require('./util');
 
 // knownRooms
 const knownDevices = Devices.devices;
@@ -23,11 +24,18 @@ const deviceHasInterface = type => R.pipe(
     R.propEq("interface", type)
 );
 
+const filterMsgByDeviceInterface = interfaceType => R.pipe(
+    Util.convertToArray,
+    R.filter(input => deviceHasInterface(interfaceType)(input.key)),
+    Util.convertFromArray
+);
+
 module.exports = {
     knownDevices,
     getDeviceByName,
     getDevicesOfType,
     deviceHasType,
     deviceHasInterface,
+    filterMsgByDeviceInterface,
 };
 

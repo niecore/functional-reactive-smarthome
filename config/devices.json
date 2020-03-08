@@ -260,7 +260,7 @@
     },
     "light_shelly1": {
       "interface": "shelly",
-      "type": "light",
+      "type": "relay",
       "id": "shelly1-F41475/relay/0",
       "description": "Relay für Deckenlampe Flur"
     },
@@ -272,7 +272,7 @@
     },
     "light_shelly2": {
       "interface": "shelly",
-      "type": "light",
+      "type": "relay",
       "id": "shelly1-F3DBB3/relay/0",
       "description": "Relay für Deckenlampe Küche"
     },
