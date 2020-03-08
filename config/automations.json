@@ -13,6 +13,10 @@
         "office": {
           "delay": 600,
           "nightLight": false
+        },
+        "hallway": {
+          "delay": 240,
+          "nightLight": false
         }
       }
     }

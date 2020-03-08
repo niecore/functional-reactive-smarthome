@@ -2,6 +2,7 @@ const R = require('ramda');
 const Groups = require('../config/groups.json');
 const Rooms = require('../model/rooms.js');
 const Devices = require('../model/devices.js');
+const Util = require('../model/util.js');
 
 // knownGroups :: [Group]
 const knownGroups = Groups.groups;
@@ -54,6 +55,33 @@ const roomGroupOfType = (room, type) => R.pipe(
     renameGroup(roomTypeGroupName(room)(type)),
 )(roomGroup(room));
 
+
+const filterMsgIsGroup = R.pipe(
+    Util.convertToArray,
+    R.filter(input => isKnownGroup(input.key)),
+    Util.convertFromArray
+);
+
+const filterMsgIsDevice = R.pipe(
+    Util.convertToArray,
+    R.filter(input => !isKnownGroup(input.key)),
+    Util.convertFromArray
+);
+
+// expandGroupMsg ::
+const expandGroupMsg = R.pipe(
+    Util.convertToArray,
+    R.map(input => {
+        const group = R.prop(input.key, knownGroups);
+        const devices = R.map(
+            R.objOf(R.__, input.value)
+        )(devicesInGroup(group));
+
+        return R.mergeAll(devices)
+    }),
+    R.head
+);
+
 // isKnownGroup :: String -> bool
 const isKnownGroup = R.includes(R.__, R.keys(knownGroups));
 
@@ -66,4 +94,7 @@ module.exports = {
     roomTypeGroupName,
     devicesInGroup,
     isKnownGroup,
+    expandGroupMsg,
+    filterMsgIsGroup,
+    filterMsgIsDevice,
 };

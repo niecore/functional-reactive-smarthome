@@ -7,16 +7,20 @@ const Lenses = require('../lenses');
 const DayPeriod = require('../model/day_period');
 const Automations = require('../config/automations.json');
 
-// setBrightnessForDevice :: Number => String => String
-const setBrightnessForDevice = level => device => R.objOf(device, {
+// turnLightOnWithBrightness :: Number => String => String
+const turnLightOnWithBrightness = level => device => R.objOf(device, {
     state: "ON",
     brightness: level,
     transition: 1,
 });
 
+const turnLightOff = device => R.objOf(device, {
+    state: "OFF",
+});
+
 const setAdaptiveBrightnessInRoom = (input) => {
     return timedLightOnStream(
-        R.always(90)(input)
+        configuredMotionLightDuration(input)
     )(
         getAdaptiveBrightness(input)
     )(
@@ -40,7 +44,7 @@ const getAdaptiveBrightness = input => {
     }
 };
 
-const timedLightOnStream = duration => brightness => device => Bacon.once(setBrightnessForDevice(brightness)(device)).merge(Bacon.later(duration * 1000, setBrightnessForDevice(0)(device)));
+const timedLightOnStream = duration => brightness => device => Bacon.once(turnLightOnWithBrightness(brightness)(device)).merge(Bacon.later(duration * 1000, turnLightOff(device)));
 
 // getLightGroupOfRoom :: Msg => String
 const getLightGroupOfRoom = R.pipe(
@@ -98,6 +102,14 @@ const currentBrightnessInRoom = R.pipe(
     R.map(R.prop("brightness")),
     R.values,
     R.head
+);
+
+// isMessageFromRoomWithNightLight :: Msg => Boolean
+const configuredMotionLightDuration = R.pipe(
+    R.view(Lenses.inputNameLens),
+    Rooms.getRoomOfDevice,
+    R.prop(R.__, Automations.automations.motionLight.rooms),
+    R.propOr(90, "delay")
 );
 
 

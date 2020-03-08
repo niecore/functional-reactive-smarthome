@@ -22,6 +22,7 @@ const deviceInputStream = MqttStream.inputStream(client)
     .map(obj => R.objOf(obj.topic)(obj.payload));
 
 const deviceOutputStream = new Bacon.Bus();
+const groupOutputStream = new Bacon.Bus();
 
 deviceOutputStream
     .map(Util.convertToArray)
@@ -35,4 +36,5 @@ deviceOutputStream
 module.exports = {
     deviceInputStream,
     deviceOutputStream,
+    groupOutputStream
 };
