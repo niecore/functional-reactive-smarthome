@@ -22,7 +22,21 @@
     "group_light_in_kitchen": {
       "devices": [
         "led_driver_tradfri_1",
-        "led_driver_tradfri_2"
+        "led_driver_tradfri_2",
+        "light_shelly2"
+      ]
+    },
+    "group_light_in_office": {
+      "devices": [
+        "led_dimmer_shelly1",
+        "plug_osram_1",
+        "lightbulb_hue_2",
+        "lightbulb_hue_3"
+      ]
+    },
+    "group_light_in_hallway": {
+      "devices": [
+        "light_shelly1"
       ]
     }
   }

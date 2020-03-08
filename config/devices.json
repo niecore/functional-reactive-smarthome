@@ -242,6 +242,45 @@
       "type": "light",
       "sub_type": "indirect",
       "description": "Tischlampe Schreibmaschine"
+    },
+    "motionsensor_aqara_7": {
+      "interface": "zigbee",
+      "type": "motion_sensor",
+      "description": "Hallway"
+    },
+    "motionsensor_aqara_8": {
+      "interface": "zigbee",
+      "type": "motion_sensor",
+      "description": "Kitchen"
+    },
+    "motionsensor_aqara_9": {
+      "interface": "zigbee",
+      "type": "motion_sensor",
+      "description": "An der Heizung in Wohnzimmer"
+    },
+    "light_shelly1": {
+      "interface": "shelly",
+      "type": "light",
+      "id": "shelly1-F41475/relay/0",
+      "description": "Relay für Deckenlampe Flur"
+    },
+    "button_shelly4": {
+      "interface": "shelly",
+      "type": "remote",
+      "id": "shelly1-F41475/input/0",
+      "description": "Schalter für Deckenlampe Flur"
+    },
+    "light_shelly2": {
+      "interface": "shelly",
+      "type": "light",
+      "id": "shelly1-F3DBB3/relay/0",
+      "description": "Relay für Deckenlampe Küche"
+    },
+    "button_shelly5": {
+      "interface": "shelly",
+      "type": "remote",
+      "id": "shelly1-F3DBB3/input/0",
+      "description": "Schalter für Küche Flur"
     }
   }
 }
