@@ -5,7 +5,12 @@
         "contact_aqara_3"
       ]
     },
-    "hallway": {},
+    "hallway": {
+      "devices": [
+        "motionsensor_aqara_7",
+        "light_shelly1"
+      ]
+    },
     "server_room": {},
     "bathroom_small": {},
     "kitchen": {
@@ -13,7 +18,9 @@
         "led_driver_tradfri_1",
         "led_driver_tradfri_2",
         "remote_tradfri_3",
-        "contact_aqara_2"
+        "contact_aqara_2",
+        "motionsensor_aqara_8",
+        "light_shelly2"
       ]
     },
     "living_room": {
@@ -27,7 +34,8 @@
         "etrv-livingroom",
         "etrv-kitchen",
         "contact_aqara_1",
-        "plug_tasmota_5"
+        "plug_tasmota_5",
+        "motionsensor_aqara_9"
       ]
     },
     "junk_room": {

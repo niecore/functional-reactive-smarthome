@@ -76,24 +76,36 @@
   "kitchen_off": {
     "group_light_in_kitchen": {
       "state": "OFF"
+    },
+    "light_shelly2": {
+      "state": "OFF"
     }
   },
   "kitchen_on_normal": {
     "group_light_in_kitchen": {
       "state": "ON",
       "brightness": 180
+    },
+    "light_shelly2": {
+      "state": "ON"
     }
   },
   "kitchen_on_dimmed": {
     "group_light_in_kitchen": {
       "state": "ON",
       "brightness": 10
+    },
+    "light_shelly2": {
+      "state": "OFF"
     }
   },
   "kitchen_on_full": {
     "group_light_in_kitchen": {
       "state": "ON",
       "brightness": 255
+    },
+    "light_shelly2": {
+      "state": "ON"
     }
   },
   "wake_up_bed_room": {

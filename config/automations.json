@@ -9,6 +9,10 @@
         "staircase": {
           "delay": 90,
           "nightLight": true
+        },
+        "office": {
+          "delay": 600,
+          "nightLight": false
         }
       }
     }
