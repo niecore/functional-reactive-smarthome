@@ -1,8 +1,8 @@
 const R = require("ramda");
 const Bacon = require("baconjs");
 const Groups = require("../model/groups");
-const Rooms = require("../model/rooms");
 const Devices = require("../model/devices");
+const Logic = require("../model/logic");
 const Lenses = require('../lenses');
 const DayPeriod = require('../model/day_period');
 const Automations = require('../config/automations.json');
@@ -48,15 +48,13 @@ const timedLightOnStream = duration => brightness => device => Bacon.once(turnLi
 
 // getLightGroupOfRoom :: Msg => String
 const getLightGroupOfRoom = R.pipe(
-    R.view(Lenses.inputNameLens),
-    Rooms.getRoomOfDevice,
+    Logic.getRoomOfMessage,
     Groups.roomTypeGroupName("light"),
 );
 
 // getNightLightGroupOfRoom :: Msg => String
 const getNightLightGroupOfRoom = R.pipe(
-    R.view(Lenses.inputNameLens),
-    Rooms.getRoomOfDevice,
+    Logic.getRoomOfMessage,
     Groups.roomTypeGroupName("nightlight"),
 );
 
@@ -78,15 +76,14 @@ const roomToDark = R.pipe(
 
 // isMessageFromRoomWithNightLight :: Msg => Boolean
 const isMessageFromRoomWithNightLight = R.pipe(
-    R.view(Lenses.inputNameLens),
-    Rooms.getRoomOfDevice,
+    Logic.getRoomOfMessage,
     R.prop(R.__, Automations.automations.motionLight.rooms),
     R.propOr(false, "nightLight")
 );
 
 // isMessageFromRoomWithLightOff :: Msg => Boolean
 const isMessageFromRoomWithLightOff = R.pipe(
-    Rooms.getStateOfDeviceInSameRoom,
+    Logic.getStateOfDeviceInSameRoom,
     R.pickBy((k, v) => Devices.deviceHasType("light")(v)),
     R.map(R.prop("state")),
     R.map(state => state.toLowerCase() !== "off"),
@@ -97,7 +94,7 @@ const isMessageFromRoomWithLightOff = R.pipe(
 
 // currentBrightnessInRoom :: Msg => Number
 const currentBrightnessInRoom = R.pipe(
-    Rooms.getStateOfDeviceInSameRoom,
+    Logic.getStateOfDeviceInSameRoom,
     R.pickBy((k, v) => Devices.deviceHasType("light")(v)),
     R.map(R.prop("brightness")),
     R.values,
@@ -106,8 +103,7 @@ const currentBrightnessInRoom = R.pipe(
 
 // isMessageFromRoomWithNightLight :: Msg => Boolean
 const configuredMotionLightDuration = R.pipe(
-    R.view(Lenses.inputNameLens),
-    Rooms.getRoomOfDevice,
+    Logic.getRoomOfMessage,
     R.prop(R.__, Automations.automations.motionLight.rooms),
     R.propOr(90, "delay")
 );

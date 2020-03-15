@@ -39,6 +39,7 @@ const getNextScene = input => {
 };
 
 const remoteAction = Routes.input
+    .filter(Devices.isMessageFromDevice)
     .filter(isMessageFromRemoteSensor)
     .filter(isMessageFromConfiguredRemote)
     .map(getNextScene);

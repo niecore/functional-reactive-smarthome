@@ -1,5 +1,6 @@
 const R = require('ramda');
 const Scenes = require('../config/scenes.json');
+const Rooms = require('../model/rooms');
 const Lenses = require('../lenses');
 
 // knownScenes
@@ -15,8 +16,15 @@ const sceneIsActive = input => scene => {
     )(scene)));
 };
 
+// filterSceneByDevicesInRoom :: String => Scene => Scene
+const filterSceneByDevicesInRoom = room => R.pipe(
+    R.pickBy((_, device) => Rooms.deviceIsInRoom(room)(device))
+);
+
+
 module.exports = {
     knownScenes,
     getSceneByName,
-    sceneIsActive
+    sceneIsActive,
+    filterSceneByDevicesInRoom
 };

@@ -19,8 +19,8 @@ update.plug(Tasmota.deviceInputStream);
 
 EasyControl.deviceInputStream.then(function (stream) {
     update.plug(stream)
-});
 
+});
 const state = update.scan({}, R.mergeDeepRight);
 const input = state.zip(update, (state, input) => [input, state]);
 
@@ -39,5 +39,6 @@ Tasmota.groupOutputStream.plug(groups);
 
 module.exports = {
     output,
-    input
+    input,
+    update
 };

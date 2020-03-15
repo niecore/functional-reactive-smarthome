@@ -34,6 +34,7 @@ const adjustBrightnessInRoom = input => {
 };
 
 const brightnessControl = Routes.input
+    .filter(Devices.isMessageFromDevice)
     .filter(isMessageFromRemoteSensor)
     .filter(isMessageWithBrightnessAdjustment)
     .map(adjustBrightnessInRoom);
