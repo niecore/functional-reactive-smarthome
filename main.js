@@ -6,6 +6,8 @@ const SceneSwitching = require('./automations/sceneControl.js');
 const BrightnessControl = require('./automations/brightnessControl.js');
 const InfluxDb = require('./automations/influxdbLogger');
 
+const Presence = require('./model/presence');
+
 console.log("Starting functional-reactive-smart-home.");
 
 Routes.input

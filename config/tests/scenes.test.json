@@ -1,0 +1,16 @@
+{
+  "test_scene_1": {
+    "device_id_1": {"state":  "ON"},
+    "device_id_2": {
+      "state": "ON",
+      "brightness": 255,
+      "color_temp": 400
+    },
+    "light_1": {
+      "state": "ON",
+      "brightness": 255
+    }
+  }
+}
+
+

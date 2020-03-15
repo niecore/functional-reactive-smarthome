@@ -1,6 +1,7 @@
 const R = require('ramda');
 const Devices = require('../config/devices.json');
 const Util = require('./util');
+const Lenses = require('../lenses');
 
 // knownRooms
 const knownDevices = Devices.devices;
@@ -24,6 +25,18 @@ const deviceHasInterface = type => R.pipe(
     R.propEq("interface", type)
 );
 
+const isDevice = R.pipe(
+    getDeviceByName,
+    R.isNil,
+    R.not
+);
+
+// isMessageFromDevice :: Msg => Boolean
+const isMessageFromDevice = R.pipe(
+    R.view(Lenses.inputNameLens),
+    isDevice
+);
+
 const filterMsgByDeviceInterface = interfaceType => R.pipe(
     Util.convertToArray,
     R.filter(input => deviceHasInterface(interfaceType)(input.key)),
@@ -32,6 +45,8 @@ const filterMsgByDeviceInterface = interfaceType => R.pipe(
 
 module.exports = {
     knownDevices,
+    isDevice,
+    isMessageFromDevice,
     getDeviceByName,
     getDevicesOfType,
     deviceHasType,

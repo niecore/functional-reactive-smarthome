@@ -12,26 +12,27 @@ const influx = new Influx.InfluxDB({
     database: Interfaces.influxdb.db
 });
 
-Routes.input.onValue(value => {
+Routes.input
+    .filter(Devices.isMessageFromDevice)
+    .onValue(value => {
+        const device = R.view(Lenses.inputNameLens)(value);
+        const type = Devices.getDeviceByName(device).type;
+        const room = Rooms.getRoomOfDevice(device);
+        const data = R.view(Lenses.inputDataLens)(value);
 
-    const device = R.view(Lenses.inputNameLens)(value);
-    const type = Devices.getDeviceByName(device).type;
-    const room = Rooms.getRoomOfDevice(device);
-    const data = R.view(Lenses.inputDataLens)(value);
+        const isValidType = v => (R.type(v) === 'Number' || R.type(v) === 'String' || R.type(v) === 'Boolean');
 
-    const isValidType = v => (R.type(v) === 'Number' || R.type(v) === 'String' || R.type(v) === 'Boolean');
-
-    influx.writePoints([
-        {
-            measurement: 'data-input',
-            tags: {
-                device: device,
-                type: type,
-                room: room,
-            },
-            fields: R.filter(isValidType, data)
-        }
-    ]).catch(error => {
-        console.error(`Error saving data to InfluxDB! ${err.stack}`)
-    })
+        influx.writePoints([
+            {
+                measurement: 'data-input',
+                tags: {
+                    device: device,
+                    type: type,
+                    room: room,
+                },
+                fields: R.filter(isValidType, data)
+            }
+        ]).catch(error => {
+            console.error(`Error saving data to InfluxDB! ${err.stack}`)
+        })
 });
