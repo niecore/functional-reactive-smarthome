@@ -1,6 +1,5 @@
 const R = require('ramda');
 const Rooms = require('../config/rooms.json');
-const Lenses = require('../lenses');
 
 // knownRooms
 const knownRooms = Rooms.rooms;
@@ -26,30 +25,10 @@ const deviceIsInRoom = room => R.pipe(
     R.equals(room)
 );
 
-// getRoomOfMessage :: Msg => String
-const getRoomOfMessage = R.pipe(
-    R.view(Lenses.inputNameLens),
-    getRoomOfDevice
-);
-
-// filterStateByDevicesRoom :: String => State => State
-const filterStateByDevicesRoom = room => R.pickBy((k, v) => deviceIsInRoom(room)(v));
-
-// getStateOfDeviceInSameRoom :: State => State
-const getStateOfDeviceInSameRoom = input => {
-    return filterStateByDevicesRoom(
-        R.pipe(
-            R.view(Lenses.inputNameLens),
-            getRoomOfDevice
-        )(input)
-    )(R.view(Lenses.stateLens)(input))
-};
 
 module.exports = {
     getRoomByName,
-    getRoomOfMessage,
     getDevicesInRoom,
-    getStateOfDeviceInSameRoom,
     getRoomOfDevice,
     deviceIsInRoom
 };
