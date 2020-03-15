@@ -26,7 +26,8 @@
     "moduleNameMapper": {
       "rooms.json": "<rootDir>/config/tests/rooms.test.json",
       "devices.json": "<rootDir>/config/tests/devices.test.json",
-      "groups.json": "<rootDir>/config/tests/groups.test.json"
+      "groups.json": "<rootDir>/config/tests/groups.test.json",
+      "scenes.json": "<rootDir>/config/tests/scenes.test.json"
     }
   }
 }
