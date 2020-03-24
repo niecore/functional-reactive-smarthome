@@ -2,6 +2,7 @@ const Presence = require("../model/presence");
 const Devices = require("../model/devices");
 const Rooms = require("../model/rooms");
 const Lenses = require("../lenses");
+const R = require("ramda");
 
 // todo move to other model
 // getRoomOfMessage :: Msg => String | undefined
@@ -11,7 +12,7 @@ const getRoomOfMessage =  (input) => {
     }
 
     if(Devices.isMessageFromDevice(input)) {
-        return Rooms.getRoomOfDevice(input)
+        return Rooms.getRoomOfDevice(R.view(Lenses.inputNameLens)(input))
     }
 
     return undefined
