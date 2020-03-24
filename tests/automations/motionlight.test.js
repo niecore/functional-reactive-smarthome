@@ -1,24 +1,13 @@
 const MotionLight = require("../../automations/motionLight");
-const Rooms = require("../../model/rooms");
+const Presence = require("../../model/presence");
+const Logic = require("../../model/logic");
 const Light = require("../../model/light");
 const R = require("ramda");
 
-test('test movement detection', () => {
-    expect(MotionLight.movementDetected(
-        [
-            {
-                motion_sensor_1: {
-                    occupancy: true
-                }
-            },
-            {}
-        ]
-    )).toBe(true);
-});
 
 test('test is getStateOfDeviceInSameRoom', () => {
     expect(
-        Rooms.getStateOfDeviceInSameRoom(
+        Logic.getStateOfDeviceInSameRoom(
         [
                 {
                     motion_sensor_1: {
@@ -33,8 +22,10 @@ test('test is getStateOfDeviceInSameRoom', () => {
             ]
         )
     ).toEqual(
-        {light_1: {state: "OFF"}}
-        );
+        {
+            light_1: {state: "OFF"}
+        }
+    );
 });
 
 test('test is isMessageFromRoomWithLightOn', () => {
