@@ -13,6 +13,7 @@ const isPresenceFromRoomWithMotionLight = R.pipe(
 
 const motionLight = Routes.input
     .filter(Presence.isMessageFromPresence)
+    .filter(isPresenceFromRoomWithMotionLight)
     .groupBy(Presence.getRoomOfPresence)
     .flatMap(function(groupedStream) {
         return groupedStream.flatMapLatest(Light.setAdaptiveBrightnessInRoom)
