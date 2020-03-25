@@ -1,10 +1,9 @@
 const R = require('ramda');
 const Influx = require('influx');
-const Hub = require('../hub');
+const Bacon = require('baconjs');
 const Lenses = require('../lenses');
 const Devices = require('../model/devices');
 const Rooms = require('../model/rooms');
-const Util = require('../model/util');
 const Interfaces = require('../config/interfaces.json');
 
 const influx = new Influx.InfluxDB({
@@ -12,8 +11,9 @@ const influx = new Influx.InfluxDB({
     database: Interfaces.influxdb.db
 });
 
-Hub.input
-    .filter(Devices.isMessageFromDevice)
+const input = new Bacon.Bus();
+
+input.filter(Devices.isMessageFromDevice)
     .onValue(value => {
         const device = R.view(Lenses.inputNameLens)(value);
         const type = Devices.getDeviceByName(device).type;
@@ -36,3 +36,7 @@ Hub.input
             console.error(`Error saving data to InfluxDB! ${err.stack}`)
         })
 });
+
+module.exports = {
+    input
+};

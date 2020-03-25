@@ -1,5 +1,5 @@
+const Bacon = require("baconjs");
 const R = require('ramda');
-const Hub = require('../hub');
 const Lenses = require('../lenses');
 const Devices = require('../model/devices');
 const Remotes = require('../model/remotes');
@@ -33,14 +33,16 @@ const adjustBrightnessInRoom = input => {
     return other_devices;
 };
 
-const brightnessControl = Hub.input
+const input = new Bacon.Bus();
+
+const output = input
     .filter(Devices.isMessageFromDevice)
     .filter(isMessageFromRemoteSensor)
     .filter(isMessageWithBrightnessAdjustment)
     .map(adjustBrightnessInRoom);
 
-
 module.exports = {
-    brightnessControl
+    input,
+    output
 };
 
