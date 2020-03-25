@@ -1,5 +1,5 @@
 const R = require('ramda');
-const Routes = require('../router');
+const Hub = require('../hub');
 const Lenses = require('../lenses');
 const Devices = require('../model/devices');
 const Remotes = require('../model/remotes');
@@ -33,10 +33,14 @@ const adjustBrightnessInRoom = input => {
     return other_devices;
 };
 
-const brightnessControl = Routes.input
+const brightnessControl = Hub.input
     .filter(Devices.isMessageFromDevice)
     .filter(isMessageFromRemoteSensor)
     .filter(isMessageWithBrightnessAdjustment)
     .map(adjustBrightnessInRoom);
 
-Routes.output.plug(brightnessControl);
+
+module.exports = {
+    brightnessControl
+};
+

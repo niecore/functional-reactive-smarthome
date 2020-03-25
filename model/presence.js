@@ -3,7 +3,7 @@ const Bacon = require("baconjs");
 const Devices = require("../model/devices");
 const Rooms = require("../model/rooms");
 const Lenses = require('../lenses');
-const Routes = require('../router');
+const Hub = require('../hub');
 
 // occupancyLens :: Lens
 const occupancyLens = R.compose(Lenses.inputDataLens, R.lensPath(["occupancy"]));
@@ -36,7 +36,7 @@ const isMessageFromPresence = R.pipe(
     R.equals("presence")
 );
 
-const presence = Routes.input
+const presence = Hub.input
     .filter(Devices.isMessageFromDevice)
     .filter(isMessageFromMotionSensor)
     .filter(movementDetected)
@@ -44,7 +44,7 @@ const presence = Routes.input
     .map(Rooms.getRoomOfDevice)
     .flatMapLatest( room => Bacon.once(R.objOf("presence")(R.objOf(room, true))).merge(Bacon.later(90 * 1000, R.objOf("presence")(R.objOf(room, false)))));
 
-Routes.update.plug(presence);
+Hub.update.plug(presence);
 
 module.exports = {
     presence,

@@ -2,7 +2,7 @@ const R = require("ramda");
 const Bacon = require("baconjs");
 const Presence = require('../model/presence');
 const Light = require('../model/light');
-const Routes = require('../router');
+const Hub = require('../hub');
 const Automations = require("../config/automations");
 
 // isMessageFromRoomWithMotionLight :: Msg => Boolean
@@ -11,7 +11,7 @@ const isPresenceFromRoomWithMotionLight = R.pipe(
     R.includes(R.__, R.keys(Automations.automations.motionLight.rooms))
 );
 
-const motionLight = Routes.input
+const motionLight = Hub.input
     .filter(Presence.isMessageFromPresence)
     .filter(isPresenceFromRoomWithMotionLight)
     .groupBy(Presence.getRoomOfPresence)
@@ -19,4 +19,6 @@ const motionLight = Routes.input
         return groupedStream.flatMapLatest(Light.setAdaptiveBrightnessInRoom)
     });
 
-Routes.output.plug(motionLight);
+module.exports = {
+    motionLight
+};

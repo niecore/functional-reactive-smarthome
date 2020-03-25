@@ -1,5 +1,5 @@
 const R = require('ramda');
-const Routes = require('../router');
+const Hub = require('../hub');
 const Lenses = require('../lenses');
 const Devices = require('../model/devices');
 const Remotes = require('../model/remotes');
@@ -38,10 +38,12 @@ const getNextScene = input => {
     }
 };
 
-const remoteAction = Routes.input
+const remoteAction = Hub.input
     .filter(Devices.isMessageFromDevice)
     .filter(isMessageFromRemoteSensor)
     .filter(isMessageFromConfiguredRemote)
     .map(getNextScene);
 
-Routes.output.plug(remoteAction);
+module.exports = {
+    remoteAction
+};
