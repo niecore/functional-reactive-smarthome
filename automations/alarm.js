@@ -2,7 +2,7 @@ const R = require("ramda");
 const Bacon = require('baconjs');
 
 const Scenes = require('../model/scenes');
-const Routes = require('../router');
+const Hub = require('../hub');
 const schedule = require('node-schedule');
 
 const weekday_rule = new schedule.RecurrenceRule(null, null, null, null, 6, 0, 0);
@@ -18,4 +18,6 @@ const alarm = alarmStream
     .map(Scenes.getSceneByName("wake_up_bed_room"))
     .map(R.head);
 
-Routes.output.plug(alarm);
+module.exports = {
+    alarm
+};

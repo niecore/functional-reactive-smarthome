@@ -1,6 +1,6 @@
 const R = require('ramda');
 const Influx = require('influx');
-const Routes = require('../router');
+const Hub = require('../hub');
 const Lenses = require('../lenses');
 const Devices = require('../model/devices');
 const Rooms = require('../model/rooms');
@@ -12,7 +12,7 @@ const influx = new Influx.InfluxDB({
     database: Interfaces.influxdb.db
 });
 
-Routes.input
+Hub.input
     .filter(Devices.isMessageFromDevice)
     .onValue(value => {
         const device = R.view(Lenses.inputNameLens)(value);
