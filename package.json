@@ -2,9 +2,9 @@
   "name": "untitled",
   "version": "1.0.0",
   "dependencies": {
-    "baconjs": "^3.0.10",
     "bosch-xmpp": "^1.0.2",
     "influx": "^5.5.1",
+    "kefir": "^3.8.6",
     "mqtt": "^3.0.0",
     "node-schedule": "^1.3.2",
     "node-telegram-bot-api": "^0.40.0",
@@ -13,6 +13,7 @@
     "ramda": "^0.26.1",
     "ramda-adjunct": "^2.23.0",
     "sunrise-sunset-js": "^2.1.1",
+    "transducers-js": "^0.4.174",
     "z": "^1.0.9"
   },
   "devDependencies": {

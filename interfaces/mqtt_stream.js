@@ -1,5 +1,5 @@
 const Mqtt_stream = require("mqtt");
-const Bacon = require("baconjs");
+const Kefir = require("kefir");
 const R = require('ramda');
 
 // topicLense :: Lens s a
@@ -10,9 +10,9 @@ const payloadLense = R.lensProp("payload");
 
 const publishTopic = client => topic => payload => new Promise((resolve) => client.publish(topic, payload, resolve));
 
-const inputStream = client => Bacon.fromBinder(function (sink) {
+const inputStream = client => Kefir.stream(emitter => {
     client.on('message', function (topic, message) {
-        sink({topic: topic, payload: message})
+        emitter.emit({topic: topic, payload: message});
     })
 });
 

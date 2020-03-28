@@ -6,7 +6,7 @@ const R = require("ramda");
 
 // todo move to other model
 // getRoomOfMessage :: Msg => String | undefined
-const getRoomOfMessage =  (input) => {
+const getRoomOfMessage = input => {
     if (Presence.isMessageFromPresence(input)) {
         return Presence.getRoomOfPresence(input)
     }
@@ -25,7 +25,7 @@ const filterStateByDevicesRoom = room => R.pickBy((k, v) => Rooms.deviceIsInRoom
 const getStateOfDeviceInSameRoom = input => {
     return filterStateByDevicesRoom(
         getRoomOfMessage(input)
-    )(R.view(Lenses.stateLens)(input))
+    )(R.view(Lenses.stateLens, input));
 };
 
 module.exports = {

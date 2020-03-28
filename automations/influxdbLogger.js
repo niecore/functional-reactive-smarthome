@@ -1,6 +1,6 @@
 const R = require('ramda');
+const Kefir = require('kefir');
 const Influx = require('influx');
-const Bacon = require('baconjs');
 const Lenses = require('../lenses');
 const Devices = require('../model/devices');
 const Rooms = require('../model/rooms');
@@ -11,7 +11,7 @@ const influx = new Influx.InfluxDB({
     database: Interfaces.influxdb.db
 });
 
-const input = new Bacon.Bus();
+const input = new Kefir.pool();
 
 input.filter(Devices.isMessageFromDevice)
     .onValue(value => {

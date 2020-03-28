@@ -1,5 +1,5 @@
 const R = require("ramda");
-const Bacon = require("baconjs");
+const Kefir = require("kefir");
 const Devices = require("../model/devices");
 const Rooms = require("../model/rooms");
 const Lenses = require('../lenses');
@@ -42,7 +42,7 @@ const presence = Hub.input
     .filter(movementDetected)
     .map(R.view(Lenses.inputNameLens))
     .map(Rooms.getRoomOfDevice)
-    .flatMapLatest( room => Bacon.once(R.objOf("presence")(R.objOf(room, true))).merge(Bacon.later(90 * 1000, R.objOf("presence")(R.objOf(room, false)))));
+    .flatMapLatest( room => Kefir.later(0, R.objOf("presence")(R.objOf(room, true))).merge(Kefir.later(90 * 1000, R.objOf("presence")(R.objOf(room, false)))));
 
 Hub.update.plug(presence);
 

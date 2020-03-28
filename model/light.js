@@ -1,5 +1,5 @@
 const R = require("ramda");
-const Bacon = require("baconjs");
+const Kefir = require("kefir");
 const Groups = require("../model/groups");
 const Devices = require("../model/devices");
 const Logic = require("../model/logic");
@@ -44,7 +44,7 @@ const getAdaptiveBrightness = input => {
     }
 };
 
-const timedLightOnStream = duration => brightness => device => Bacon.once(turnLightOnWithBrightness(brightness)(device)).merge(Bacon.later(duration * 1000, turnLightOff(device)));
+const timedLightOnStream = duration => brightness => device => Kefir.later(0, turnLightOnWithBrightness(brightness)(device)).merge(Kefir.later(duration * 1000, turnLightOff(device)));
 
 // getLightGroupOfRoom :: Msg => String
 const getLightGroupOfRoom = R.pipe(

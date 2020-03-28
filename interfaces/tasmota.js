@@ -1,4 +1,4 @@
-const Bacon = require("baconjs");
+const Kefir = require("kefir");
 const R = require('ramda');
 const Interfaces = require('../config/interfaces.json');
 const Devices = require('../model/devices');
@@ -21,8 +21,8 @@ const deviceInputStream = MqttStream.inputStream(client)
     .map(R.over(MqttStream.payloadLense, R.objOf("state")))
     .map(obj => R.objOf(obj.topic)(obj.payload));
 
-const deviceOutputStream = new Bacon.Bus();
-const groupOutputStream = new Bacon.Bus();
+const deviceOutputStream = new Kefir.pool();
+const groupOutputStream = new Kefir.pool();
 
 deviceOutputStream
     .map(Util.convertToArray)

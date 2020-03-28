@@ -1,5 +1,5 @@
 const R = require("ramda");
-const Bacon = require("baconjs");
+const Kefir = require("kefir");
 const schedule = require('node-schedule');
 
 async function getEasyControlClient() {
@@ -62,7 +62,7 @@ const deviceInputStream = getEasyControlClient().then(client => {
             )
         );
 
-    const deviceInputStream = Bacon.fromBinder(function (sink) {
+    const deviceInputStream = Kefir.stream(function (sink) {
         schedule.scheduleJob("*/5 * * * *", function () {
             getEtrvIds
                 .then(ids => Promise.all(
