@@ -1,12 +1,12 @@
 const R = require("ramda");
-const Bacon = require('baconjs');
+const Kefir = require('kefir');
 
 const Scenes = require('../model/scenes');
 const schedule = require('node-schedule');
 
 const weekday_rule = new schedule.RecurrenceRule(null, null, null, null, 6, 0, 0);
 
-const alarmStream = Bacon.fromBinder(function (sink) {
+const alarmStream = Kefir.stream(function (sink) {
     schedule.scheduleJob(weekday_rule, function(){
         sink({activate: true})
     });

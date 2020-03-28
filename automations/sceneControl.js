@@ -1,5 +1,5 @@
 const R = require('ramda');
-const Bacon = require('baconjs');
+const Kefir = require('kefir');
 const Lenses = require('../lenses');
 const Devices = require('../model/devices');
 const Remotes = require('../model/remotes');
@@ -38,7 +38,7 @@ const getNextScene = input => {
     }
 };
 
-const input = new Bacon.Bus();
+const input = new Kefir.pool();
 
 const output = input
     .filter(Devices.isMessageFromDevice)

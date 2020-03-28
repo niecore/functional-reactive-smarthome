@@ -1,4 +1,4 @@
-const Bacon = require("baconjs");
+const Kefir = require("kefir");
 const R = require('ramda');
 const Interfaces = require('../config/interfaces.json');
 const Mqtt = require("mqtt");
@@ -16,7 +16,7 @@ const deviceInputStream = MqttStream.inputStream(client)
     .map(data => R.objOf("miscale")({weight: JSON.parse(data.payload)}))
     .skipDuplicates(R.equals);
 
-const deviceOutputStream = new Bacon.Bus();
+const deviceOutputStream = new Kefir.pool();
 
 module.exports = {
     deviceInputStream,

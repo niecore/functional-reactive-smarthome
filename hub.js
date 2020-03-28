@@ -1,10 +1,10 @@
-const Bacon = require("baconjs");
+const Kefir = require("kefir");
 const R = require('ramda');
 
-const output = new Bacon.Bus();
-const update = new Bacon.Bus();
+const output = new Kefir.pool();
+const update = new Kefir.pool();
 
-const state = update.scan({}, R.mergeDeepRight);
+const state = update.scan(R.mergeDeepRight, {});
 const input = state.zip(update, (state, input) => [input, state]);
 
 module.exports = {

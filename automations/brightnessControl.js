@@ -1,9 +1,9 @@
-const Bacon = require("baconjs");
+const Kefir = require("kefir");
 const R = require('ramda');
 const Lenses = require('../lenses');
 const Devices = require('../model/devices');
 const Remotes = require('../model/remotes');
-const Rooms = require('../model/rooms');
+const Logic = require('../model/logic');
 
 // isMessageFromRemoteSensor :: Msg => Boolean
 const isMessageFromRemoteSensor = R.pipe(
@@ -22,7 +22,7 @@ const adjustBrightnessInRoom = input => {
     const factor =  Remotes.getRemoteAction(input) == "brightness_up_click" ? 50 : -50;
 
     const other_devices = R.pipe(
-        Rooms.getStateOfDeviceInSameRoom,
+        Logic.getStateOfDeviceInSameRoom,
         R.pickBy((k, v) => Devices.deviceHasType("light")(v)),
         R.map(R.pick(["brightness"])),
         R.map(R.map(R.add(factor))),
@@ -33,7 +33,7 @@ const adjustBrightnessInRoom = input => {
     return other_devices;
 };
 
-const input = new Bacon.Bus();
+const input = new Kefir.pool();
 
 const output = input
     .filter(Devices.isMessageFromDevice)
