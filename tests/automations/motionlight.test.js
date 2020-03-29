@@ -3,6 +3,9 @@ const Presence = require("../../model/presence");
 const Logic = require("../../model/logic");
 const Light = require("../../model/light");
 const R = require("ramda");
+const Kefir = require('kefir');
+
+require('../extend-expect');
 
 
 test('test is getStateOfDeviceInSameRoom', () => {
@@ -45,5 +48,9 @@ test('test is isMessageFromRoomWithLightOn', () => {
             ]
         )
     ).toBeTruthy();
+});
+
+test('test', () => {
+    expect(Kefir.stream()).toBeStream()
 });
 
