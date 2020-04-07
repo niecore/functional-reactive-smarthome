@@ -11,6 +11,12 @@
         "light_1",
         "motion_sensor_1"
       ]
+    },
+    "light_room2": {
+      "devices": [
+        "light_2",
+        "motion_sensor_2"
+      ]
     }
   }
 }

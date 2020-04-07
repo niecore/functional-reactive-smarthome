@@ -10,41 +10,16 @@ const Automations = require('../config/automations.json');
 // turnLightOnWithBrightness :: Number => String => String
 const turnLightOnWithBrightness = level => device => R.objOf(device, {
     state: "ON",
-    brightness: level,
-    transition: 1,
+    brightness: level
 });
-
-const turnLightOff = device => R.objOf(device, {
-    state: "OFF",
-});
-
-const setAdaptiveBrightnessInRoom = (input) => {
-    return timedLightOnStream(
-        configuredMotionLightDuration(input)
-    )(
-        getAdaptiveBrightness(input)
-    )(
-        getLightGroup(input)
-    )
-};
 
 const getAdaptiveBrightness = input => {
-    if(roomToDark(input)){
-        if(DayPeriod.itsNightTime() && isMessageFromRoomWithNightLight(input)){
-            return 1;
-        }else {
-            return 255;
-        }
-    } else {
-        if (isMessageFromRoomWithLightOff(input)) {
-            return 0;
-        } else {
-            return currentBrightnessInRoom(input);
-        }
+    if(DayPeriod.itsNightTime() && isMessageFromRoomWithNightLight(input)){
+        return 1;
+    }else {
+        return 255;
     }
 };
-
-const timedLightOnStream = duration => brightness => device => Kefir.later(0, turnLightOnWithBrightness(brightness)(device)).merge(Kefir.later(duration * 1000, turnLightOff(device)));
 
 // getLightGroupOfRoom :: Msg => String
 const getLightGroupOfRoom = R.pipe(
@@ -67,12 +42,7 @@ const getLightGroup = msg => {
     }
 };
 
-// roomToDark :: Msg => Boolean
-const roomToDark = R.pipe(
-    R.view(Lenses.inputDataLens),
-    R.propOr(0,"illuminance"),
-    R.gt(9)
-);
+
 
 // isMessageFromRoomWithNightLight :: Msg => Boolean
 const isMessageFromRoomWithNightLight = R.pipe(
@@ -92,25 +62,47 @@ const isMessageFromRoomWithLightOff = R.pipe(
     R.not,
 );
 
-// currentBrightnessInRoom :: Msg => Number
-const currentBrightnessInRoom = R.pipe(
+// currentIlluminanceInRoom :: Msg => Number
+const currentIlluminanceInRoom = R.pipe(
     Logic.getStateOfDeviceInSameRoom,
-    R.pickBy((k, v) => Devices.deviceHasType("light")(v)),
-    R.map(R.prop("brightness")),
+    R.pickBy((k, v) => Devices.deviceHasType("motion_sensor")(v)),
+    R.map(R.prop("illuminance")),
     R.values,
-    R.head
+    R.mean,
+    R.defaultTo(0)
 );
 
-// isMessageFromRoomWithNightLight :: Msg => Boolean
-const configuredMotionLightDuration = R.pipe(
-    Logic.getRoomOfMessage,
-    R.prop(R.__, Automations.automations.motionLight.rooms),
-    R.propOr(90, "delay")
+// roomToDark :: Msg => Boolean
+const roomToDark = R.pipe(
+    currentIlluminanceInRoom,
+    R.gt(9)
+);
+
+const lightChangeRequired = R.allPass(
+    [roomToDark, isMessageFromRoomWithLightOff]
+);
+
+const setLightInRoomAdaptiveOn = (input) => {
+    if(lightChangeRequired(input)) {
+        return turnLightOnWithBrightness(
+            getAdaptiveBrightness(input)
+        )(
+            getLightGroup(input)
+        )
+    }
+    return {};
+};
+
+const setLightInRoomOff = R.pipe(
+    getLightGroup,
+    R.objOf(R.__, {
+        state: "OFF",
+    })
 );
 
 
 module.exports = {
-    setAdaptiveBrightnessInRoom,
-    isMessageFromRoomWithLightOff,
-    currentBrightnessInRoom
+    setLightInRoomAdaptiveOn,
+    setLightInRoomOff,
+    isMessageFromRoomWithLightOff
 };

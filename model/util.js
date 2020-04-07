@@ -8,8 +8,7 @@ const convertToArray = R.pipe(R.toPairs, R.map(R.zipObj(['key', 'value'])));
 // convertFromArray :: [{key:a, value: A}] => {a:A}
 const convertFromArray = R.pipe(R.map(R.values), R.fromPairs);
 
-
-const groupBy = (keyF, limitF = R.identity) => src => {
+const groupBy = (keyF, limitF = (stream, _) => stream ) => src => {
     const streams = {};
 
     return src.transduce(T.comp(
@@ -17,8 +16,7 @@ const groupBy = (keyF, limitF = R.identity) => src => {
         T.map(function (firstValue) {
             const key = keyF(firstValue);
             const similarValues = src.changes().filter(x => keyF(x) === key);
-            const data = Kefir.later(0, firstValue).concat(similarValues);
-
+            const data = Kefir.constant(firstValue).concat(similarValues);
 
             const limited = limitF(data, firstValue).withHandler((emitter, event) => {
                 if (event.type === 'end') {
