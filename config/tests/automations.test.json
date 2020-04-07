@@ -1,0 +1,14 @@
+{
+  "automations": {
+    "motionLight": {
+      "rooms": {
+        "light_room": {
+          "nightLight": false
+        },
+        "light_room2": {
+          "nightLight": true
+        }
+      }
+    }
+  }
+}

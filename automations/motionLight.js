@@ -2,8 +2,7 @@ const R = require("ramda");
 const Kefir = require("kefir");
 const Presence = require('../model/presence');
 const Light = require('../model/light');
-const Util = require('../model/util');
-const Automations = require("../config/automations");
+const Automations = require("../config/automations.json");
 
 // isMessageFromRoomWithMotionLight :: Msg => Boolean
 const isPresenceFromRoomWithMotionLight = R.pipe(
@@ -16,10 +15,11 @@ const input = new Kefir.pool();
 const output = input
     .filter(Presence.isMessageFromPresence)
     .filter(isPresenceFromRoomWithMotionLight)
-    .thru(Util.groupBy(Presence.getRoomOfPresence))
-    .flatMap(function(groupedStream) {
-        return groupedStream.flatMapLatest(Light.setAdaptiveBrightnessInRoom)
-    });
+    .map(
+        x => Presence.isMessageWithPresenceOn(x)
+            ? Light.setLightInRoomAdaptiveOn(x)
+            : Light.setLightInRoomOff(x)
+    );
 
 module.exports = {
     input,

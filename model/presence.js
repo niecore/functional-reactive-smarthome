@@ -20,8 +20,11 @@ const isMessageFromMotionSensor = R.pipe(
 // presenceInRoom :: String => Boolean
 const presenceInRoom = room => R.has(room);
 
-// presenceDetected :: String => Boolean
-const presenceDetected = room => R.propEq(room, true);
+// presenceInRoomDetected :: String => Boolean
+const presenceInRoomDetected = room => R.pipe(
+    R.view(Lenses.inputDataLens),
+    R.propEq(room, true)
+);
 
 // getRoomOfPresence :: Msg => String
 const getRoomOfPresence = R.pipe(
@@ -42,14 +45,23 @@ const presence = Hub.input
     .filter(movementDetected)
     .map(R.view(Lenses.inputNameLens))
     .map(Rooms.getRoomOfDevice)
-    .flatMapLatest( room => Kefir.later(0, R.objOf("presence")(R.objOf(room, true))).merge(Kefir.later(90 * 1000, R.objOf("presence")(R.objOf(room, false)))));
+    .flatMapLatest( room => Kefir.constant(R.objOf("presence")(R.objOf(room, true))).merge(Kefir.later(120 * 1000, R.objOf("presence")(R.objOf(room, false)))));
+
+
+// isMessageFromPresence :: Msg => Boolean
+const isMessageWithPresenceOn = R.pipe(
+    R.view(Lenses.inputDataLens),
+    R.values,
+    R.head
+);
 
 Hub.update.plug(presence);
 
 module.exports = {
     presence,
     presenceInRoom,
-    presenceDetected,
+    presenceInRoomDetected,
     getRoomOfPresence,
-    isMessageFromPresence
+    isMessageFromPresence,
+    isMessageWithPresenceOn
 };
