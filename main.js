@@ -9,9 +9,7 @@ const InfluxDb = require('./automations/influxdbLogger');
 console.log("Starting functional-reactive-smart-home.");
 
 Routes.input
-    .log(new Date().toString() + ": input : ")
-    .subscribe();
+    .onValue(x => console.log({"input": x[0], "state": x[1]}));
 
 Routes.output
-    .log(new Date().toString() + ": output : ")
-    .subscribe();
+    .onValue(x => console.log({"output": x}));
