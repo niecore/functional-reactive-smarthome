@@ -21,28 +21,32 @@ const getAdaptiveBrightness = input => {
     }
 };
 
-// getLightGroupOfRoom :: Msg => String
-const getLightGroupOfRoom = R.pipe(
-    Logic.getRoomOfMessage,
-    Groups.roomTypeGroupName("light"),
+const getLightsInRoom = R.pipe(
+    Logic.getDevicesInSameRoom,
+    R.filter(Devices.deviceHasType("light"))
 );
 
-// getNightLightGroupOfRoom :: Msg => String
-const getNightLightGroupOfRoom = R.pipe(
-    Logic.getRoomOfMessage,
-    Groups.roomTypeGroupName("nightlight"),
+const getNightLightsInRoom = R.pipe(
+    getLightsInRoom,
+    R.filter(
+        R.pipe(
+            Devices.getDeviceByName,
+            R.propEq("sub_type", "indirect")
+        )
+    )
 );
+
+
+
 
 // getLightGroup :: Msg => String
 const getLightGroup = msg => {
     if(DayPeriod.itsNightTime() && isMessageFromRoomWithNightLight(msg)){
-        return getNightLightGroupOfRoom(msg);
+        return getNightLightsInRoom(msg);
     }else {
-        return getLightGroupOfRoom(msg);
+        return getLightsInRoom(msg);
     }
 };
-
-
 
 // isMessageFromRoomWithNightLight :: Msg => Boolean
 const isMessageFromRoomWithNightLight = R.pipe(
@@ -84,11 +88,10 @@ const lightChangeRequired = R.allPass(
 
 const setLightInRoomAdaptiveOn = (input) => {
     if(lightChangeRequired(input)) {
-        return turnLightOnWithBrightness(
-            getAdaptiveBrightness(input)
-        )(
-            getLightGroup(input)
-        )
+
+        return R.pipe(
+            turnLightOnWithBrightness( getAdaptiveBrightness(input))
+        )(getLightGroup(input));
     }
     return {};
 };
