@@ -28,7 +28,13 @@ const getStateOfDeviceInSameRoom = input => {
     )(R.view(Lenses.stateLens, input));
 };
 
+const getDevicesInSameRoom = R.pipe(
+    getRoomOfMessage,
+    Rooms.getDevicesInRoom
+);
+
 module.exports = {
     getRoomOfMessage,
-    getStateOfDeviceInSameRoom
+    getStateOfDeviceInSameRoom,
+    getDevicesInSameRoom
 };
