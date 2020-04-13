@@ -34,6 +34,7 @@ BrightnessControl.input.plug(Hub.input);
 SceneSwitching.input.plug(Hub.input);
 MotionLight.input.plug(Hub.input);
 InfluxDb.input.plug(Hub.input);
+Presence.input.plug(Hub.input);
 
 // Plug automations to output
 Hub.output.plug(BrightnessControl.output);
@@ -42,7 +43,7 @@ Hub.output.plug(MotionLight.output);
 Hub.output.plug(Alarm.output);
 
 // Plug hub output to interfaces
-const devices = Hub.output.map(Groups.filterMsgIsDevice);
+const devices = Hub.output.map( Groups.filterMsgIsDevice);
 const groups = Hub.output.map(Groups.filterMsgIsGroup);
 
 Zigbee.deviceOutputStream.plug(devices.map(Devices.filterMsgByDeviceInterface("zigbee")));
