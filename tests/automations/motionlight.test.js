@@ -87,7 +87,7 @@ describe("Motionlight tests", () => {
 
     test('Motion light with night light configuration will turn on normally during daytime', () => {
         const trigger = value([{presence: {light_room2: true}}, {}]);
-        const output = value({light_2: {state: "ON", brightness: 255}});
+        const output = value({light_2: {state: "ON", brightness: 255}, light_3: {state: "ON", brightness: 255}});
 
         jest.doMock("../../model/day_period", () => ({
             itsDayTime: () => true,
@@ -103,9 +103,10 @@ describe("Motionlight tests", () => {
         })
     });
 
-    test('Motion light will turn off after ', () => {
+    test('Motion light will not turn light off whenever a light has changed during the presence', () => {
         const trigger = value([{presence: {light_room2: true}}, {}]);
-        const output = value({light_2: {state: "ON", brightness: 255}});
+        const output = value({light_2: {state: "ON", brightness: 255}, light_3: {state: "ON", brightness: 255}});
+        const second_trigger = value([{presence: {light_room2: false}}, {light_3: {state: "ON", brightness: 122}}]);
 
         jest.doMock("../../model/day_period", () => ({
             itsDayTime: () => true,
@@ -114,9 +115,9 @@ describe("Motionlight tests", () => {
 
         const MotionLight = require("../../automations/motionLight");
 
-        expect(MotionLight.output).toEmit([output, end()], () => {
+        expect(MotionLight.output).toEmit([output, value({}), end()], () => {
             send(
-                MotionLight.input, [trigger, end()]
+                MotionLight.input, [trigger, second_trigger, end()]
             );
         })
     });

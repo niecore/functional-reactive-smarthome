@@ -88,9 +88,9 @@ const lightChangeRequired = R.allPass(
 
 const setLightInRoomAdaptiveOn = (input) => {
     if(lightChangeRequired(input)) {
-
         return R.pipe(
-            turnLightOnWithBrightness( getAdaptiveBrightness(input))
+            R.map(turnLightOnWithBrightness( getAdaptiveBrightness(input))),
+            R.reduce(R.mergeLeft(), {})
         )(getLightGroup(input));
     }
     return {};

@@ -3,6 +3,7 @@ const Kefir = require("kefir");
 const Devices = require("../model/devices");
 const Rooms = require("../model/rooms");
 const Lenses = require('../lenses');
+const Util = require('../model/util');
 const Hub = require('../hub');
 
 // occupancyLens :: Lens
@@ -39,14 +40,24 @@ const isMessageFromPresence = R.pipe(
     R.equals("presence")
 );
 
-const presence = Hub.input
+const getRoomOfMessage = R.pipe(
+    R.view(Lenses.inputNameLens),
+    Rooms.getRoomOfDevice
+);
+
+const input = new Kefir.pool();
+
+const output = input
     .filter(Devices.isMessageFromDevice)
     .filter(isMessageFromMotionSensor)
     .filter(movementDetected)
-    .map(R.view(Lenses.inputNameLens))
-    .map(Rooms.getRoomOfDevice)
-    .flatMapLatest( room => Kefir.constant(R.objOf("presence")(R.objOf(room, true))).merge(Kefir.later(120 * 1000, R.objOf("presence")(R.objOf(room, false)))));
-
+    .thru(Util.groupBy(getRoomOfMessage))
+    .flatMap( groupedStream => {
+        return groupedStream
+            .map(getRoomOfMessage)
+            .flatMapLatest(room => Kefir.constant(R.objOf("presence")(R.objOf(room, true))).merge(Kefir.later(120 * 1000, R.objOf("presence")(R.objOf(room, false)))))
+            .skipDuplicates(R.equals);
+    });
 
 // isMessageFromPresence :: Msg => Boolean
 const isMessageWithPresenceOn = R.pipe(
@@ -55,10 +66,9 @@ const isMessageWithPresenceOn = R.pipe(
     R.head
 );
 
-Hub.update.plug(presence);
-
 module.exports = {
-    presence,
+    input,
+    output,
     presenceInRoom,
     presenceInRoomDetected,
     getRoomOfPresence,
