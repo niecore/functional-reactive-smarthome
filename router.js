@@ -36,6 +36,9 @@ MotionLight.input.plug(Hub.input);
 InfluxDb.input.plug(Hub.input);
 Presence.input.plug(Hub.input);
 
+// Plug logics back to input
+Hub.update.plug(Presence.output);
+
 // Plug automations to output
 Hub.output.plug(BrightnessControl.output);
 Hub.output.plug(SceneSwitching.output);
