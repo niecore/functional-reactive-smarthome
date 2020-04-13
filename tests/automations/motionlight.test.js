@@ -67,6 +67,21 @@ describe("Motionlight tests", () => {
         })
     });
 
+    test('Motion light will turn light off, when after it has not turned on', () => {
+
+        const MotionLight = require("../../automations/motionLight");
+
+        const trigger = value([{presence: {light_room: true}}, {light_1: {state: "ON"}}]);
+        const trigger_off = value([{presence: {light_room: false}}, {light_1: {state: "ON"}}]);
+        const output = value({});
+
+        expect(MotionLight.output).toEmit([output, output, end()], () => {
+            send(
+                MotionLight.input, [trigger, trigger_off, end()]
+            );
+        })
+    });
+
     test('Motion light with night light configuration will turn on with minimal brightness during night time', () => {
         const trigger = value([{presence: {light_room2: true}}, {}]);
         const output = value({light_2: {state: "ON", brightness: 1}});

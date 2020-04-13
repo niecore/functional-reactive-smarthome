@@ -14,9 +14,9 @@ const turnLightOnWithBrightness = level => device => R.objOf(device, {
 });
 
 const getAdaptiveBrightness = input => {
-    if(DayPeriod.itsNightTime() && isMessageFromRoomWithNightLight(input)){
+    if (DayPeriod.itsNightTime() && isMessageFromRoomWithNightLight(input)) {
         return 1;
-    }else {
+    } else {
         return 255;
     }
 };
@@ -37,13 +37,11 @@ const getNightLightsInRoom = R.pipe(
 );
 
 
-
-
 // getLightGroup :: Msg => String
 const getLightGroup = msg => {
-    if(DayPeriod.itsNightTime() && isMessageFromRoomWithNightLight(msg)){
+    if (DayPeriod.itsNightTime() && isMessageFromRoomWithNightLight(msg)) {
         return getNightLightsInRoom(msg);
-    }else {
+    } else {
         return getLightsInRoom(msg);
     }
 };
@@ -87,9 +85,9 @@ const lightChangeRequired = R.allPass(
 );
 
 const setLightInRoomAdaptiveOn = (input) => {
-    if(lightChangeRequired(input)) {
+    if (lightChangeRequired(input)) {
         return R.pipe(
-            R.map(turnLightOnWithBrightness( getAdaptiveBrightness(input))),
+            R.map(turnLightOnWithBrightness(getAdaptiveBrightness(input))),
             R.reduce(R.mergeLeft(), {})
         )(getLightGroup(input));
     }
@@ -98,10 +96,13 @@ const setLightInRoomAdaptiveOn = (input) => {
 
 const setLightInRoomOff = R.pipe(
     getLightGroup,
-    R.objOf(R.__, {
-        state: "OFF",
-    })
-);
+    R.map(
+        R.objOf(R.__, {
+            state: "OFF",
+        })
+    ),
+    R.reduce(R.mergeLeft(), {})
+)
 
 
 module.exports = {
