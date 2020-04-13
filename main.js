@@ -3,8 +3,8 @@ const Router = require("./router");
 
 console.log("Starting functional-reactive-smart-home.");
 
-Routes.input
+Hub.input
     .onValue(x => console.log(JSON.stringify({"input": x[0], "state": x[1]})));
 
-Routes.output
+Hub.output
     .onValue(x => console.log(JSON.stringify({"output": x})));
