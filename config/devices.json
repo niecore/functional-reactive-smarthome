@@ -281,6 +281,29 @@
       "type": "remote",
       "id": "shelly1-F3DBB3/input/0",
       "description": "Schalter für Küche Flur"
+    },
+    "motionsensor_hueoutdoor_1": {
+      "interface": "zigbee",
+      "type": "motion_sensor",
+      "description": "Garden"
+    },
+    "outdoorspot_hue_1": {
+      "interface": "zigbee",
+      "type": "light",
+      "sub_type": "indirect",
+      "description": "Lily Spot 1"
+    },
+    "outdoorspot_hue_2": {
+      "interface": "zigbee",
+      "type": "light",
+      "sub_type": "indirect",
+      "description": "Lily Spot 2"
+    },
+    "outdoorspot_hue_3": {
+      "interface": "zigbee",
+      "type": "light",
+      "sub_type": "indirect",
+      "description": "Lily Spot 3"
     }
   }
 }

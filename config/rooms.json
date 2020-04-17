@@ -44,7 +44,14 @@
         "lightbulb_huew_1"
       ]
     },
-    "garden": {},
+    "garden": {
+      "devices": [
+        "motionsensor_hueoutdoor_1",
+        "outdoorspot_hue_1",
+        "outdoorspot_hue_2",
+        "outdoorspot_hue_3"
+      ]
+    },
     "staircase": {
       "devices": [
         "motionsensor_aqara_3",
