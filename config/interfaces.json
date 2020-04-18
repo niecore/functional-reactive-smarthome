@@ -20,5 +20,9 @@
   },
   "tasmota": {
     "address": "mqtt://192.168.0.158"
+  },
+  "hmip": {
+    "server_address": "192.168.0.101",
+    "client_address": "192.168.0.25"
   }
 }
