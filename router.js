@@ -4,6 +4,7 @@ const Shelly = require('./interfaces/shelly');
 const EasyControl = require('./interfaces/easy_control');
 const XiaomiScale = require('./interfaces/xiaomi_scale');
 const Tasmota = require('./interfaces/tasmota');
+const Hmip = require('./interfaces/hmip');
 
 // Model
 const Devices = require("./model/devices");
@@ -24,6 +25,7 @@ Hub.update.plug(Zigbee.deviceInputStream);
 Hub.update.plug(Shelly.deviceInputStream);
 Hub.update.plug(XiaomiScale.deviceInputStream);
 Hub.update.plug(Tasmota.deviceInputStream);
+Hub.update.plug(Hmip.deviceInputStream);
 
 EasyControl.deviceInputStream.then(function (stream) {
     Hub.update.plug(stream)
@@ -46,7 +48,7 @@ Hub.output.plug(MotionLight.output);
 Hub.output.plug(Alarm.output);
 
 // Plug hub output to interfaces
-const devices = Hub.output.map( Groups.filterMsgIsDevice);
+const devices = Hub.output.map(Groups.filterMsgIsDevice);
 const groups = Hub.output.map(Groups.filterMsgIsGroup);
 
 Zigbee.deviceOutputStream.plug(devices.map(Devices.filterMsgByDeviceInterface("zigbee")));

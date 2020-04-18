@@ -185,27 +185,38 @@
       "description": "Stehlampe neben Schrank in Office"
     },
     "etrv-laundryroom": {
-      "interface": "easy_control",
+      "interface": "hmip",
+      "address": "000056D85A8C2C",
       "type": "etrv"
     },
     "etrv-bedroom": {
-      "interface": "easy_control",
+      "interface": "hmip",
+      "address": "000056D85A8832",
       "type": "etrv"
     },
     "etrv-bathroom": {
-      "interface": "easy_control",
+      "interface": "hmip",
+      "address": "000056D85A89A1",
+      "type": "etrv"
+    },
+    "etrv-office": {
+      "interface": "hmip",
+      "address": "000056D85849BD",
       "type": "etrv"
     },
     "etrv-bedroom2": {
-      "interface": "easy_control",
+      "interface": "hmip",
+      "address": "000056D85A8C15",
       "type": "etrv"
     },
     "etrv-livingroom": {
-      "interface": "easy_control",
+      "interface": "hmip",
+      "address": "000056D85849E6",
       "type": "etrv"
     },
     "etrv-kitchen": {
-      "interface": "easy_control",
+      "interface": "hmip",
+      "address": "000056D85843A3",
       "type": "etrv"
     },
     "miscale": {
