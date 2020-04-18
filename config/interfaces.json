@@ -3,9 +3,6 @@
     "address": "mqtt://192.168.0.158",
     "baseTopic": "zigbee2mqtt"
   },
-  "tasmota": {
-
-  },
   "shelly": {
     "address": "mqtt://192.168.0.158",
     "baseTopic": "shellies"
