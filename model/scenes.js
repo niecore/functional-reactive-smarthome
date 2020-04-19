@@ -1,4 +1,5 @@
 const R = require('ramda');
+const Kefir = require('kefir');
 const Scenes = require('../config/scenes.json');
 const Rooms = require('../model/rooms');
 const Lenses = require('../lenses');
@@ -21,10 +22,23 @@ const filterSceneByDevicesInRoom = room => R.pipe(
     R.pickBy((_, device) => Rooms.deviceIsInRoom(room)(device))
 );
 
+const switchedSceneStream = scene => {
+    return Kefir.repeat(_ => {
+        return Kefir.stream(emitter => {
+            scene.forEach(element => {
+                const delay = element[0];
+                const scene = element[1];
+                emitter.emit(Kefir.later(delay * 1000, scene))
+            });
+            emitter.end()
+        }).flatMap();
+    });
+};
 
 module.exports = {
     knownScenes,
     getSceneByName,
     sceneIsActive,
-    filterSceneByDevicesInRoom
+    filterSceneByDevicesInRoom,
+    switchedSceneStream
 };

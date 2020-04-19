@@ -1,6 +1,8 @@
 {
   "livingroom_on": {
-    "plug_tasmota_5": {"state":  "ON"},
+    "plug_tasmota_5": {
+      "state": "ON"
+    },
     "lightbulb_tradfriw_5": {
       "state": "ON",
       "brightness": 255,
@@ -16,7 +18,9 @@
     }
   },
   "livingroom_off": {
-    "plug_tasmota_5": {"state":  "OFF"},
+    "plug_tasmota_5": {
+      "state": "OFF"
+    },
     "lightbulb_tradfriw_5": {
       "state": "OFF"
     },
@@ -28,7 +32,9 @@
     }
   },
   "livingroom_chill_1": {
-    "plug_tasmota_5": {"state":  "ON"},
+    "plug_tasmota_5": {
+      "state": "ON"
+    },
     "lightbulb_tradfriw_5": {
       "state": "ON",
       "brightness": 100,
@@ -42,7 +48,9 @@
     }
   },
   "livingroom_chill_2": {
-    "plug_tasmota_5": {"state":  "ON"},
+    "plug_tasmota_5": {
+      "state": "ON"
+    },
     "lightbulb_tradfriw_5": {
       "state": "ON",
       "brightness": 255,
@@ -199,6 +207,101 @@
         "saturation": 90
       }
     }
+  },
+  "garden_ambient_light_1": [
+    [
+      0,
+      {
+        "outdoorspot_hue_1": {
+          "state": "on",
+          "brightness": 50,
+          "color": {
+            "hex": "#26FFEB"
+          },
+          "transition": 15
+        },
+        "outdoorspot_hue_2": {
+          "state": "on",
+          "brightness": 50,
+          "color": {
+            "hex": "#B31BA3"
+          },
+          "transition": 15
+        },
+        "outdoorspot_hue_3": {
+          "state": "on",
+          "brightness": 50,
+          "color": {
+            "hex": "#FFDF59"
+          },
+          "transition": 15
+        }
+      }
+    ],
+    [
+      30,
+      {
+        "outdoorspot_hue_1": {
+          "state": "on",
+          "brightness": 50,
+          "color": {
+            "hex": "#B31BA3"
+          },
+          "transition": 15
+        },
+        "outdoorspot_hue_2": {
+          "state": "on",
+          "brightness": 50,
+          "color": {
+            "hex": "#FFDF59"
+          },
+          "transition": 15
+        },
+        "outdoorspot_hue_3": {
+          "state": "on",
+          "brightness": 50,
+          "color": {
+            "hex": "#26FFEB"
+          },
+          "transition": 15
+        }
+      }
+    ],
+    [
+      45,
+      {
+        "outdoorspot_hue_1": {
+          "state": "on",
+          "brightness": 50,
+          "color": {
+            "hex": "#FFDF59"
+          },
+          "transition": 15
+        },
+        "outdoorspot_hue_2": {
+          "state": "on",
+          "brightness": 50,
+          "color": {
+            "hex": "#26FFEB"
+          },
+          "transition": 15
+        },
+        "outdoorspot_hue_3": {
+          "state": "on",
+          "brightness": 50,
+          "color": {
+            "hex": "#B31BA3"
+          },
+          "transition": 15
+        }
+      }
+    ],
+    [60, {}]
+  ],
+  "garden_off" : {
+    "outdoorspot_hue_1": {"state": "off"},
+    "outdoorspot_hue_2": {"state": "off"},
+    "outdoorspot_hue_3": {"state": "off"}
   }
 }
 

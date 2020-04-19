@@ -1,5 +1,14 @@
 {
   "automations": {
+    "ambientLight": [
+      {
+        "room": "garden",
+        "scene": "garden_ambient_light_1",
+        "disable": "garden_off",
+        "trigger": "0 0 21 * * *",
+        "stop": "0 0 0 * * *"
+      }
+    ],
     "motionLight": {
       "rooms": {
         "junk_room": {

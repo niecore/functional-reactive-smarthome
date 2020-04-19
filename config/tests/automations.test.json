@@ -9,6 +9,15 @@
           "nightLight": true
         }
       }
-    }
+    },
+    "ambientLight": [
+      {
+        "room": "first_room",
+        "scene": "test_scene_2",
+        "disable": "test_scene_3",
+        "trigger": "0 0 21 * * *",
+        "stop": "0 0 22 * * *"
+      }
+    ]
   }
 }
