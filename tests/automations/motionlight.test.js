@@ -43,8 +43,22 @@ describe("Motionlight tests", () => {
 
         const MotionLight = require("../../automations/motionLight");
 
-        const trigger = value([{presence: {light_room: true}}, {motion_sensor_1: {illuminance: 50}}]);
+        const trigger = value([{presence: {light_room: true}}, {motion_sensor_1: {illuminance_lux: 3000}}]);
         const output = value({});
+
+        expect(MotionLight.output).toEmit([output, end()], () => {
+            send(
+                MotionLight.input, [trigger, end()]
+            );
+        })
+    });
+
+    test('Motion light will trigger, when room is to dark', () => {
+
+        const MotionLight = require("../../automations/motionLight");
+
+        const trigger = value([{presence: {light_room: true}}, {motion_sensor_1: {illuminance_lux: 199}}]);
+        const output = value({light_1: {state: "ON", brightness: 255}});
 
         expect(MotionLight.output).toEmit([output, end()], () => {
             send(

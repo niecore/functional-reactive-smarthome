@@ -68,16 +68,25 @@ const isMessageFromRoomWithLightOff = R.pipe(
 const currentIlluminanceInRoom = R.pipe(
     Logic.getStateOfDeviceInSameRoom,
     R.pickBy((k, v) => Devices.deviceHasType("motion_sensor")(v)),
-    R.map(R.prop("illuminance")),
+    R.map(R.prop("illuminance_lux")),
     R.values,
     R.mean,
     R.defaultTo(0)
 );
 
+// https://docs.microsoft.com/en-us/windows/win32/sensorsapi/understanding-and-interpreting-lux-values
+const darkIndoors = R.gt(50);
+const dimIndoors = R.gt(200);
+const normalIndoors = R.gt(400);
+const brightIndoors = R.gt(1000);
+const dimOutdoors = R.gt(5000);
+const cloudyOutdoors = R.gt(10000);
+const directSunlight = R.gt(30000);
+
 // roomToDark :: Msg => Boolean
 const roomToDark = R.pipe(
     currentIlluminanceInRoom,
-    R.gt(9)
+    dimIndoors
 );
 
 const lightChangeRequired = R.allPass(
