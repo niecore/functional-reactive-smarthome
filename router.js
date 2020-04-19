@@ -17,6 +17,7 @@ const SceneSwitching = require('./automations/sceneControl.js');
 const BrightnessControl = require('./automations/brightnessControl.js');
 const InfluxDb = require('./automations/influxdbLogger');
 const Presence = require('./model/presence');
+const AmbientLight = require('./automations/ambientLight');
 
 const Hub = require("./hub");
 
@@ -46,6 +47,7 @@ Hub.output.plug(BrightnessControl.output);
 Hub.output.plug(SceneSwitching.output);
 Hub.output.plug(MotionLight.output);
 Hub.output.plug(Alarm.output);
+Hub.output.plug(AmbientLight.output);
 
 // Plug hub output to interfaces
 const devices = Hub.output.map(Groups.filterMsgIsDevice);

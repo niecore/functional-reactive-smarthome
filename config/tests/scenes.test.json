@@ -10,7 +10,13 @@
       "state": "ON",
       "brightness": 255
     }
-  }
+  },
+  "test_scene_2": [
+    [0, {"device_id_1": {"state":  "ON"}}],
+    [1800, {"device_id_2": {"state":  "ON"}}],
+    [3600, {}]
+  ],
+  "test_scene_3": {"device_id_1": {"state":  "OFF"}, "device_id_2": {"state":  "OFF"}}
 }
 
 
