@@ -19,7 +19,10 @@ describe("Ambientlight tests", () => {
         const output3 = value({device_id_1: {state: "OFF"}, device_id_2: {state: "OFF"}});
 
         expect(AmbientLight.output).toEmitInTime([[71999001, output], [73799000, output2],  [75599000, output3]], (tick, clock) => {
-            clock.setSystemTime(new Date().setHours(20));
+            const day = new Date("Januar 01, 1970 20:00:00");
+            //const birthday = new Date(Date.UTC(1970, 1, 1, 20, 0));
+
+            clock.setSystemTime(day);
             tick(3000*3600);
         });
     });
