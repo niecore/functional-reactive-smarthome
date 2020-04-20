@@ -5,8 +5,8 @@
         "room": "garden",
         "scene": "garden_ambient_light_1",
         "disable": "garden_off",
-        "trigger": "0 0 21 * * *",
-        "stop": "0 0 0 * * *"
+        "trigger": "0 0 20 * * *",
+        "stop": "0 0 23 * * *"
       }
     ],
     "motionLight": {
