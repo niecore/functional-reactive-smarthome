@@ -13,6 +13,7 @@
     "rambda": "^4.1.0",
     "ramda": "^0.26.1",
     "ramda-adjunct": "^2.23.0",
+    "socket.io": "^2.3.0",
     "sunrise-sunset-js": "^2.1.1",
     "transducers-js": "^0.4.174",
     "z": "^1.0.9"
