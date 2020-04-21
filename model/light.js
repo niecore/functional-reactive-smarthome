@@ -86,7 +86,7 @@ const directSunlight = R.gt(30000);
 // roomToDark :: Msg => Boolean
 const roomToDark = R.pipe(
     currentIlluminanceInRoom,
-    dimIndoors
+    darkIndoors
 );
 
 const lightChangeRequired = R.allPass(
