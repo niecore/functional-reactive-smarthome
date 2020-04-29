@@ -1,5 +1,6 @@
 const Hub = require('./hub');
 const Router = require("./router");
+const Server = require("./server");
 
 console.log("Starting functional-reactive-smart-home.");
 

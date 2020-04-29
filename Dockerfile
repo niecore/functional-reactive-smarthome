@@ -6,5 +6,7 @@ RUN npm install
 
 COPY . .
 
+EXPOSE 9090
+
 # Run the app
 CMD [ "npm", "start" ]
