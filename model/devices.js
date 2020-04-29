@@ -43,6 +43,18 @@ const filterMsgByDeviceInterface = interfaceType => R.pipe(
     Util.convertFromArray
 );
 
+// getTypeOfDevice :: String => String
+const getTypeOfDevice = R.pipe(
+    getDeviceByName,
+    R.propOr("", "type")
+);
+
+// getDescriptionOfDevice :: String => String
+const getDescriptionOfDevice = R.pipe(
+    getDeviceByName,
+    R.propOr("", "description")
+);
+
 module.exports = {
     knownDevices,
     isDevice,
@@ -52,5 +64,7 @@ module.exports = {
     deviceHasType,
     deviceHasInterface,
     filterMsgByDeviceInterface,
+    getTypeOfDevice,
+    getDescriptionOfDevice,
 };
 

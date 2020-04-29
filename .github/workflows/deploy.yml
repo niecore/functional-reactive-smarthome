@@ -29,6 +29,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Publish to Registry UI
+        id: push-ui
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: niecore/functional-reactive-smarthome-ui
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          dockerfile: ui/Dockerfile
+
       - name: 'Deploy ${{ github.event.deployment.environment }} - ${{ github.event.deployment.ref }}'
         uses: appleboy/ssh-action@master
         with:
@@ -37,7 +46,10 @@ jobs:
           passphrase: ${{ secrets.DOCKER_PASSPHRASE }}
           port: ${{ secrets.DOCKER_SWARM_PORT }}
           key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY}}
-          script: docker service update --image niecore$${{ steps.push.outputs.digest }} functional-reactive-smarthome
+          script: |
+            docker service update --image niecore$${{ steps.push.outputs.digest }} functional-reactive-smarthome
+            docker service update --image niecore$${{ steps.push-ui.outputs.digest }} functional-reactive-smarthome-ui
+
 
       - name: 'deployment success'
         if: success()
