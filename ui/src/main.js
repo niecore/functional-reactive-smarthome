@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/all.js'
 
 Vue.use(new VueSocketIO({
     debug: true,
-    connection: "192.168.0.101:9090",
+    connection: "http://192.168.0.178:9090",
 }));
 
 Vue.config.productionTip = false;
