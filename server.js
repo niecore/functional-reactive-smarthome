@@ -6,16 +6,18 @@ const broadcastToSocketClients = value => {
     io.sockets.emit("frs", value)
 };
 
-const input = new Kefir.pool();
+const currentValue = Hub.input.toProperty();
 
 io.on('connection', (socket) => {
+
+    // broadcast initial value
+    currentValue.take(1).onValue(value => socket.emit("frs", JSON.stringify(value)));
+
     socket.on("frs", (msg) => {
         Hub.output.plug(Kefir.constant(JSON.parse(msg)));
     });
 });
 
-
-
 Hub.input
-    .map(JSON.stringify)
+    .map()
     .onValue(broadcastToSocketClients);
