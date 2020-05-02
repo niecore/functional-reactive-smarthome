@@ -115,7 +115,7 @@
       "interface": "shelly",
       "type": "light",
       "id": "shellydimmer-F3AB9C/light/0",
-      "description": "Dimmer"
+      "description": "Deckenlampe im Arbeitszimmer"
     },
     "button_shelly1": {
       "interface": "shelly",
@@ -182,7 +182,7 @@
       "interface": "zigbee",
       "type": "light",
       "sub_type": "direct",
-      "description": "Stehlampe neben Schrank in Office"
+      "description": "Stehlampe neben Regal in Arbeitszimmer"
     },
     "etrv-laundryroom": {
       "interface": "hmip",
