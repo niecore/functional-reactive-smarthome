@@ -2,22 +2,19 @@ const Kefir = require("kefir");
 const Hub = require('./hub');
 const io = require("socket.io").listen(9090);
 
-const broadcastToSocketClients = value => {
-    io.sockets.emit("frs", value)
-};
-
-const currentValue = Hub.input.toProperty();
+const HubProperty = Hub.input.toProperty();
+const broadcastToSocketClient = socket => value => socket.emit("frs", value);
 
 io.on('connection', (socket) => {
 
-    // broadcast initial value
-    currentValue.take(1).onValue(value => socket.emit("frs", JSON.stringify(value)));
+    // input
+    HubProperty
+        .map(JSON.stringify)
+        .onValue(broadcastToSocketClient(socket));
 
+    // output
     socket.on("frs", (msg) => {
         Hub.output.plug(Kefir.constant(JSON.parse(msg)));
     });
 });
 
-Hub.input
-    .map(JSON.stringify)
-    .onValue(broadcastToSocketClients);
