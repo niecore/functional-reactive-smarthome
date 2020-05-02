@@ -20,15 +20,15 @@
         name: "State",
         data() {
             return {
-                checked: 0
+                checked: this.state.toUpperCase() === "ON"
             }
         },
         watch: {
             checked: function (newValue) {
-                this.state = newValue ? "ON" : "OFF"
+                this.state.toUpperCase = newValue.toUpperCase() ? "ON" : "OFF"
             },
             state: function (newValue) {
-                this.checked = newValue === "ON"
+                this.checked = newValue.toUpperCase() === "ON"
             }
         },
         methods : {
