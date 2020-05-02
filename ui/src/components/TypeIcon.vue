@@ -1,5 +1,4 @@
 <template>
-
   <div v-if="type === 'light'">
     <span class="icon">
       <i class="fas fa-lightbulb"></i>
@@ -35,18 +34,14 @@
       <i class="fas fa-plug"></i>
     </span>
   </div>
-  <div v-else>
-  </div>
-
+  <div v-else></div>
 </template>
 
 <script>
-    export default {
-        props: ["type"],
-        name: "TypeIcon"
-    }
+export default {
+  props: ["type"],
+  name: "TypeIcon"
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

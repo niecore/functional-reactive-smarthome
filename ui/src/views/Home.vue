@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <FRS/>
+    <FRS />
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import FRS from "../components/FRS";
 export default {
   name: "Home",
   components: {
-      FRS,
+    FRS
   }
 };
 </script>
