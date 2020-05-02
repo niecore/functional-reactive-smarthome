@@ -1,5 +1,5 @@
 <template>
-  <div class="columns">
+  <div class="columns is-mobile">
     <div class="column has-text-left">
       <span>state</span>
     </div>
