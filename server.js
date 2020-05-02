@@ -19,5 +19,5 @@ io.on('connection', (socket) => {
 });
 
 Hub.input
-    .map()
+    .map(JSON.stringify)
     .onValue(broadcastToSocketClients);
