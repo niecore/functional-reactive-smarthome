@@ -1,6 +1,7 @@
 const R = require('ramda');
 const T = require("transducers-js");
 const Kefir = require("kefir");
+const schedule = require('node-schedule');
 
 // convertToArray :: {a:A} => [{key:a, value: A}]
 const convertToArray = R.pipe(R.toPairs, R.map(R.zipObj(['key', 'value'])));
@@ -33,9 +34,16 @@ const groupBy = (keyF, limitF = (stream, _) => stream ) => src => {
     ))
 };
 
+const schedulerStream = value => cron => Kefir.stream(emitter => {
+    schedule.scheduleJob(cron, () => {
+        emitter.emit(value);
+    });
+});
+
 
 module.exports = {
     convertToArray,
     convertFromArray,
     groupBy,
+    schedulerStream
 };
