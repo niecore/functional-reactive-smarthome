@@ -11,13 +11,7 @@ const Devices = require("./model/devices");
 const Groups = require("./model/groups");
 
 // Automations
-const MotionLight = require('./automations/motionLight.js');
-const Alarm = require('./automations/alarm.js');
-const SceneSwitching = require('./automations/sceneControl.js');
-const BrightnessControl = require('./automations/brightnessControl.js');
-const InfluxDb = require('./automations/influxdbLogger');
-const Presence = require('./model/presence');
-const AmbientLight = require('./automations/ambientLight');
+const MotionLight = require('./model/automations/motionLight.js');
 
 const Hub = require("./hub");
 
@@ -33,11 +27,7 @@ EasyControl.deviceInputStream.then(function (stream) {
 });
 
 // Plug hub to automations
-BrightnessControl.input.plug(Hub.input);
-SceneSwitching.input.plug(Hub.input);
 MotionLight.input.plug(Hub.input);
-InfluxDb.input.plug(Hub.input);
-Presence.input.plug(Hub.input);
 
 // Plug logics back to input
 Hub.update.plug(Presence.output);
