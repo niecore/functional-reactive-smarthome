@@ -13,7 +13,7 @@ describe("Motionlight tests", () => {
     });
 
     test('Basic motion light turn on', () => {
-        const MotionLight = require("../../automations/motionLight");
+        const MotionLight = require("../../model/automations/motionLight");
 
         const trigger = value([{presence: {light_room: true}}, {}]);
         const output = value({light_1: {state: "ON", brightness: 255}});
@@ -27,7 +27,7 @@ describe("Motionlight tests", () => {
 
     test('Basic motion light turn off', () => {
 
-        const MotionLight = require("../../automations/motionLight");
+        const MotionLight = require("../../model/automations/motionLight");
 
         const trigger = value([{presence: {light_room: false}}, {}]);
         const output = value({light_1: {state: "OFF"}});
@@ -41,7 +41,7 @@ describe("Motionlight tests", () => {
 
     test('Motion light will not trigger, when room is illuminated', () => {
 
-        const MotionLight = require("../../automations/motionLight");
+        const MotionLight = require("../../model/automations/motionLight");
 
         const trigger = value([{presence: {light_room: true}}, {motion_sensor_1: {illuminance_lux: 3000}}]);
         const output = value({});
@@ -55,7 +55,7 @@ describe("Motionlight tests", () => {
 
     test('Motion light will trigger, when room is to dark', () => {
 
-        const MotionLight = require("../../automations/motionLight");
+        const MotionLight = require("../../model/automations/motionLight");
 
         const trigger = value([{presence: {light_room: true}}, {motion_sensor_1: {illuminance_lux: 49}}]);
         const output = value({light_1: {state: "ON", brightness: 255}});
@@ -69,7 +69,7 @@ describe("Motionlight tests", () => {
 
     test('Motion light will not trigger, when room has enabled lights', () => {
 
-        const MotionLight = require("../../automations/motionLight");
+        const MotionLight = require("../../model/automations/motionLight");
 
         const trigger = value([{presence: {light_room: true}}, {light_1: {state: "ON"}}]);
         const output = value({});
@@ -83,7 +83,7 @@ describe("Motionlight tests", () => {
 
     test('Motion light will turn light off, when after it has not turned on', () => {
 
-        const MotionLight = require("../../automations/motionLight");
+        const MotionLight = require("../../model/automations/motionLight");
 
         const trigger = value([{presence: {light_room: true}}, {light_1: {state: "ON"}}]);
         const trigger_off = value([{presence: {light_room: false}}, {light_1: {state: "ON"}}]);
@@ -105,7 +105,7 @@ describe("Motionlight tests", () => {
             itsNightTime: () => true
         }));
 
-        const MotionLight = require("../../automations/motionLight");
+        const MotionLight = require("../../model/automations/motionLight");
 
         expect(MotionLight.output).toEmit([output, end()], () => {
             send(
@@ -123,7 +123,7 @@ describe("Motionlight tests", () => {
             itsNightTime: () => false
         }));
 
-        const MotionLight = require("../../automations/motionLight");
+        const MotionLight = require("../../model/automations/motionLight");
 
         expect(MotionLight.output).toEmit([output, end()], () => {
             send(
@@ -142,7 +142,7 @@ describe("Motionlight tests", () => {
             itsNightTime: () => false
         }));
 
-        const MotionLight = require("../../automations/motionLight");
+        const MotionLight = require("../../model/automations/motionLight");
 
         expect(MotionLight.output).toEmit([output, value({}), end()], () => {
             send(

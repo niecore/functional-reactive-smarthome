@@ -6,7 +6,6 @@ const HubProperty = Hub.input.toProperty();
 const broadcastToSocketClient = socket => value => socket.emit("frs", value);
 
 io.on('connection', (socket) => {
-
     // input
     HubProperty
         .map(JSON.stringify)
