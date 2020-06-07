@@ -2,7 +2,7 @@ const R = require('ramda');
 const Kefir = require('kefir');
 const Scenes = require('../config/scenes.json');
 const Rooms = require('../model/rooms');
-const Lenses = require('../lenses');
+const Lenses = require('./lenses');
 
 // knownScenes
 const knownScenes = Scenes;

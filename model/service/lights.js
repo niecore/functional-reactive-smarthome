@@ -1,8 +1,7 @@
-const Lenses = require('../lenses');
+const R = require("ramda");
 const Devices = require("../devices");
 const Rooms = require("../rooms");
-
-const input = new Kefir.pool();
+const Service = require("./service");
 
 // filterStateByDevicesRoom :: String => State => State
 const filterStateByDevicesRoom = room => R.pickBy((k, v) => Rooms.deviceIsInRoom(room)(v));
@@ -19,20 +18,12 @@ const allLightsOff = R.pipe(
     R.not,
 );
 
-const stateStream = input
-    .map(R.view(Lenses.stateLens));
+const lightState = R.map(filterStateByLightType, Service.state);
 
-const lightStateStream = stateStream
-    .map(filterStateByLightType);
+const lightStateOfRoom = room => R.map(filterStateByDevicesRoom(room), lightState);
 
-const lightStateOfRoomProperty = room => lightStateStream
-    .filter(filterStateByDevicesRoom(room))
-    .toProperty();
-
-const lightsInRoomOff = room => lightStateOfRoomProperty(room)
-    .map(allLightsOff);
+const lightsInRoomOff = room => R.map(allLightsOff, lightStateOfRoom(room));
 
 module.exports = {
-    input,
     lightsInRoomOff
 };

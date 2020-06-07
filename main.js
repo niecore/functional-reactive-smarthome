@@ -9,3 +9,6 @@ Hub.input
 
 Hub.output
     .onValue(x => console.log(JSON.stringify({"output": x})));
+
+Hub.events
+    .onValue(x => console.log(JSON.stringify({"event": x, })));

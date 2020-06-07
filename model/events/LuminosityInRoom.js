@@ -1,6 +1,8 @@
 const R = require("ramda");
 const Kefir = require("kefir");
+
 const Lenses = require('../lenses');
+const Rooms = require('../rooms');
 
 // isMessageWithLuminosity :: Msg => Boolean
 const isMessageWithLuminosity = R.pipe(
@@ -8,21 +10,15 @@ const isMessageWithLuminosity = R.pipe(
     R.has("illuminance_lux")
 );
 
-// createRoomToDarkEvent :: Msg => RoomToDark
-const createRoomToDarkEvent = msg => {
-    const room = getRoomOfMessage(msg);
-    return ({id: "RoomToDark", room: room});
-};
+// createRoomToDarkEvent :: String => RoomToDark
+const createRoomToDarkEvent = room => ({id: "RoomToDark", room: room});
 
-// createRoomBrightEnoughEvent :: Msg => RoomBrightEnough
-const createRoomBrightEnoughEvent = msg => {
-    const room = getRoomOfMessage(msg);
-    return ({id: "RoomBrightEnough", room: room});
-};
+// createRoomBrightEnoughEvent :: String => RoomBrightEnough
+const createRoomBrightEnoughEvent = room => ({id: "RoomBrightEnough", room: room});
 
 // createLuminosityEventForRoom :: Msg => Either[RoomToDark, RoomBrightEnough]
 const createLuminosityEventForRoom = msg => {
-    const room = getRoomOfMessage(msg);
+    const room = Rooms.getRoomOfMessage(msg);
     const luminosity = R.prop("illuminance_lux")(R.view(Lenses.inputDataLens)(msg));
 
     const roomToDarkEvent = createRoomToDarkEvent(room);

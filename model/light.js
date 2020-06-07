@@ -3,7 +3,7 @@ const Kefir = require("kefir");
 const Groups = require("../model/groups");
 const Devices = require("../model/devices");
 const Logic = require("../model/logic");
-const Lenses = require('../lenses');
+const Lenses = require('./lenses');
 const DayPeriod = require('../model/day_period');
 const Automations = require('../config/automations.json');
 

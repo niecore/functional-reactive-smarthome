@@ -1,7 +1,7 @@
 const R = require('ramda');
 const Devices = require('../config/devices.json');
 const Util = require('./util');
-const Lenses = require('../lenses');
+const Lenses = require('./lenses');
 
 // knownRooms
 const knownDevices = Devices.devices;

@@ -1,10 +1,13 @@
 const R = require("ramda");
 const Kefir = require("kefir");
+
+const Devices = require("../devices");
 const Lenses = require('../lenses');
+const Rooms = require("../rooms");
 
 // createMovementDetectedEvent :: Msg => MovementDetected
 const createMovementDetectedEvent = msg => {
-    const room = getRoomOfMessage(msg);
+    const room = Rooms.getRoomOfMessage(msg);
     return ({id: "MovementDetected", room: room});
 };
 
@@ -18,12 +21,6 @@ const movementDetected = R.view(occupancyLens);
 const isMessageFromMotionSensor = R.pipe(
     R.view(Lenses.inputNameLens),
     Devices.deviceHasType("motion_sensor")
-);
-
-// getRoomOfMessage :: Msg => String
-const getRoomOfMessage = R.pipe(
-    R.view(Lenses.inputNameLens),
-    Rooms.getRoomOfDevice
 );
 
 const input = new Kefir.pool();

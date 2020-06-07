@@ -1,3 +1,7 @@
+//
+//  This file currently represents the logic that should be handled by a plugin system
+//
+
 // Devices
 const Zigbee = require('./interfaces/zigbee');
 const Shelly = require('./interfaces/shelly');
@@ -13,6 +17,18 @@ const Groups = require("./model/groups");
 // Automations
 const MotionLight = require('./model/automations/motionLight.js');
 
+// Events
+const LuminosityInRoom = require("./model/events/LuminosityInRoom");
+const MovementDetected = require("./model/events/MovementDetected");
+const PresenceDetected = require("./model/events/PresenceDetected");
+const TurnLightOn = require("./model/events/TurnLightOn");
+const TurnNightLightsOn = require("./model/events/TurnNightLightOn");
+const TurnAllLightsOff = require("./model/events/TurnAllLightsOff");
+
+// Service
+const Service = require("./model/service/service");
+const Lights = require("./model/service/lights");
+
 const Hub = require("./hub");
 
 // Plug interfaces input to hub
@@ -26,18 +42,33 @@ EasyControl.deviceInputStream.then(function (stream) {
     Hub.update.plug(stream)
 });
 
-// Plug hub to automations
-MotionLight.input.plug(Hub.input);
+// Plug services            input -> ()
+Service.input.plug(Hub.input);
 
-// Plug logics back to input
-Hub.update.plug(Presence.output);
+// Plug Events of Type 1    input -> events
+MovementDetected.input.plug(Hub.input);
+Hub.events.plug(MovementDetected.output);
 
-// Plug automations to output
-Hub.output.plug(BrightnessControl.output);
-Hub.output.plug(SceneSwitching.output);
-Hub.output.plug(MotionLight.output);
-Hub.output.plug(Alarm.output);
-Hub.output.plug(AmbientLight.output);
+LuminosityInRoom.input.plug(Hub.input);
+Hub.events.plug(LuminosityInRoom.output);
+
+// Plug Events of Type 2    events -> events
+PresenceDetected.input.plug(Hub.events);
+Hub.events.plug(PresenceDetected.output);
+
+// Plug Events of Type 3    events -> output
+TurnLightOn.input.plug(Hub.events);
+Hub.output.plug(TurnLightOn.output);
+
+TurnNightLightsOn.input.plug(Hub.events);
+Hub.output.plug(TurnNightLightsOn.output);
+
+TurnAllLightsOff.input.plug(Hub.events);
+Hub.output.plug(TurnAllLightsOff.output);
+
+// Plug Automations         events -> events
+MotionLight.input.plug(Hub.events);
+Hub.events.plug(MotionLight.output);
 
 // Plug hub output to interfaces
 const devices = Hub.output.map(Groups.filterMsgIsDevice);
