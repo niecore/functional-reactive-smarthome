@@ -9,7 +9,7 @@ const isLightOnEvent = R.propEq("id", "TurnNightLightsOn");
 const input = new Kefir.pool();
 
 // isLight :: String => boolean
-const isLight = Devices.deviceHasType("light")
+const isLight = Devices.deviceHasType("light");
 
 // isNightLight :: String => boolean
 const isNightLight = R.pipe(
