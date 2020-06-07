@@ -62,12 +62,12 @@
     },
     "remote_tradfri_1": {
       "interface": "zigbee",
-      "type": "remote",
+      "type": "tradfri_remote",
       "description": "Light Remote Wohnzimmer"
     },
     "remote_tradfri_2": {
       "interface": "zigbee",
-      "type": "remote",
+      "type": "tradfri_remote",
       "description": "Light Remote Schlafzimmer"
     },
     "lightbulb_tint_1": {
@@ -98,12 +98,12 @@
     },
     "remote_tradfri_3": {
       "interface": "zigbee",
-      "type": "remote",
+      "type": "tradfri_remote",
       "description": "Light Remote Küche"
     },
     "remote_tradfri_4": {
       "interface": "zigbee",
-      "type": "remote",
+      "type": "tradfri_remote",
       "description": "Light Remote Office"
     },
     "remote_aqara_1": {
