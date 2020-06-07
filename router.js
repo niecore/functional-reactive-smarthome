@@ -16,6 +16,7 @@ const Groups = require("./model/groups");
 
 // Automations
 const MotionLight = require('./model/automations/motionLight.js');
+const Dimming = require('./model/automations/dimming.js');
 
 // Events
 const LuminosityInRoom = require("./model/events/LuminosityInRoom");
@@ -24,6 +25,8 @@ const PresenceDetected = require("./model/events/PresenceDetected");
 const TurnLightOn = require("./model/events/TurnLightOn");
 const TurnNightLightsOn = require("./model/events/TurnNightLightOn");
 const TurnAllLightsOff = require("./model/events/TurnAllLightsOff");
+const ButtonBrightnessClick = require("./model/events/ButtonBrightnessClick");
+const ChangeBrightness = require("./model/events/ChangeBrightness");
 
 // Service
 const Service = require("./model/service/service");
@@ -52,6 +55,9 @@ Hub.events.plug(MovementDetected.output);
 LuminosityInRoom.input.plug(Hub.input);
 Hub.events.plug(LuminosityInRoom.output);
 
+ButtonBrightnessClick.input.plug(Hub.input);
+Hub.events.plug(ButtonBrightnessClick.output);
+
 // Plug Events of Type 2    events -> events
 PresenceDetected.input.plug(Hub.events);
 Hub.events.plug(PresenceDetected.output);
@@ -66,9 +72,15 @@ Hub.output.plug(TurnNightLightsOn.output);
 TurnAllLightsOff.input.plug(Hub.events);
 Hub.output.plug(TurnAllLightsOff.output);
 
+ChangeBrightness.input.plug(Hub.events);
+Hub.output.plug(ChangeBrightness.output);
+
 // Plug Automations         events -> events
 MotionLight.input.plug(Hub.events);
 Hub.events.plug(MotionLight.output);
+
+Dimming.input.plug(Hub.events);
+Hub.events.plug(Dimming.output);
 
 // Plug hub output to interfaces
 const devices = Hub.output.map(Groups.filterMsgIsDevice);

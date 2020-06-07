@@ -24,6 +24,13 @@ const lightStateOfRoom = room => R.map(filterStateByDevicesRoom(room), lightStat
 
 const lightsInRoomOff = room => R.map(allLightsOff, lightStateOfRoom(room));
 
+const getBrightnessOfLight = light => R.pipe(
+    R.prop(light),
+    R.prop("brightness"),
+    R.defaultTo(0)
+)(lightState);
+
 module.exports = {
-    lightsInRoomOff
+    lightsInRoomOff,
+    getBrightnessOfLight
 };
