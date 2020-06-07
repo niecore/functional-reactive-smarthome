@@ -2,7 +2,7 @@
 //  This file currently represents the logic that should be handled by a plugin system
 //
 
-// Devices
+// Interfaces
 const Zigbee = require('./interfaces/zigbee');
 const Shelly = require('./interfaces/shelly');
 const EasyControl = require('./interfaces/easy_control');
@@ -13,6 +13,9 @@ const Hmip = require('./interfaces/hmip');
 // Model
 const Devices = require("./model/devices");
 const Groups = require("./model/groups");
+
+// Devices
+const TradfriRemote = require("./model/devices/tradfri_remote");
 
 // Automations
 const MotionLight = require('./model/automations/motionLight.js');
@@ -25,7 +28,6 @@ const PresenceDetected = require("./model/events/PresenceDetected");
 const TurnLightOn = require("./model/events/TurnLightOn");
 const TurnNightLightsOn = require("./model/events/TurnNightLightOn");
 const TurnAllLightsOff = require("./model/events/TurnAllLightsOff");
-const ButtonBrightnessClick = require("./model/events/ButtonBrightnessClick");
 const ChangeBrightness = require("./model/events/ChangeBrightness");
 
 // Service
@@ -48,15 +50,16 @@ EasyControl.deviceInputStream.then(function (stream) {
 // Plug services            input -> ()
 Service.input.plug(Hub.input);
 
+// Plug Devices             input => events
+TradfriRemote.input.plug(Hub.input);
+Hub.events.plug(TradfriRemote.output);
+
 // Plug Events of Type 1    input -> events
 MovementDetected.input.plug(Hub.input);
 Hub.events.plug(MovementDetected.output);
 
 LuminosityInRoom.input.plug(Hub.input);
 Hub.events.plug(LuminosityInRoom.output);
-
-ButtonBrightnessClick.input.plug(Hub.input);
-Hub.events.plug(ButtonBrightnessClick.output);
 
 // Plug Events of Type 2    events -> events
 PresenceDetected.input.plug(Hub.events);
