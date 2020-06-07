@@ -4,20 +4,20 @@ const Kefir = require("kefir");
 const Rooms = require("../rooms");
 const Devices = require("../devices");
 
-const isLightOnEvent = R.propEq("id", "TurnLightsOn");
+const isLightOffEvent = R.propEq("id", "TurnAllLightsOff");
 
 const input = new Kefir.pool();
 
 const output = input
-    .filter(isLightOnEvent)
+    .filter(isLightOffEvent)
     .map(lightOnEvent => {
         const lightsInRoom = Rooms.getDevicesInRoom(lightOnEvent.room)
             .filter(Devices.deviceHasType("light"));
 
-        const enableLights = lightsInRoom
-            .map(device_name => R.objOf(device_name, {state: "ON", brightness: 255}));
+        const disableLights = lightsInRoom
+            .map(device_name => R.objOf(device_name, {state: "OFF"}));
 
-        return R.reduce(R.mergeLeft(), {}, enableLights);
+        return R.reduce(R.mergeLeft(), {}, disableLights);
     });
 
 module.exports = {

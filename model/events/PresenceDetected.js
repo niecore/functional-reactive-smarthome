@@ -1,12 +1,8 @@
 const R = require("ramda");
 const Kefir = require("kefir");
-const Util = require('../model/util');
 
-// createPresenceDetectedEvent :: Msg => MovementDetected
-const createPresenceDetectedEvent = msg => {
-    const room = getRoomOfMessage(msg);
-    return ({id: "PresenceDetected", room: room});
-};
+const Util = require('../util');
+
 
 // isMovementDetectedEvent :: Event => boolean
 const isMovementDetectedEvent = R.propEq("id", "MovementDetected");
@@ -41,8 +37,8 @@ const output = input
     .thru(Util.groupBy(getRoomOfMovement))
     .flatMap( groupedStream => {
         return groupedStream
-            .skipDuplicates(R.equals)
-            .flatMapLatest(presenceDetectedDueToMovementInRoom);
+            .flatMapLatest(presenceDetectedDueToMovementInRoom)
+            .skipDuplicates(R.equals);
     });
 
 module.exports = {

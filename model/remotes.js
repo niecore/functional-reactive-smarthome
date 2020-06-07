@@ -1,6 +1,6 @@
 const R = require('ramda');
 const Remotes = require('../config/remotes');
-const Lenses = require('../lenses');
+const Lenses = require('./lenses');
 
 // knownRemotes
 const knownRemotes = Remotes;

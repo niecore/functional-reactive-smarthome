@@ -1,7 +1,10 @@
 const R = require("ramda");
 const Kefir = require("kefir");
 
+const Automations = require("../../config/automations");
 const Lights = require("../service/lights");
+const Luminosity = require("../service/luminosity");
+const DayPeriod = require("../day_period");
 
 const input = new Kefir.pool();
 
@@ -15,11 +18,9 @@ const isPresenceInRoomEvent = R.propEq("id", "PresenceDetected");
 const isNoPresenceInRoomEvent = R.propEq("id", "PresenceGone");
 const isActivateSceneEvent = R.propEq("id", "ActivateScene");
 
-const isRoomBrightEnough= R.propEq("id", "RoomBrightEnough");
-const isRoomToDark = R.propEq("id", "RoomToDark");
-
 const createNoActionEvent = () => ({id: "NoAction"});
 const createTurnAllLightsInRoomOnEvent = room => ({id: "TurnLightsOn", room: room});
+const createTurnAllNightLightsInRoomOnEvent = room => ({id: "TurnNightLightsOn", room: room});
 const createTurnAllLightsInRoomOffEvent = room => ({id: "TurnAllLightsOff", room: room});
 
 const presenceStream = input
@@ -31,32 +32,32 @@ const noPresenceStream = input
 const sceneStream = input
     .filter(isActivateSceneEvent);
 
-const luminosityStream = input
-    .filter(R.any([isRoomBrightEnough, isRoomToDark]));
-
-const roomLuminosityProperty = room => luminosityStream
-    .filter(R.propEq("room", room))
-    .toProperty();
-
 const presenceInRoomsWithMotionLight = presenceStream
     .filter(isRoomWithMotionLight);
 
 // isRoomTooDark :: PresenceDetected => boolean
-const isRoomTooDark = presenceDetected => isRoomToDark(roomLuminosityProperty(presenceDetected.room));
+const isRoomTooDark = presenceDetected => Luminosity.isRoomToDark(presenceDetected.room);
 
 // isRoomTooDark :: PresenceDetected => boolean
 const hasRoomAllLightsOff = presenceDetected => Lights.lightsInRoomOff(presenceDetected.room);
 
-const output = presenceInRoomsWithMotionLight
-    .filter(isRoomTooDark)
-    .filter(hasRoomAllLightsOff)
-    .flatMap(StartMotionLightRoutine);
+// isRoomWithNightlight :: String => boolean
+const isRoomWithNightlight = R.pipe(
+    R.prop(R.__, Automations.automations.motionLight.rooms),
+    R.propOr(true, "nightLight")
+);
 
-const StartMotionLightRoutine = presenceDetected => {
+// useNightLight :: String => boolean
+const useNightLight = room => DayPeriod.itsNightTime() && isRoomWithNightlight(room);
+
+// startMotionLightRoutine :: PresenceDetected => Stream<TurnLightsOn, TurnAllLightsOff, NoAction>
+const startMotionLightRoutine = presenceDetected => {
 
     const room = presenceDetected.room;
 
-    const TurnMotionLightsOn = Kefir.constant(createTurnAllLightsInRoomOnEvent(room));
+    const TurnMotionLightsOn = useNightLight(room)
+        ? createTurnAllNightLightsInRoomOnEvent(room)
+        : createTurnAllLightsInRoomOnEvent(room);
 
     const WhenInterrupted = sceneStream
         .map(_ => createNoActionEvent());
@@ -66,13 +67,18 @@ const StartMotionLightRoutine = presenceDetected => {
 
     return Kefir.merge(
         [
-            TurnMotionLightsOn,
+            Kefir.constant(TurnMotionLightsOn),
             WhenInterrupted,
             WhenPresenceGone
         ]
     ).take(2)
 };
 
+
+const output = presenceInRoomsWithMotionLight
+    .filter(hasRoomAllLightsOff)
+    .filter(isRoomTooDark)
+    .flatMap(startMotionLightRoutine);
 
 module.exports = {
     input,

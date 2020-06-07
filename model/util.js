@@ -9,6 +9,16 @@ const convertToArray = R.pipe(R.toPairs, R.map(R.zipObj(['key', 'value'])));
 // convertFromArray :: [{key:a, value: A}] => {a:A}
 const convertFromArray = R.pipe(R.map(R.values), R.fromPairs);
 
+const currentValue = property =>  {
+    var result;
+    var save = function(x) {
+        result = x;
+    };
+    property.onValue(save);
+    property.offValue(save);
+    return result;
+};
+
 const groupBy = (keyF, limitF = (stream, _) => stream ) => src => {
     const streams = {};
 
@@ -45,5 +55,6 @@ module.exports = {
     convertToArray,
     convertFromArray,
     groupBy,
-    schedulerStream
+    schedulerStream,
+    currentValue
 };

@@ -1,5 +1,7 @@
 const R = require('ramda');
+
 const Rooms = require('../config/rooms.json');
+const Lenses = require('./lenses');
 
 // knownRooms
 const knownRooms = Rooms.rooms;
@@ -25,11 +27,17 @@ const deviceIsInRoom = room => R.pipe(
     R.equals(room)
 );
 
+// getRoomOfMessage :: Msg => String
+const getRoomOfMessage = R.pipe(
+    R.view(Lenses.inputNameLens),
+    getRoomOfDevice
+);
 
 module.exports = {
     getRoomByName,
     getDevicesInRoom,
     getRoomOfDevice,
+    getRoomOfMessage,
     deviceIsInRoom
 };
 
