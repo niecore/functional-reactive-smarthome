@@ -35,7 +35,8 @@
         "etrv-kitchen",
         "contact_aqara_1",
         "plug_tasmota_5",
-        "motionsensor_aqara_9"
+        "motionsensor_aqara_9",
+        "lightstrip_hue_1"
       ]
     },
     "junk_room": {

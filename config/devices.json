@@ -315,6 +315,12 @@
       "type": "light",
       "sub_type": "indirect",
       "description": "Lily Spot 3"
+    },
+    "lightstrip_hue_1": {
+      "interface": "zigbee",
+      "type": "light",
+      "sub_type": "indirect",
+      "description": "Lightstrip under TV"
     }
   }
 }

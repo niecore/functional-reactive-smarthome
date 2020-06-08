@@ -15,6 +15,10 @@
     "led_dimmer_shelly3": {
       "state": "ON",
       "brightness": 255
+    },
+    "lightstrip_hue_1": {
+      "state": "ON",
+      "brightness": 255
     }
   },
   "livingroom_off": {
@@ -28,6 +32,9 @@
       "state": "OFF"
     },
     "led_dimmer_shelly3": {
+      "state": "OFF"
+    },
+    "lightstrip_hue_1": {
       "state": "OFF"
     }
   },
@@ -45,6 +52,11 @@
     },
     "led_dimmer_shelly3": {
       "state": "OFF"
+    },
+    "lightstrip_hue_1": {
+      "state": "ON",
+      "brightness": 100,
+      "color_temp": 500
     }
   },
   "livingroom_chill_2": {
@@ -63,6 +75,11 @@
     "led_dimmer_shelly3": {
       "state": "ON",
       "brightness": 50
+    },
+    "lightstrip_hue_1": {
+      "state": "ON",
+      "brightness": 255,
+      "color_temp": 500
     }
   },
   "bedroom_nightstand_on": {
