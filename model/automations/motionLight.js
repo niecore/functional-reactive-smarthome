@@ -4,7 +4,7 @@ const Kefir = require("kefir");
 const Automations = require("../../config/automations");
 const Lights = require("../service/lights");
 const Luminosity = require("../service/luminosity");
-const DayPeriod = require("../day_period");
+const DayPeriod = require("../dayPeriod");
 
 const input = new Kefir.pool();
 
