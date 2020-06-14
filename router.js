@@ -21,7 +21,7 @@ const TradfriRemote = require("./model/devices/tradfriRemote");
 // Automations
 const MotionLight = require('./model/automations/motionLight.js');
 const Dimming = require('./model/control/dimming.js');
-const Scenes = require('./model/control/scene_switching.js');
+const Scenes = require('./model/control/sceneSwitching.js');
 
 // Events
 const LuminosityInRoom = require("./model/events/LuminosityInRoom");
