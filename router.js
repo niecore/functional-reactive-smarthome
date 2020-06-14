@@ -9,6 +9,7 @@ const EasyControl = require('./interfaces/easy_control');
 const XiaomiScale = require('./interfaces/xiaomi_scale');
 const Tasmota = require('./interfaces/tasmota');
 const Hmip = require('./interfaces/hmip');
+const InfluxDb = require('./interfaces/influx_db');
 
 // Model
 const Devices = require("./model/devices");
@@ -44,6 +45,8 @@ Hub.update.plug(Shelly.deviceInputStream);
 Hub.update.plug(XiaomiScale.deviceInputStream);
 Hub.update.plug(Tasmota.deviceInputStream);
 Hub.update.plug(Hmip.deviceInputStream);
+
+InfluxDb.input.plug(Hub.input);
 
 EasyControl.deviceInputStream.then(function (stream) {
     Hub.update.plug(stream)
