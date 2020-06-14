@@ -13,7 +13,7 @@ describe("Presence tests", () => {
     });
 
     test('Presence basic test', () => {
-        const Presence = require("../../model/presence");
+        const Presence = require("../../src/presence");
 
         const trigger = value([{motion_sensor_1: {occupancy: true}}, {}]);
         const enable = value({presence: {light_room: true}});
@@ -28,7 +28,7 @@ describe("Presence tests", () => {
     });
 
     test('Presence is extended after new motion detection with no new event', () => {
-        const Presence = require("../../model/presence");
+        const Presence = require("../../src/presence");
 
         const trigger = value([{motion_sensor_1: {occupancy: true}}, {}]);
         const enable = value({presence: {light_room: true}});
@@ -43,7 +43,7 @@ describe("Presence tests", () => {
     });
 
     test('Presence is not interrupted by motion of other room', () => {
-        const Presence = require("../../model/presence");
+        const Presence = require("../../src/presence");
 
 
         const trigger = value([{motion_sensor_1: {occupancy: true}}, {}]);

@@ -1,4 +1,4 @@
-const Devices = require('../../model/devices');
+const Devices = require('../../src/model/devices');
 const R = require("ramda");
 
 test('device type can be checked', () => {

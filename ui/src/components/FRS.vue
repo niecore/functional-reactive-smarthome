@@ -12,8 +12,8 @@
 import Device from "../components/Device";
 
 const R = require("ramda");
-const Devices = require("./../../../model/devices");
-const Rooms = require("./../../../model/rooms");
+const Devices = require("../../../src/model/devices");
+const Rooms = require("../../../src/model/rooms");
 
 export default {
   name: "FRS",

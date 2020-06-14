@@ -25,7 +25,7 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "node main.js"
+    "start": "node src/main.js"
   },
   "jest": {
     "moduleNameMapper": {
