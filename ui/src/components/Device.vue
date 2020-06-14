@@ -36,7 +36,7 @@ import State from "./properties/State";
 import Color from "./properties/Color";
 import Brightness from "./properties/Brightness";
 
-const Devices = require("./../../../model/devices");
+const Devices = require("../../../src/model/devices");
 
 export default {
   components: { Color, TypeIcon, State, Brightness },

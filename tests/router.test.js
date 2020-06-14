@@ -1,4 +1,4 @@
-const Lenses = require("../model/lenses");
+const Lenses = require("../src/lenses");
 const R = require("ramda");
 
 test('updated devices lense getter returns correct value', () => {

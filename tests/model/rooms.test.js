@@ -1,4 +1,4 @@
-const Rooms = require('../../model/rooms');
+const Rooms = require('../../src/model/rooms');
 const R = require("ramda");
 
 test('get room by name returns a room', () => {
