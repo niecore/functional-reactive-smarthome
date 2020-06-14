@@ -35,10 +35,13 @@ const switchedSceneStream = scene => {
     });
 };
 
+const isSwitchedScene = scene => scene.isArray();
+
 module.exports = {
     knownScenes,
     getSceneByName,
     sceneIsActive,
     filterSceneByDevicesInRoom,
-    switchedSceneStream
+    switchedSceneStream,
+    isSwitchedScene
 };

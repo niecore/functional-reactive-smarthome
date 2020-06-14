@@ -8,8 +8,14 @@ const input = new Kefir.pool();
 
 const output = input
     .filter(isStartSceneEvent)
-    .map(startSceneEvent => {
-        return Scenes.getSceneByName(startSceneEvent.scene)
+    .flatMapLatest(startSceneEvent => {
+        const scene = Scenes.getSceneByName(startSceneEvent.scene);
+
+        if(Scenes.isSwitchedScene(scene)) {
+            return Scenes.switchedSceneStream(scene)
+        } else {
+            return Kefir.constant(scene)
+        }
     });
 
 module.exports = {
