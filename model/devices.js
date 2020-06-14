@@ -19,6 +19,12 @@ const deviceHasType = type => R.pipe(
     R.propEq("type", type)
 );
 
+// deviceHasSubType :: String => String -> bool
+const deviceHasSubType = type => R.pipe(
+    getDeviceByName,
+    R.propEq("sub_type", type)
+);
+
 // deviceHasInterface :: String => String -> bool
 const deviceHasInterface = type => R.pipe(
     getDeviceByName,
@@ -55,6 +61,8 @@ const getDescriptionOfDevice = R.pipe(
     R.propOr("", "description")
 );
 
+const isLight = R.anyPass([deviceHasType("light"), deviceHasSubType("light")]);
+
 module.exports = {
     knownDevices,
     isDevice,
@@ -66,5 +74,6 @@ module.exports = {
     filterMsgByDeviceInterface,
     getTypeOfDevice,
     getDescriptionOfDevice,
+    isLight
 };
 

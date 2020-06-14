@@ -14,7 +14,7 @@ const output = input
     .map(changeBrightnessEvent => {
 
         const lightsInRoom = Rooms.getDevicesInRoom(changeBrightnessEvent.room)
-            .filter(Devices.deviceHasType("light"));
+            .filter(Devices.isLight);
 
         const brightnessOfLights = lightsInRoom
             .map(Lights.getBrightnessOfLight)

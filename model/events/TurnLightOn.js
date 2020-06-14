@@ -12,7 +12,7 @@ const output = input
     .filter(isLightOnEvent)
     .map(lightOnEvent => {
         const lightsInRoom = Rooms.getDevicesInRoom(lightOnEvent.room)
-            .filter(Devices.deviceHasType("light"));
+            .filter(Devices.isLight);
 
         const enableLights = lightsInRoom
             .map(device_name => R.objOf(device_name, {state: "ON", brightness: 255}));
