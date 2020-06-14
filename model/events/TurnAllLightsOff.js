@@ -12,7 +12,7 @@ const output = input
     .filter(isLightOffEvent)
     .map(lightOnEvent => {
         const lightsInRoom = Rooms.getDevicesInRoom(lightOnEvent.room)
-            .filter(Devices.deviceHasType("light"));
+            .filter(Devices.isLight);
 
         const disableLights = lightsInRoom
             .map(device_name => R.objOf(device_name, {state: "OFF"}));

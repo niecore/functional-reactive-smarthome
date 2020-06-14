@@ -126,6 +126,7 @@
     "plug_osram_1": {
       "interface": "zigbee",
       "type": "plug",
+      "sub_type": "light",
       "description": "Plug for lights in Office"
     },
     "sensor_air_2": {
@@ -176,6 +177,7 @@
     "plug_osram_2": {
       "interface": "zigbee",
       "type": "plug",
+      "sub_type": "light",
       "description": "Plug for hue color in bedroom"
     },
     "lightbulb_hue_3": {
@@ -246,6 +248,7 @@
     "plug_tasmota_5": {
       "interface": "tasmota",
       "type": "plug",
+      "sub_type": "light",
       "description": "Lamp sideboard livingroom"
     },
     "lightbulb_tradfriw_5": {
@@ -273,6 +276,7 @@
       "interface": "shelly",
       "type": "relay",
       "id": "shelly1-F41475/relay/0",
+      "sub_type": "light",
       "description": "Relay für Deckenlampe Flur"
     },
     "button_shelly4": {
@@ -284,6 +288,7 @@
     "light_shelly2": {
       "interface": "shelly",
       "type": "relay",
+      "sub_type": "light",
       "id": "shelly1-F3DBB3/relay/0",
       "description": "Relay für Deckenlampe Küche"
     },
