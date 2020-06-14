@@ -19,14 +19,14 @@ const createButtonToggleClick = remote => {
     return ({id: "ButtonToggleClick", remote: remote});
 };
 
-// createButtonSceneLeftClick :: remote => ButtonSceneLeftClick
-const createButtonSceneLeftClick = remote => {
-    return ({id: "ButtonSceneLeftClick", remote: remote});
+// createButtonPreviousClick :: remote => ButtonPreviousSceneClick
+const createButtonPreviousClick = remote => {
+    return ({id: "ButtonPreviousSceneClick", remote: remote});
 };
 
-// createButtonSceneRightClick :: remote => ButtonSceneRightClick
-const createButtonSceneRightClick = remote => {
-    return ({id: "ButtonSceneRightClick", remote: remote});
+// createButtonNextSceneClick :: remote => ButtonNextSceneClick
+const createButtonNextSceneClick = remote => {
+    return ({id: "ButtonNextSceneClick", remote: remote});
 };
 
 // isMessageFromTradfriRemote :: Msg => Boolean
@@ -35,7 +35,7 @@ const isMessageFromTradfriRemote = R.pipe(
     Devices.deviceHasType("tradfri_remote")
 );
 
-// createButtonBrightnessModificationEvent :: Msg => Either[ButtonBrightnessUpClick, ButtonBrightnessDownClick, ButtonToggleClick, ButtonSceneLeftClick, ButtonSceneRightClick]
+// createButtonBrightnessModificationEvent :: Msg => Either[ButtonBrightnessUpClick, ButtonBrightnessDownClick, ButtonToggleClick, ButtonPreviousSceneClick, ButtonNextSceneClick]
 const createTradfriButtonEvent = msg => {
     const action = R.prop("action")(R.view(Lenses.inputDataLens)(msg));
     const remote = R.view(Lenses.inputNameLens)(msg);
@@ -48,9 +48,9 @@ const createTradfriButtonEvent = msg => {
         case "toggle":
             return createButtonToggleClick(remote);
         case "arrow_left_click":
-            return createButtonSceneLeftClick(remote);
+            return createButtonPreviousClick(remote);
         case "arrow_right_click":
-            return createButtonSceneRightClick(remote);
+            return createButtonNextSceneClick(remote);
     }
 };
 

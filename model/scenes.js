@@ -10,7 +10,7 @@ const knownScenes = Scenes;
 // getSceneByName :: String => Scene | undefined
 const getSceneByName = R.prop(R.__, knownScenes);
 
-// isSceneSelect :: Scene => Msg => Boolean
+// isSceneSelect :: Scene => State => Boolean
 const sceneIsActive = input => scene => {
     return R.reduce(R.and, true)(R.values(R.mapObjIndexed(
         (num, key, obj) => R.whereEq(num)(R.propOr({}, key)(input))

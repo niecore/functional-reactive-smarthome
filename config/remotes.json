@@ -1,28 +1,36 @@
 {
   "remote_tradfri_1": {
-    "toggle": ["livingroom_on", "livingroom_off"],
-    "arrow_left_click": ["livingroom_chill_1"],
-    "arrow_right_click": ["livingroom_chill_2"]
+    "scenes": [
+      "livingroom_on",
+      "livingroom_chill_1",
+      "livingroom_chill_2"
+    ]
   },
-
   "remote_tradfri_2": {
-    "toggle": ["bedroom_nightstand_on", "bedroom_nightstand_off"]
+    "scenes": [
+      "bedroom_nightstand_on"
+    ]
   },
-
   "remote_tradfri_3": {
-    "toggle": ["kitchen_off", "kitchen_on_normal"],
-    "arrow_left_click": ["kitchen_on_dimmed"],
-    "arrow_right_click": ["kitchen_on_full"]
+    "scenes": [
+      "kitchen_on_normal",
+      "kitchen_on_dimmed",
+      "kitchen_on_full"
+    ]
   },
-
   "remote_tradfri_4": {
-    "toggle": ["office_light_on", "office_light_off"],
-    "arrow_left_click": ["office_light_color_2"],
-    "arrow_right_click": ["office_light_color_1"]
+    "scenes": [
+      "office_light_on",
+      "office_light_color_2",
+      "office_light_color_1"
+    ]
   },
-
   "remote_aqara_1": {
-    "left": ["staircase_off"],
-    "right": ["staircase_on"]
+    "left": [
+      "staircase_off"
+    ],
+    "right": [
+      "staircase_on"
+    ]
   }
 }

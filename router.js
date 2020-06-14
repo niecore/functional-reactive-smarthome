@@ -15,11 +15,12 @@ const Devices = require("./model/devices");
 const Groups = require("./model/groups");
 
 // Devices
-const TradfriRemote = require("./model/devices/tradfri_remote");
+const TradfriRemote = require("./model/devices/tradfriRemote");
 
 // Automations
 const MotionLight = require('./model/automations/motionLight.js');
-const Dimming = require('./model/automations/dimming.js');
+const Dimming = require('./model/control/dimming.js');
+const Scenes = require('./model/control/scene_switching.js');
 
 // Events
 const LuminosityInRoom = require("./model/events/LuminosityInRoom");
@@ -29,6 +30,7 @@ const TurnLightOn = require("./model/events/TurnLightOn");
 const TurnNightLightsOn = require("./model/events/TurnNightLightOn");
 const TurnAllLightsOff = require("./model/events/TurnAllLightsOff");
 const ChangeBrightness = require("./model/events/ChangeBrightness");
+const StartScene = require("./model/events/StartScene");
 
 // Service
 const Service = require("./model/service/service");
@@ -78,12 +80,18 @@ Hub.output.plug(TurnAllLightsOff.output);
 ChangeBrightness.input.plug(Hub.events);
 Hub.output.plug(ChangeBrightness.output);
 
+StartScene.input.plug(Hub.events);
+Hub.output.plug(StartScene.output);
+
 // Plug Automations         events -> events
 MotionLight.input.plug(Hub.events);
 Hub.events.plug(MotionLight.output);
 
 Dimming.input.plug(Hub.events);
 Hub.events.plug(Dimming.output);
+
+Scenes.input.plug(Hub.events);
+Hub.events.plug(Scenes.output);
 
 // Plug hub output to interfaces
 const devices = Hub.output.map(Groups.filterMsgIsDevice);
