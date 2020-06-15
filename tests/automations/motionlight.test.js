@@ -1,4 +1,3 @@
-
 const R = require("ramda");
 const Kefir = require('kefir');
 
@@ -12,15 +11,18 @@ describe("Motionlight tests", () => {
         jest.resetModules();
     });
 
+    const presenceDetected = value({id: "PresenceDetected", room: "light_room"});
+    const presenceGone = value({id: "PresenceGone", room: "light_room"});
+    const turnLightsOn = value({id: "TurnLightsOn", room: "light_room"});
+    const turnLightsOff = value({id: "TurnAllLightsOff", room: "light_room"});
+    const turnNightLightsOn = value({id: "TurnNightLightsOn", room: "light_room2"});
+
     test('Basic motion light turn on', () => {
         const MotionLight = require("../../src/automations/motionLight");
 
-        const trigger = value([{presence: {light_room: true}}, {}]);
-        const output = value({light_1: {state: "ON", brightness: 255}});
-
-        expect(MotionLight.output).toEmit([output, end()], () => {
+        expect(MotionLight.output).toEmit([turnLightsOn, end()], () => {
             send(
-                MotionLight.input, [trigger, end()]
+                MotionLight.input, [presenceDetected, end()]
             );
         })
     });
@@ -29,96 +31,94 @@ describe("Motionlight tests", () => {
 
         const MotionLight = require("../../src/automations/motionLight");
 
-        const trigger = value([{presence: {light_room: false}}, {}]);
-        const output = value({light_1: {state: "OFF"}});
-
-        expect(MotionLight.output).toEmit([output, end()], () => {
+        expect(MotionLight.output).toEmit([turnLightsOn, turnLightsOff, end()], () => {
             send(
-                MotionLight.input, [trigger, end()]
+                MotionLight.input, [presenceDetected, presenceGone, end()]
             );
         })
     });
 
-    test('Motion light will not trigger, when room is illuminated', () => {
+    test('Motion light will not presenceDetected, when room is illuminated', () => {
+
+        jest.doMock("../../src/service/luminosity", () => ({
+            isRoomToDark: () => false
+        }));
 
         const MotionLight = require("../../src/automations/motionLight");
 
-        const trigger = value([{presence: {light_room: true}}, {motion_sensor_1: {illuminance_lux: 3000}}]);
-        const output = value({});
-
-        expect(MotionLight.output).toEmit([output, end()], () => {
+        expect(MotionLight.output).toEmit([end()], () => {
             send(
-                MotionLight.input, [trigger, end()]
+                MotionLight.input, [presenceDetected, end()]
             );
         })
     });
 
-    test('Motion light will trigger, when room is to dark', () => {
+    test('Motion light will presenceDetected, when room is to dark', () => {
+
+        jest.doMock("../../src/service/luminosity", () => ({
+            isRoomToDark: () => true
+        }));
 
         const MotionLight = require("../../src/automations/motionLight");
 
-        const trigger = value([{presence: {light_room: true}}, {motion_sensor_1: {illuminance_lux: 49}}]);
-        const output = value({light_1: {state: "ON", brightness: 255}});
-
-        expect(MotionLight.output).toEmit([output, end()], () => {
+        expect(MotionLight.output).toEmit([turnLightsOn, end()], () => {
             send(
-                MotionLight.input, [trigger, end()]
+                MotionLight.input, [presenceDetected, end()]
             );
         })
     });
 
-    test('Motion light will not trigger, when room has enabled lights', () => {
+    test('Motion light will not presenceDetected, when room has enabled lights', () => {
+
+        jest.doMock("../../src/service/lights", () => ({
+            lightsInRoomOff: () => false
+        }));
 
         const MotionLight = require("../../src/automations/motionLight");
 
-        const trigger = value([{presence: {light_room: true}}, {light_1: {state: "ON"}}]);
-        const output = value({});
-
-        expect(MotionLight.output).toEmit([output, end()], () => {
+        expect(MotionLight.output).toEmit([end()], () => {
             send(
-                MotionLight.input, [trigger, end()]
+                MotionLight.input, [presenceDetected, end()]
             );
         })
     });
 
     test('Motion light will turn light off, when after it has not turned on', () => {
 
+        jest.doMock("../../src/service/lights", () => ({
+            lightsInRoomOff: () => true
+        }));
+
         const MotionLight = require("../../src/automations/motionLight");
 
-        const trigger = value([{presence: {light_room: true}}, {light_1: {state: "ON"}}]);
-        const trigger_off = value([{presence: {light_room: false}}, {light_1: {state: "ON"}}]);
-        const output = value({});
-
-        expect(MotionLight.output).toEmit([output, output, end()], () => {
+        expect(MotionLight.output).toEmit([turnLightsOn, end()], () => {
             send(
-                MotionLight.input, [trigger, trigger_off, end()]
+                MotionLight.input, [presenceDetected, end()]
             );
         })
     });
 
     test('Motion light with night light configuration will turn on with minimal brightness during night time', () => {
-        const trigger = value([{presence: {light_room2: true}}, {}]);
-        const output = value({light_2: {state: "ON", brightness: 1}});
 
-        jest.doMock("../../src/day_period", () => ({
+        jest.doMock("../../src/model/dayPeriod", () => ({
             itsDayTime: () => false,
             itsNightTime: () => true
         }));
 
         const MotionLight = require("../../src/automations/motionLight");
 
-        expect(MotionLight.output).toEmit([output, end()], () => {
+        expect(MotionLight.output).toEmit([turnNightLightsOn, end()], () => {
             send(
-                MotionLight.input, [trigger, end()]
+                MotionLight.input, [presenceDetected, end()]
             );
         })
     });
 
     test('Motion light with night light configuration will turn on normally during daytime', () => {
-        const trigger = value([{presence: {light_room2: true}}, {}]);
-        const output = value({light_2: {state: "ON", brightness: 255}, light_3: {state: "ON", brightness: 255}});
+        const output = value({id: "TurnLightsOn", room: "light_room2"});
+        const presenceDetected = value({id: "PresenceDetected", room: "light_room2"});
 
-        jest.doMock("../../src/day_period", () => ({
+        jest.doMock("../../src/model/dayPeriod", () => ({
             itsDayTime: () => true,
             itsNightTime: () => false
         }));
@@ -127,26 +127,21 @@ describe("Motionlight tests", () => {
 
         expect(MotionLight.output).toEmit([output, end()], () => {
             send(
-                MotionLight.input, [trigger, end()]
+                MotionLight.input, [presenceDetected, end()]
             );
         })
     });
 
     test('Motion light will not turn light off whenever a light has changed during the presence', () => {
-        const trigger = value([{presence: {light_room2: true}}, {}]);
-        const output = value({light_2: {state: "ON", brightness: 255}, light_3: {state: "ON", brightness: 255}});
-        const second_trigger = value([{presence: {light_room2: false}}, {light_3: {state: "ON", brightness: 122}}]);
 
-        jest.doMock("../../src/day_period", () => ({
-            itsDayTime: () => true,
-            itsNightTime: () => false
-        }));
+        const startSceneInRoom = value({id: "StartScene", scene: "test_scene_1"});
+        const noAction = value({id: "NoAction"});
 
         const MotionLight = require("../../src/automations/motionLight");
 
-        expect(MotionLight.output).toEmit([output, value({}), end()], () => {
+        expect(MotionLight.output).toEmit([turnLightsOn, noAction, end()], () => {
             send(
-                MotionLight.input, [trigger, second_trigger, end()]
+                MotionLight.input, [presenceDetected, startSceneInRoom, end()]
             );
         })
     });

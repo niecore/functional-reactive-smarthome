@@ -22,6 +22,18 @@ const filterSceneByDevicesInRoom = room => R.pipe(
     R.pickBy((_, device) => Rooms.deviceIsInRoom(room)(device))
 );
 
+const lengthGreaterZero = R.pipe(
+    R.length,
+    R.equals(0),
+    R.not
+);
+
+const isSceneInRoom = room => R.pipe(
+    filterSceneByDevicesInRoom(room),
+    R.keys,
+    lengthGreaterZero
+);
+
 const switchedSceneStream = scene => {
     return Kefir.repeat(_ => {
         return Kefir.stream(emitter => {
@@ -37,11 +49,18 @@ const switchedSceneStream = scene => {
 
 const isSwitchedScene = scene => scene.isArray();
 
+const getSceneFromEvent = R.pipe(
+    R.prop("scene"),
+    getSceneByName
+);
+
 module.exports = {
     knownScenes,
     getSceneByName,
     sceneIsActive,
     filterSceneByDevicesInRoom,
     switchedSceneStream,
-    isSwitchedScene
+    isSwitchedScene,
+    isSceneInRoom,
+    getSceneFromEvent
 };

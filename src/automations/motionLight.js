@@ -1,10 +1,11 @@
 const R = require("ramda");
 const Kefir = require("kefir");
 
-const Automations = require("../../config/automations");
+const Automations = require("../../config/automations.json");
 const Lights = require("../service/lights");
 const Luminosity = require("../service/luminosity");
 const DayPeriod = require("../model/dayPeriod");
+const Scenes = require("../model/scenes");
 
 const input = new Kefir.pool();
 
@@ -16,7 +17,7 @@ const isRoomWithMotionLight = R.pipe(
 
 const isPresenceInRoomEvent = R.propEq("id", "PresenceDetected");
 const isNoPresenceInRoomEvent = R.propEq("id", "PresenceGone");
-const isActivateSceneEvent = R.propEq("id", "ActivateScene");
+const isActivateSceneEvent = R.propEq("id", "StartScene");
 
 const createNoActionEvent = () => ({id: "NoAction"});
 const createTurnAllLightsInRoomOnEvent = room => ({id: "TurnLightsOn", room: room});
@@ -30,7 +31,8 @@ const noPresenceStream = input
     .filter(isNoPresenceInRoomEvent);
 
 const sceneStream = input
-    .filter(isActivateSceneEvent);
+    .filter(isActivateSceneEvent)
+    .map(Scenes.getSceneFromEvent);
 
 const presenceInRoomsWithMotionLight = presenceStream
     .filter(isRoomWithMotionLight);
@@ -60,6 +62,7 @@ const startMotionLightRoutine = presenceDetected => {
         : createTurnAllLightsInRoomOnEvent(room);
 
     const WhenInterrupted = sceneStream
+        .filter(Scenes.isSceneInRoom(room))
         .map(_ => createNoActionEvent());
 
     const WhenPresenceGone = noPresenceStream
@@ -73,7 +76,6 @@ const startMotionLightRoutine = presenceDetected => {
         ]
     ).take(2)
 };
-
 
 const output = presenceInRoomsWithMotionLight
     .filter(hasRoomAllLightsOff)

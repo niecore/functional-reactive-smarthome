@@ -11,14 +11,13 @@ describe("Ambientlight tests", () => {
         jest.resetModules();
     });
 
-    test.skip('Basic ambient light', () => {
-        const AmbientLight = require("../../automations/ambientLight");
+    test('Basic ambient light', () => {
+        const AmbientLight = require("../../src/automations/ambientLight");
 
-        const output = value({device_id_1: {state: "ON"}});
-        const output2 = value({device_id_2: {state: "ON"}});
-        const output3 = value({device_id_1: {state: "OFF"}, device_id_2: {state: "OFF"}});
+        const output = value({id: "StartScene", scene: "test_scene_2"});
+        const output2 = value({id: "StartScene", scene: "test_scene_3"});
 
-        expect(AmbientLight.output).toEmitInTime([[71999001, output], [73799000, output2],  [75599000, output3]], (tick, clock) => {
+        expect(AmbientLight.output).toEmitInTime([[71999000, output], [75599000, output2]], (tick, clock) => {
             const day = new Date("Januar 01, 1970 20:00:00");
 
             clock.setSystemTime(day);
