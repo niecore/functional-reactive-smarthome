@@ -107,6 +107,8 @@ describe("Motionlight tests", () => {
 
         const MotionLight = require("../../src/automations/motionLight");
 
+        const presenceDetected = value({id: "PresenceDetected", room: "light_room2"});
+
         expect(MotionLight.output).toEmit([turnNightLightsOn, end()], () => {
             send(
                 MotionLight.input, [presenceDetected, end()]
