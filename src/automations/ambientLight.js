@@ -1,7 +1,7 @@
 const R = require("ramda");
 const Kefir = require("kefir");
-const Automations = require("../config/automations.json");
-const Util = require("../model/util");
+const Automations = require("../../config/automations.json");
+const Util = require("../util");
 
 const input = new Kefir.pool();
 
@@ -15,7 +15,7 @@ const ambientLight = Kefir.sequentially(0, Automations.automations.ambientLight)
         return Kefir.merge([
             Util.schedulerStream(true)(ambientLight.trigger),
             Util.schedulerStream(false)(ambientLight.stop)
-        ]).flatMap(enable => enable
+        ]).map(enable => enable
             ? createStartSceneEvent(ambientLight.scene)
             : createStartSceneEvent(ambientLight.disable)
         )
@@ -24,5 +24,6 @@ const ambientLight = Kefir.sequentially(0, Automations.automations.ambientLight)
 const output = input.merge(ambientLight);
 
 module.exports = {
-    output,input
+    output,
+    input
 };
