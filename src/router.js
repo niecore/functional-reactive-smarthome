@@ -10,6 +10,7 @@ const XiaomiScale = require('./interfaces/xiaomi_scale');
 const Tasmota = require('./interfaces/tasmota');
 const Hmip = require('./interfaces/hmip');
 const InfluxDb = require('./interfaces/influx_db');
+const Telegram = require('./interfaces/telegram');
 
 // Model
 const Devices = require("./model/devices");
@@ -47,6 +48,7 @@ Hub.update.plug(Tasmota.deviceInputStream);
 Hub.update.plug(Hmip.deviceInputStream);
 
 InfluxDb.input.plug(Hub.input);
+Telegram.input.plug(Hub.events);
 
 EasyControl.deviceInputStream.then(function (stream) {
     Hub.update.plug(stream)

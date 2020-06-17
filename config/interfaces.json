@@ -21,5 +21,10 @@
   "hmip": {
     "server_address": "192.168.0.101",
     "client_address": "192.168.0.178"
+  },
+  "telegram": {
+    "chatIds" : [
+      "905765354"
+    ]
   }
 }

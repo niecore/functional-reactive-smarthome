@@ -16,7 +16,17 @@ async function getEasyControlCredentials () {
     }
 }
 
+async function getTelegramBotApiKey () {
+    try {
+        const resp = await vault.read('frs/telegram-api-key').then(v => v.data["telegram-api-key"]);
+        return resp
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 module.exports = {
-    getEasyControlCredentials
+    getEasyControlCredentials,
+    getTelegramBotApiKey
 };
