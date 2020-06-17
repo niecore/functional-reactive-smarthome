@@ -10,10 +10,9 @@ COPY ./ui/package*.json ./ui/
 
 RUN cd ui && npm install --only-prod
 
-COPY ./lenses.js ./lenses.js
-COPY ./model ./model
 COPY ./ui ./ui
 COPY ./config ./config
+COPY ./src ./src
 
 RUN cd ui && npm run build
 
