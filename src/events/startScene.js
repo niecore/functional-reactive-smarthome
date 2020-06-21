@@ -28,7 +28,7 @@ const startStaticScene = startSceneEvent => Scenes.getSceneByName(startSceneEven
 const startSwitchedSceneStream = startSceneEvent => {
     const scene = Scenes.getSceneByName(startSceneEvent.scene);
     const switchedStream = Scenes.switchedSceneStream(scene);
-    const stopSceneStreamWithSameScene = stopSceneStream.log().filter(R.propEq("scene",startSceneEvent.scene)).log();
+    const stopSceneStreamWithSameScene = stopSceneStream.filter(R.propEq("scene",startSceneEvent.scene));
 
     return switchedStream.takeUntilBy(stopSceneStreamWithSameScene);
 };
