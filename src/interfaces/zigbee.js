@@ -1,5 +1,5 @@
 const Mqtt = require("mqtt");
-const MqttStream = require("./mqtt_stream");
+const MqttStream = require("./mqttStream");
 const Kefir = require("kefir");
 const R = require('ramda');
 const RA = require('ramda-adjunct');

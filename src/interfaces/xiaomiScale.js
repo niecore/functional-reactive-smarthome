@@ -2,7 +2,7 @@ const Kefir = require("kefir");
 const R = require('ramda');
 const Interfaces = require('../../config/interfaces.json');
 const Mqtt = require("mqtt");
-const MqttStream = require("./mqtt_stream");
+const MqttStream = require("./mqttStream");
 
 // baseTopic :: String
 const topic = Interfaces.miscale.baseTopic + "/weight/kg";

@@ -5,11 +5,11 @@
 // Interfaces
 const Zigbee = require('./interfaces/zigbee');
 const Shelly = require('./interfaces/shelly');
-const EasyControl = require('./interfaces/easy_control');
-const XiaomiScale = require('./interfaces/xiaomi_scale');
+const EasyControl = require('./interfaces/easyControl');
+const XiaomiScale = require('./interfaces/xiaomiScale');
 const Tasmota = require('./interfaces/tasmota');
 const Hmip = require('./interfaces/hmip');
-const InfluxDb = require('./interfaces/influx_db');
+const InfluxDb = require('./interfaces/influxDb');
 const Telegram = require('./interfaces/telegram');
 
 // Model
@@ -25,14 +25,14 @@ const Dimming = require('./control/dimming.js');
 const Scenes = require('./control/sceneSwitching.js');
 
 // Events
-const LuminosityInRoom = require("./events/LuminosityInRoom");
-const MovementDetected = require("./events/MovementDetected");
-const PresenceDetected = require("./events/PresenceDetected");
-const TurnLightOn = require("./events/TurnLightOn");
-const TurnNightLightsOn = require("./events/TurnNightLightOn");
-const TurnAllLightsOff = require("./events/TurnAllLightsOff");
-const ChangeBrightness = require("./events/ChangeBrightness");
-const StartScene = require("./events/StartScene");
+const LuminosityInRoom = require("./events/luminosityInRoom");
+const MovementDetected = require("./events/movementDetected");
+const PresenceDetected = require("./events/presenceDetected");
+const TurnLightOn = require("./events/turnLightOn");
+const TurnNightLightsOn = require("./events/turnNightLightOn");
+const TurnAllLightsOff = require("./events/turnAllLightsOff");
+const ChangeBrightness = require("./events/changeBrightness");
+const StartScene = require("./events/startScene");
 
 // Service
 const Service = require("./service/service");

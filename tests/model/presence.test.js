@@ -21,7 +21,7 @@ describe("Presence tests", () => {
     const disable_other_room = value({id: "PresenceGone", room: "light_room2"});
 
     test('Presence basic test', () => {
-        const Presence = require("../../src/events/PresenceDetected");
+        const Presence = require("../../src/events/presenceDetected");
 
 
         expect(Presence.output).toEmitInTime([[0, enable],  [120*1000, disable], [120*1000, end()]], (tick, clock) => {
@@ -33,7 +33,7 @@ describe("Presence tests", () => {
     });
 
     test('Presence is extended after new motion detection with no new event', () => {
-        const Presence = require("../../src/events/PresenceDetected");
+        const Presence = require("../../src/events/presenceDetected");
 
         expect(Presence.output).toEmitInTime([[0, enable],  [(119+120)*1000, disable], [(119+120)*1000, end()]], (tick, clock) => {
             send(Presence.input, [trigger]);
@@ -44,7 +44,7 @@ describe("Presence tests", () => {
     });
 
     test('Presence is not interrupted by motion of other room', () => {
-        const Presence = require("../../src/events/PresenceDetected");
+        const Presence = require("../../src/events/presenceDetected");
 
         expect(Presence.output).toEmitInTime([[0, enable], [1*1000, enable_other_room],  [120*1000, disable], [121*1000, disable_other_room], [121*1000, end()]], (tick, clock) => {
             send(Presence.input, [trigger]);

@@ -4,7 +4,7 @@ const Interfaces = require('../../config/interfaces.json');
 const Devices = require('../model/devices');
 const Util = require('../util');
 const Mqtt = require("mqtt");
-const MqttStream = require("./mqtt_stream");
+const MqttStream = require("./mqttStream");
 
 const tasmotaTopcis = R.pipe(
     R.filter(R.propEq("interface", "tasmota")),

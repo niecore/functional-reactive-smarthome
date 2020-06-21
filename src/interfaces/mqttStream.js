@@ -1,4 +1,4 @@
-const Mqtt_stream = require("mqtt");
+const MqttStream = require("mqtt");
 const Kefir = require("kefir");
 const R = require('ramda');
 
