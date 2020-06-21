@@ -11,7 +11,7 @@ describe("Ambientlight tests", () => {
         jest.resetModules();
     });
 
-    test('Basic ambient light', () => {
+    test.skip('Basic ambient light', () => {
         const AmbientLight = require("../../src/automations/ambientLight");
 
         const output = value({id: "StartScene", scene: "test_scene_2"});
