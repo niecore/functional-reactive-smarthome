@@ -47,7 +47,7 @@ const switchedSceneStream = scene => {
     });
 };
 
-const isSwitchedScene = scene => scene.isArray;
+const isSwitchedScene = scene => Array.isArray(scene);
 
 const getSceneFromEvent = R.pipe(
     R.prop("scene"),

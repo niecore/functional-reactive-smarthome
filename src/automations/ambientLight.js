@@ -10,14 +10,22 @@ const createStartSceneEvent = scene => {
     return ({id: "StartScene", scene: scene});
 };
 
+// createStopSceneEvent :: scene => StopScene
+const createStopSceneEvent = scene => {
+    return ({id: "StopScene", scene: scene});
+};
+
+const createStartSceneStream = scene => Kefir.constant(createStartSceneEvent(scene));
+const createStopSceneStream = scene => Kefir.constant(createStopSceneEvent(scene));
+
 const ambientLight = Kefir.sequentially(0, Automations.automations.ambientLight)
     .flatMap(ambientLight => {
         return Kefir.merge([
             Util.schedulerStream(true)(ambientLight.trigger),
             Util.schedulerStream(false)(ambientLight.stop)
-        ]).map(enable => enable
-            ? createStartSceneEvent(ambientLight.scene)
-            : createStartSceneEvent(ambientLight.disable)
+        ]).flatMap(enable => enable
+            ? createStartSceneStream(ambientLight.scene)
+            : createStopSceneStream(ambientLight.scene).merge(createStartSceneStream(ambientLight.disable))
         )
     });
 
