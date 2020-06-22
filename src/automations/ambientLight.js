@@ -29,7 +29,7 @@ const ambientLight = Kefir.sequentially(0, Automations.automations.ambientLight)
         )
     });
 
-const output = input.merge(ambientLight);
+const output = ambientLight;
 
 module.exports = {
     output,

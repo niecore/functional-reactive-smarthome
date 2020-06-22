@@ -20,6 +20,7 @@ const Groups = require("./model/groups");
 const TradfriRemote = require("./devices/tradfriRemote");
 
 // Automations
+const AmbientLight = require('./automations/ambientLight.js');
 const MotionLight = require('./automations/motionLight.js');
 const Dimming = require('./control/dimming.js');
 const Scenes = require('./control/sceneSwitching.js');
@@ -91,6 +92,9 @@ Hub.output.plug(StartScene.output);
 // Plug Automations         events -> events
 MotionLight.input.plug(Hub.events);
 Hub.events.plug(MotionLight.output);
+
+AmbientLight.input.plug(Hub.events);
+Hub.events.plug(AmbientLight.output);
 
 Dimming.input.plug(Hub.events);
 Hub.events.plug(Dimming.output);
