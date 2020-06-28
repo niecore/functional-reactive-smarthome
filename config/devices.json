@@ -326,6 +326,11 @@
       "type": "light",
       "sub_type": "indirect",
       "description": "Lightstrip under TV"
+    },
+    "weather": {
+      "interface": "weather",
+      "type": "virtual",
+      "description": "Weather information of location"
     }
   }
 }

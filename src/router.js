@@ -11,6 +11,7 @@ const Tasmota = require('./interfaces/tasmota');
 const Hmip = require('./interfaces/hmip');
 const InfluxDb = require('./interfaces/influxDb');
 const Telegram = require('./interfaces/telegram');
+const Weather = require('./interfaces/weather');
 
 // Model
 const Devices = require("./model/devices");
@@ -47,6 +48,7 @@ Hub.update.plug(Shelly.deviceInputStream);
 Hub.update.plug(XiaomiScale.deviceInputStream);
 Hub.update.plug(Tasmota.deviceInputStream);
 Hub.update.plug(Hmip.deviceInputStream);
+Hub.update.plug(Weather.deviceInputStream);
 
 InfluxDb.input.plug(Hub.input);
 Telegram.input.plug(Hub.events);
