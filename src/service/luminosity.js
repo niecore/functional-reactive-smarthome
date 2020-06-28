@@ -1,5 +1,6 @@
 const R = require("ramda");
-const Service = require("./service");
+const Devices = require("../model/devices");
+const Rooms = require("../model/rooms");
 
 // filterStateByDevicesRoom :: String => State => State
 const filterStateByDevicesRoom = room => R.pickBy((k, v) => Rooms.deviceIsInRoom(room)(v));
@@ -7,9 +8,12 @@ const filterStateByDevicesRoom = room => R.pickBy((k, v) => Rooms.deviceIsInRoom
 // filterStateByLightType :: State => State
 const filterStateByMotionSensorType = R.pickBy((k, v) => Devices.deviceHasType("motion_sensor")(v));
 
-const luminosityState = R.map(filterStateByMotionSensorType, Service.state);
+const luminosityState = filterStateByMotionSensorType;
 
-const luminosityStateOfRoom = room => R.map(filterStateByDevicesRoom(room), luminosityState);
+const luminosityStateOfRoom = room => R.pipe(
+    luminosityState,
+    R.map(filterStateByDevicesRoom(room))
+);
 
 // allLightsOff :: State => Number
 const getMeanLuminosity = R.pipe(
@@ -31,10 +35,16 @@ const directSunlight = 30000;
 const luminosityToDark =  luminosity => R.gt(darkIndoors, luminosity);
 
 // meanLuminosityInRoom :: String => Number
-const meanLuminosityInRoom = room => R.map(getMeanLuminosity, luminosityStateOfRoom(room));
+const meanLuminosityInRoom = room => R.pipe(
+    luminosityStateOfRoom(room),
+    R.map(getMeanLuminosity)
+);
 
 // roomToDark :: String => Boolean
-const isRoomToDark = room => R.map(luminosityToDark, meanLuminosityInRoom(room));
+const isRoomToDark = room => R.pipe(
+    meanLuminosityInRoom(room),
+    R.map(luminosityToDark)
+);
 
 module.exports = {
     isRoomToDark,

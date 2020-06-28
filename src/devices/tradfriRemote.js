@@ -3,31 +3,22 @@ const Kefir = require("kefir");
 
 const Devices = require("../model/devices");
 const Lenses = require('../lenses');
+const Events = require("../events/events");
 
-// createButtonBrightnessUpClick :: Msg => ButtonBrightnessUpClick
-const createButtonBrightnessUpClick = remote => {
-    return ({id: "ButtonBrightnessUpClick", remote: remote});
-};
+// createButtonBrightnessUpClick :: remote => ButtonBrightnessUpClick
+const createButtonBrightnessUpClick = remote => Events.createEvent({remote: remote}, "ButtonBrightnessUpClick");
 
 // createButtonBrightnessDownClick :: remote => ButtonBrightnessDownClick
-const createButtonBrightnessDownClick = remote => {
-    return ({id: "ButtonBrightnessDownClick", remote: remote});
-};
+const createButtonBrightnessDownClick = remote => Events.createEvent({remote: remote}, "ButtonBrightnessDownClick");
 
 // createButtonToggleClick :: remote => ButtonToggleClick
-const createButtonToggleClick = remote => {
-    return ({id: "ButtonToggleClick", remote: remote});
-};
+const createButtonToggleClick = remote => Events.createEvent({remote: remote}, "ButtonToggleClick");
 
 // createButtonPreviousClick :: remote => ButtonPreviousSceneClick
-const createButtonPreviousClick = remote => {
-    return ({id: "ButtonPreviousSceneClick", remote: remote});
-};
+const createButtonPreviousClick = remote => Events.createEvent({remote: remote}, "ButtonPreviousSceneClick");
 
 // createButtonNextSceneClick :: remote => ButtonNextSceneClick
-const createButtonNextSceneClick = remote => {
-    return ({id: "ButtonNextSceneClick", remote: remote});
-};
+const createButtonNextSceneClick = remote => Events.createEvent({remote: remote}, "ButtonNextSceneClick");
 
 // isMessageFromTradfriRemote :: Msg => Boolean
 const isMessageFromTradfriRemote = R.pipe(
@@ -42,15 +33,15 @@ const createTradfriButtonEvent = msg => {
 
     switch (action) {
         case "brightness_up_click":
-            return createButtonBrightnessUpClick(remote);
+            return createButtonBrightnessUpClick(remote)(msg);
         case "brightness_down_click":
-            return createButtonBrightnessDownClick(remote);
+            return createButtonBrightnessDownClick(remote)(msg);
         case "toggle":
-            return createButtonToggleClick(remote);
+            return createButtonToggleClick(remote)(msg);
         case "arrow_left_click":
-            return createButtonPreviousClick(remote);
+            return createButtonPreviousClick(remote)(msg);
         case "arrow_right_click":
-            return createButtonNextSceneClick(remote);
+            return createButtonNextSceneClick(remote)(msg);
     }
 };
 

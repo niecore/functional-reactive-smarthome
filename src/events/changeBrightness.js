@@ -4,8 +4,9 @@ const Kefir = require("kefir");
 const Rooms = require("../model/rooms");
 const Devices = require("../model/devices");
 const Lights = require("../service/lights");
+const Events = require("./events");
 
-const isChangeBrightnessEvent = R.propEq("id", "ChangeBrightness");
+const isChangeBrightnessEvent = Events.isEvent("ChangeBrightness");
 
 const input = new Kefir.pool();
 

@@ -1,5 +1,6 @@
 const R = require("ramda");
 const Kefir = require("kefir");
+const Events = require("./events");
 
 const Lenses = require('../lenses');
 const Rooms = require('../model/rooms');
@@ -11,18 +12,18 @@ const isMessageWithLuminosity = R.pipe(
 );
 
 // createRoomToDarkEvent :: String => RoomToDark
-const createRoomToDarkEvent = room => ({id: "RoomToDark", room: room});
+const createRoomToDarkEvent = room => Events.createEvent({room: room}, "RoomToDark");
 
 // createRoomBrightEnoughEvent :: String => RoomBrightEnough
-const createRoomBrightEnoughEvent = room => ({id: "RoomBrightEnough", room: room});
+const createRoomBrightEnoughEvent = room => Events.createEvent({room: room}, "RoomBrightEnough");
 
 // createLuminosityEventForRoom :: Msg => Either[RoomToDark, RoomBrightEnough]
 const createLuminosityEventForRoom = msg => {
     const room = Rooms.getRoomOfMessage(msg);
     const luminosity = R.prop("illuminance_lux")(R.view(Lenses.inputDataLens)(msg));
 
-    const roomToDarkEvent = createRoomToDarkEvent(room);
-    const roomBrightEnoughEvent = createRoomBrightEnoughEvent(room);
+    const roomToDarkEvent = createRoomToDarkEvent(room)(msg);
+    const roomBrightEnoughEvent = createRoomBrightEnoughEvent(room)(msg);
 
     return R.gt(luminosity, darkIndoors) ? roomBrightEnoughEvent : roomToDarkEvent
 };

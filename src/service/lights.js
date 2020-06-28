@@ -1,7 +1,6 @@
 const R = require("ramda");
 const Devices = require("../model/devices");
 const Rooms = require("../model/rooms");
-const Service = require("./service");
 
 // filterStateByDevicesRoom :: String => State => State
 const filterStateByDevicesRoom = room => R.pickBy((k, v) => Rooms.deviceIsInRoom(room)(v));
@@ -18,17 +17,24 @@ const allLightsOff = R.pipe(
     R.not,
 );
 
-const lightState = R.map(filterStateByLightType, Service.state);
+const lightState = filterStateByLightType;
 
-const lightStateOfRoom = room => R.map(filterStateByDevicesRoom(room), lightState);
+const lightStateOfRoom = room => R.pipe(
+    lightState,
+    R.map(filterStateByDevicesRoom(room))
+);
 
-const lightsInRoomOff = room => R.map(allLightsOff, lightStateOfRoom(room));
+const lightsInRoomOff = room => R.pipe(
+    lightStateOfRoom(room),
+    R.map(allLightsOff)
+);
 
 const getBrightnessOfLight = light => R.pipe(
+    lightState,
     R.prop(light),
     R.prop("brightness"),
     R.defaultTo(0)
-)(lightState);
+);
 
 module.exports = {
     lightsInRoomOff,

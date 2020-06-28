@@ -37,7 +37,6 @@ const ChangeBrightness = require("./events/changeBrightness");
 const StartScene = require("./events/startScene");
 
 // Service
-const Service = require("./service/service");
 const Lights = require("./service/lights");
 
 const Hub = require("./hub");
@@ -56,9 +55,6 @@ Telegram.input.plug(Hub.events);
 EasyControl.deviceInputStream.then(function (stream) {
     Hub.update.plug(stream)
 });
-
-// Plug services            input -> ()
-Service.input.plug(Hub.input);
 
 // Plug Devices             input => events
 TradfriRemote.input.plug(Hub.input);

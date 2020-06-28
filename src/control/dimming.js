@@ -2,23 +2,22 @@ const R = require("ramda");
 const Kefir = require("kefir");
 
 const Rooms = require("../model/rooms");
+const Events = require("../events/events");
 
 const input = new Kefir.pool();
 
-const isBrightnessDownClick = R.propEq("id", "ButtonBrightnessDownClick");
-const isBrightnessUpClick = R.propEq("id", "ButtonBrightnessUpClick");
+const isBrightnessDownClick = Events.isEvent("ButtonBrightnessDownClick");
+const isBrightnessUpClick = Events.isEvent("ButtonBrightnessUpClick");
 
 // createChangeBrightnessEvent :: remote => ButtonBrightnessDownClick
-const createChangeBrightnessEvent = room => brightness => {
-    return ({id: "ChangeBrightness", room: room, brightness: brightness});
-};
+const createChangeBrightnessEvent = room => brightness => Events.createEvent({room: room, brightness: brightness}, "ChangeBrightness");
 
 // changeBrightness :: Either<ButtonBrightnessDownClick, ButtonBrightnessUpClick> => Stream<TurnLightOn, ChangeBrightness>
 const changeBrightness = brightnessControlClick => {
     const room = Rooms.getRoomOfDevice(brightnessControlClick.remote);
     const factor = isBrightnessUpClick(brightnessControlClick) ? 50 : -50;
 
-    return createChangeBrightnessEvent(room)(factor);
+    return createChangeBrightnessEvent(room)(factor)(Events.getState(brightnessControlClick));
 };
 
 const output = input

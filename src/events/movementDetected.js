@@ -4,11 +4,12 @@ const Kefir = require("kefir");
 const Devices = require("../model/devices");
 const Lenses = require('../lenses');
 const Rooms = require("../model/rooms");
+const Events = require("./events");
 
 // createMovementDetectedEvent :: Msg => MovementDetected
 const createMovementDetectedEvent = msg => {
     const room = Rooms.getRoomOfMessage(msg);
-    return ({id: "MovementDetected", room: room});
+    return Events.createEvent({room: room}, "MovementDetected")(msg);
 };
 
 // occupancyLens :: Lens

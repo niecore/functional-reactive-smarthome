@@ -39,8 +39,7 @@ const rainForecast24hStream = weatherForecastStream
     .map(x => ({forecast: {rain: x}}));
 
 const deviceInputStream = Kefir.merge([rainForecast24hStream, weatherCurrentStream])
-    .map(R.objOf("weather"))
-    .log();
+    .map(R.objOf("weather"));
 
 module.exports = {
     deviceInputStream

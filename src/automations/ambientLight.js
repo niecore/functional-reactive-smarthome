@@ -1,19 +1,17 @@
 const R = require("ramda");
 const Kefir = require("kefir");
+
 const Automations = require("../../config/automations.json");
 const Util = require("../util");
+const Events = require("../events/events");
 
 const input = new Kefir.pool();
 
 // createStartSceneEvent :: scene => StartScene
-const createStartSceneEvent = scene => {
-    return ({id: "StartScene", scene: scene});
-};
+const createStartSceneEvent = scene => Events.createEvent({scene: scene}, "StartScene");
 
 // createStopSceneEvent :: scene => StopScene
-const createStopSceneEvent = scene => {
-    return ({id: "StopScene", scene: scene});
-};
+const createStopSceneEvent = scene => Events.createEvent({scene: scene}, "StopScene");
 
 const createStartSceneStream = scene => Kefir.constant(createStartSceneEvent(scene));
 const createStopSceneStream = scene => Kefir.constant(createStopSceneEvent(scene));

@@ -1,31 +1,28 @@
 const R = require("ramda");
 const Kefir = require("kefir");
 
+const Events = require("./events");
 const Util = require('../util');
 
-
 // isMovementDetectedEvent :: Event => boolean
-const isMovementDetectedEvent = R.propEq("id", "MovementDetected");
+const isMovementDetectedEvent = Events.isEvent("MovementDetected");
 
 // getRoomOfMovement :: MovementDetectedEvent => String
 const getRoomOfMovement = R.prop("room");
 
 // createPresenceDetectedEvent :: String => PresenceDetectedEvent
-const createPresenceDetectedEvent = room => {
-    return ({id: "PresenceDetected", room: room});
-};
+const createPresenceDetectedEvent = room => Events.createEvent({room: room}, "PresenceDetected");
 
 // createPresenceGoneEvent :: String => PresenceGoneEvent
-const createPresenceGoneEvent = room => {
-    return ({id: "PresenceGone", room: room});
-};
+const createPresenceGoneEvent = room => Events.createEvent({room: room}, "PresenceGone");
 
 // presenceDetectedDueToMovementInRoom :: MovementDetectedEvent => Stream<PresenceDetectedEvent | PresenceGoneEvent>
 const presenceDetectedDueToMovementInRoom = movementDetectedEvent => {
     const room = getRoomOfMovement(movementDetectedEvent);
+    const state = Events.getState(movementDetectedEvent);
 
-    const presenceDetected = Kefir.constant(createPresenceDetectedEvent(room));
-    const presenceGone = Kefir.later(120000, createPresenceGoneEvent(room));
+    const presenceDetected = Kefir.constant(createPresenceDetectedEvent(room)(state));
+    const presenceGone = Kefir.later(120000, createPresenceGoneEvent(room)(state));
 
     return presenceDetected.merge(presenceGone)
 };
@@ -38,7 +35,7 @@ const output = input
     .flatMap( groupedStream => {
         return groupedStream
             .flatMapLatest(presenceDetectedDueToMovementInRoom)
-            .skipDuplicates(R.equals);
+            .skipDuplicates((a, b) => a.room === b.room);
     });
 
 module.exports = {

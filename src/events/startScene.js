@@ -2,9 +2,10 @@ const R = require("ramda");
 const Kefir = require("kefir");
 
 const Scenes = require("../model/scenes");
+const Events = require("./events");
 
-const isStartSceneEvent = R.propEq("id", "StartScene");
-const isStopSceneEvent = R.propEq("id", "StopScene");
+const isStartSceneEvent = Events.isEvent("StartScene");
+const isStopSceneEvent = Events.isEvent("StopScene");
 
 const input = new Kefir.pool();
 

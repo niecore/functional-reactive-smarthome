@@ -3,8 +3,9 @@ const Kefir = require("kefir");
 
 const Rooms = require("../model/rooms");
 const Devices = require("../model/devices");
+const Events = require("./events");
 
-const isLightOnEvent = R.propEq("id", "TurnLightsOn");
+const isLightOnEvent = Events.isEvent("TurnLightsOn");
 
 const input = new Kefir.pool();
 

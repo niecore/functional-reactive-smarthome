@@ -1,28 +1,28 @@
 const R = require('ramda');
 const Kefir = require('kefir');
-const Remotes = require('../model/remotes');
 
-const isSwitchToNextSceneEvent = R.propEq("id", "ButtonNextSceneClick");
-const isSwitchToPreviousSceneEvent = R.propEq("id", "ButtonPreviousSceneClick");
+const Remotes = require('../model/remotes');
+const Events = require("../events/events");
+
+const isSwitchToNextSceneEvent = Events.isEvent( "ButtonNextSceneClick");
+const isSwitchToPreviousSceneEvent = Events.isEvent( "ButtonPreviousSceneClick");
 const isSceneSwitchingEvent = R.anyPass([isSwitchToNextSceneEvent, isSwitchToPreviousSceneEvent]);
 
 let currentSceneOfRemotes = {};
 
 // createStartSceneEvent :: scene => StartScene
-const createStartSceneEvent = scene => {
-    return ({id: "StartScene", scene: scene});
-};
+const createStartSceneEvent = scene => Events.createEvent({scene:scene}, "StartScene");
 
-const getNextScene = input => {
+const getNextScene = sceneSwitchEvent => {
 
-    const sceneNamesFromRemote = Remotes.getScenesOfRemote(input.remote);
-    const currentSceneOfRemote = R.propOr(0, input.remote, currentSceneOfRemotes);
+    const sceneNamesFromRemote = Remotes.getScenesOfRemote(sceneSwitchEvent.remote);
+    const currentSceneOfRemote = R.propOr(0, sceneSwitchEvent.remote, currentSceneOfRemotes);
 
     const [scene, new_index] = switchSceneForward(sceneNamesFromRemote)(currentSceneOfRemote);
 
-    currentSceneOfRemotes = R.assoc(input.remote, new_index, currentSceneOfRemote);
+    currentSceneOfRemotes = R.assoc(sceneSwitchEvent.remote, new_index, currentSceneOfRemote);
 
-    return createStartSceneEvent(scene);
+    return createStartSceneEvent(scene)(Events.getState(sceneSwitchEvent));
 };
 
 const switchSceneForward = scenes => index => {
