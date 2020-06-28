@@ -12,13 +12,13 @@ describe("Presence tests", () => {
         jest.resetModules();
     });
 
-    const trigger = value({id: "MovementDetected", room: "light_room"});
-    const enable = value({id: "PresenceDetected", room: "light_room"});
-    const disable = value({id: "PresenceGone", room: "light_room"});
+    const trigger = value({id: "MovementDetected", room: "light_room", state: [{}, {}]});
+    const enable = value({id: "PresenceDetected", room: "light_room", state: [{}, {}]});
+    const disable = value({id: "PresenceGone", room: "light_room", state: [{}, {}]});
 
-    const trigger_other_room = value({id: "MovementDetected", room: "light_room2"});
-    const enable_other_room = value({id: "PresenceDetected", room: "light_room2"});
-    const disable_other_room = value({id: "PresenceGone", room: "light_room2"});
+    const trigger_other_room = value({id: "MovementDetected", room: "light_room2", state: [{}, {}]});
+    const enable_other_room = value({id: "PresenceDetected", room: "light_room2", state: [{}, {}]});
+    const disable_other_room = value({id: "PresenceGone", room: "light_room2", state: [{}, {}]});
 
     test('Presence basic test', () => {
         const Presence = require("../../src/events/presenceDetected");

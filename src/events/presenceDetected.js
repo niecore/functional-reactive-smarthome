@@ -35,7 +35,7 @@ const output = input
     .flatMap( groupedStream => {
         return groupedStream
             .flatMapLatest(presenceDetectedDueToMovementInRoom)
-            .skipDuplicates((a, b) => a.room === b.room);
+            .skipDuplicates((a, b) => a.id === b.id && a.room === b.room);
     });
 
 module.exports = {
