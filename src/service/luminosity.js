@@ -12,7 +12,7 @@ const luminosityState = filterStateByMotionSensorType;
 
 const luminosityStateOfRoom = room => R.pipe(
     luminosityState,
-    R.map(filterStateByDevicesRoom(room))
+    filterStateByDevicesRoom(room)
 );
 
 // allLightsOff :: State => Number
@@ -37,13 +37,13 @@ const luminosityToDark =  luminosity => R.gt(darkIndoors, luminosity);
 // meanLuminosityInRoom :: String => Number
 const meanLuminosityInRoom = room => R.pipe(
     luminosityStateOfRoom(room),
-    R.map(getMeanLuminosity)
+    getMeanLuminosity
 );
 
 // roomToDark :: String => Boolean
 const isRoomToDark = room => R.pipe(
     meanLuminosityInRoom(room),
-    R.map(luminosityToDark)
+    luminosityToDark
 );
 
 module.exports = {

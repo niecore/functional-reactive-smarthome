@@ -21,12 +21,12 @@ const lightState = filterStateByLightType;
 
 const lightStateOfRoom = room => R.pipe(
     lightState,
-    R.map(filterStateByDevicesRoom(room))
+    filterStateByDevicesRoom(room)
 );
 
 const lightsInRoomOff = room => R.pipe(
     lightStateOfRoom(room),
-    R.map(allLightsOff)
+    allLightsOff
 );
 
 const getBrightnessOfLight = light => R.pipe(
