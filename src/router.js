@@ -25,6 +25,7 @@ const AmbientLight = require('./automations/ambientLight.js');
 const MotionLight = require('./automations/motionLight.js');
 const Dimming = require('./control/dimming.js');
 const Scenes = require('./control/sceneSwitching.js');
+const OnOffToggle = require('./control/onOffToggle.js');
 
 // Events
 const LuminosityInRoom = require("./events/luminosityInRoom");
@@ -99,6 +100,9 @@ Hub.events.plug(Dimming.output);
 
 Scenes.input.plug(Hub.events);
 Hub.events.plug(Scenes.output);
+
+OnOffToggle.input.plug(Hub.events);
+Hub.events.plug(OnOffToggle.output);
 
 // Plug hub output to interfaces
 const devices = Hub.output.map(Groups.filterMsgIsDevice);
