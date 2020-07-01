@@ -36,6 +36,7 @@ const TurnNightLightsOn = require("./events/turnNightLightOn");
 const TurnAllLightsOff = require("./events/turnAllLightsOff");
 const ChangeBrightness = require("./events/changeBrightness");
 const StartScene = require("./events/startScene");
+const DoorWindowOpenedClosed = require("./events/doorWindowOpenedClosed");
 
 // Service
 const Lights = require("./service/lights");
@@ -87,6 +88,9 @@ Hub.output.plug(ChangeBrightness.output);
 
 StartScene.input.plug(Hub.events);
 Hub.output.plug(StartScene.output);
+
+DoorWindowOpenedClosed.input.plug(Hub.events);
+Hub.output.plug(DoorWindowOpenedClosed.output);
 
 // Plug Automations         events -> events
 MotionLight.input.plug(Hub.events);

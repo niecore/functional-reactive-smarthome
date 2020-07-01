@@ -2,13 +2,14 @@
   "rooms": {
     "front_door": {
       "devices": [
-        "contact_aqara_3"
+        "contact_aqara_4"
       ]
     },
     "hallway": {
       "devices": [
         "motionsensor_aqara_7",
-        "light_shelly1"
+        "light_shelly1",
+        "contact_aqara_3"
       ]
     },
     "server_room": {},

@@ -70,6 +70,7 @@ module.exports = {
     getDeviceByName,
     getDevicesOfType,
     deviceHasType,
+    deviceHasSubType,
     deviceHasInterface,
     filterMsgByDeviceInterface,
     getTypeOfDevice,
