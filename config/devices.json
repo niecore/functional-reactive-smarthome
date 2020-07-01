@@ -246,8 +246,8 @@
     "contact_aqara_4": {
       "interface": "zigbee",
       "type": "contact",
-      "sub_type": "letterbox",
-      "description": "Letterbox"
+      "sub_type": "mailbox",
+      "description": "Mailbox"
     },
     "plug_tasmota_5": {
       "interface": "tasmota",
