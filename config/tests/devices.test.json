@@ -36,6 +36,18 @@
       "interface": "interface_1",
       "type": "motion_sensor",
       "description": "description_2"
+    },
+    "contact_sensor_1": {
+      "interface": "interface_1",
+      "type": "contact",
+      "sub_type": "door",
+      "description": "door_contact"
+    },
+    "contact_sensor_2": {
+      "interface": "interface_1",
+      "type": "contact",
+      "sub_type": "window",
+      "description": "window_contact"
     }
   }
 }
