@@ -23,6 +23,9 @@ const TradfriRemote = require("./devices/tradfriRemote");
 // Automations
 const AmbientLight = require('./automations/ambientLight.js');
 const MotionLight = require('./automations/motionLight.js');
+const MailBoxNotification = require('./automations/mailBoxNotifcation.js');
+
+// Control
 const Dimming = require('./control/dimming.js');
 const Scenes = require('./control/sceneSwitching.js');
 const OnOffToggle = require('./control/onOffToggle.js');
@@ -37,6 +40,7 @@ const TurnAllLightsOff = require("./events/turnAllLightsOff");
 const ChangeBrightness = require("./events/changeBrightness");
 const StartScene = require("./events/startScene");
 const DoorWindowOpenedClosed = require("./events/doorWindowOpenedClosed");
+const MailBoxOpened = require("./events/mailBoxOpened");
 
 // Service
 const Lights = require("./service/lights");
@@ -69,6 +73,12 @@ Hub.events.plug(MovementDetected.output);
 LuminosityInRoom.input.plug(Hub.input);
 Hub.events.plug(LuminosityInRoom.output);
 
+DoorWindowOpenedClosed.input.plug(Hub.input);
+Hub.events.plug(DoorWindowOpenedClosed.output);
+
+MailBoxOpened.input.plug(Hub.input);
+Hub.events.plug(MailBoxOpened.output);
+
 // Plug Events of Type 2    events -> events
 PresenceDetected.input.plug(Hub.events);
 Hub.events.plug(PresenceDetected.output);
@@ -89,15 +99,15 @@ Hub.output.plug(ChangeBrightness.output);
 StartScene.input.plug(Hub.events);
 Hub.output.plug(StartScene.output);
 
-DoorWindowOpenedClosed.input.plug(Hub.events);
-Hub.output.plug(DoorWindowOpenedClosed.output);
-
 // Plug Automations         events -> events
 MotionLight.input.plug(Hub.events);
 Hub.events.plug(MotionLight.output);
 
 AmbientLight.input.plug(Hub.events);
 Hub.events.plug(AmbientLight.output);
+
+MailBoxNotification.input.plug(Hub.events);
+Hub.events.plug(MailBoxNotification.output);
 
 Dimming.input.plug(Hub.events);
 Hub.events.plug(Dimming.output);
