@@ -5,13 +5,13 @@ const Events = require("../events/events");
 
 const input = new Kefir.pool();
 
-const isMailBoxOpenedEvent = Events.isEvent("MailBoxOpened");
-const createMailBoxOpenedNotification = Events.createEvent({message: "Your mailbox has been opened right now."}, "NotifyUser");
+const mailboxHasBeenOpened = Events.isEvent("MailBoxOpened");
+const sendMailboxOpenedNotification = Events.createEvent({message: "Your mailbox has been opened right now."}, "NotifyUser");
 const onlyOneNotificationPerDay = Util.throttleOncePerDay;
 
 const output = input
-    .filter(isMailBoxOpenedEvent)
-    .map(createMailBoxOpenedNotification)
+    .filter(mailboxHasBeenOpened)
+    .map(sendMailboxOpenedNotification)
     .thru(onlyOneNotificationPerDay);
 
 module.exports = {
