@@ -26,6 +26,12 @@ const isMessageFromTradfriRemote = R.pipe(
     Devices.deviceHasType("tradfri_remote")
 );
 
+// isMessageWithAction :: Msg => Boolean
+const isMessageWithAction = R.pipe(
+    R.view(Lenses.inputDataLens),
+    R.has("action")
+);
+
 // createButtonBrightnessModificationEvent :: Msg => Either[ButtonBrightnessUpClick, ButtonBrightnessDownClick, ButtonToggleClick, ButtonPreviousSceneClick, ButtonNextSceneClick]
 const createTradfriButtonEvent = msg => {
     const action = R.prop("action")(R.view(Lenses.inputDataLens)(msg));
@@ -49,6 +55,7 @@ const input = new Kefir.pool();
 
 const output = input
     .filter(isMessageFromTradfriRemote)
+    .filter(isMessageWithAction)
     .map(createTradfriButtonEvent);
 
 module.exports = {

@@ -26,6 +26,12 @@ const isMailboxSensor = R.pipe(
 
 const isMessageFromMailBoxContact = R.allPass([isContactSensor, isMailboxSensor]);
 
+// isMessageWithContactInfo :: Msg => Boolean
+const isMessageWithContactInfo = R.pipe(
+    R.view(Lenses.inputDataLens),
+    R.has("contact")
+);
+
 // createMailBoxOpenedEvent :: Msg => MailBoxOpened
 const createMailBoxOpenedEvent = Events.createBasicEvent("MailBoxOpened");
 
@@ -33,6 +39,7 @@ const input = new Kefir.pool();
 
 const mailBoxContactStream = input
     .filter(isMessageFromMailBoxContact)
+    .filter(isMessageWithContactInfo)
     .filter(opened)
     .map(createMailBoxOpenedEvent);
 

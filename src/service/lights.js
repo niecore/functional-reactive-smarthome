@@ -10,7 +10,7 @@ const filterStateByLightType = R.pickBy((k, v) => Devices.deviceHasType("light")
 
 // allLightsOff :: State => boolean
 const allLightsOff = R.pipe(
-    R.map(R.prop("state")),
+    R.map(R.propOr("", "state")),
     R.map(state => state.toLowerCase() !== "off"),
     R.values,
     R.reduce(R.or, false),

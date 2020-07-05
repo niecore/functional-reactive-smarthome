@@ -17,7 +17,7 @@ const luminosityStateOfRoom = room => R.pipe(
 
 // allLightsOff :: State => Number
 const getMeanLuminosity = R.pipe(
-    R.map(R.prop("illuminance_lux")),
+    R.map(R.propOr(0, "illuminance_lux")),
     R.values,
     R.mean,
     R.defaultTo(0)

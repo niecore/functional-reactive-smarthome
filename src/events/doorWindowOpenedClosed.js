@@ -29,22 +29,25 @@ const isWindowSensor = R.pipe(
     Devices.deviceHasSubType("window")
 );
 
-const isMessageFromDoorContact = R.allPass([isContactSensor, isDoorSensor]);
-const isMessageFromWindowContact = R.allPass([isContactSensor, isWindowSensor]);
+const isMessageWithContactInfo = R.pipe(
+    R.view(Lenses.inputDataLens),
+    R.has("contact")
+);
 
-const createEventWithDeviceAndIdFromMsg = id => msg => Events.createEvent({device: R.view(Lenses.inputNameLens)(msg)}, id)(msg);
+const isMessageFromDoorContact = R.allPass([isContactSensor, isDoorSensor, isMessageWithContactInfo]);
+const isMessageFromWindowContact = R.allPass([isContactSensor, isWindowSensor, isMessageWithContactInfo]);
 
 // createWindowOpened :: String => WindowOpened
-const createWindowOpenedEvent = createEventWithDeviceAndIdFromMsg("WindowOpened");
+const createWindowOpenedEvent = Events.createEventWithDeviceAndIdFromMsg("WindowOpened");
 
 // createWindowClosed :: String => WindowClosed
-const createWindowClosedEvent = createEventWithDeviceAndIdFromMsg("WindowClosed");
+const createWindowClosedEvent = Events.createEventWithDeviceAndIdFromMsg("WindowClosed");
 
 // createDoorOpened :: String => DoorOpened
-const createDoorOpenedEvent = createEventWithDeviceAndIdFromMsg("DoorOpened");
+const createDoorOpenedEvent = Events.createEventWithDeviceAndIdFromMsg("DoorOpened");
 
 // createDoorClosed :: String => DoorClosed
-const createDoorClosedEvent = createEventWithDeviceAndIdFromMsg("DoorClosed");
+const createDoorClosedEvent = Events.createEventWithDeviceAndIdFromMsg("DoorClosed");
 
 const input = new Kefir.pool();
 
