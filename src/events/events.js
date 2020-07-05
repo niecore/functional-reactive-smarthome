@@ -9,7 +9,7 @@ const createEvent = R.curry(_createEvent);
 const isEvent = id => R.propEq("id", id);
 const getState = R.prop("state");
 
-const createEventWithDeviceAndIdFromMsg = id => msg => createEvent({device: R.view(Lenses.inputNameLens)(msg)}, id)(R.view(Lenses.stateLens, msg));
+const createEventWithDeviceAndIdFromMsg = id => msg => createEvent({device: R.view(Lenses.inputNameLens)(msg)}, id)(msg);
 
 module.exports = {
     createBasicEvent,
