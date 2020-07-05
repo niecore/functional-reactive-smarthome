@@ -16,9 +16,12 @@ const inputStream = client => Kefir.stream(emitter => {
     })
 });
 
+const parsePayloadAsJson = R.over(payloadLense, R.pipe(R.toString, JSON.parse));
+
 module.exports = {
     inputStream,
     topicLense,
     payloadLense,
-    publishTopic
+    publishTopic,
+    parsePayloadAsJson
 };

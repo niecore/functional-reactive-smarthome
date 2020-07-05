@@ -329,6 +329,18 @@
       "interface": "weather",
       "type": "virtual",
       "description": "Weather information of location"
+    },
+    "flower_sensor_1": {
+      "interface": "ble",
+      "type": "plant_sensor",
+      "id": "80EACA893A64",
+      "description": ""
+    },
+    "flower_sensor_2": {
+      "interface": "ble",
+      "type": "plant_sensor",
+      "id": "80EACA893657",
+      "description": ""
     }
   }
 }
