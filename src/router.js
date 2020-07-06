@@ -27,6 +27,7 @@ const MotionLight = require('./automations/motionLight.js');
 const MailBoxNotification = require('./automations/mailBoxNotifcation.js');
 const DeviceUnreachableNotification = require('./automations/deviceUnreachableNotification.js');
 const RainOpenWindowAlert = require('./automations/rainOpenWindowAlert.js');
+const FlowerNeedsLoveAlert = require("./automations/flowerNeedsLoveAlert");
 
 // Control
 const Dimming = require('./control/dimming.js');
@@ -46,6 +47,7 @@ const DoorWindowOpenedClosed = require("./events/doorWindowOpenedClosed");
 const MailBoxOpened = require("./events/mailBoxOpened");
 const DeviceOnlineOffline = require("./events/deviceOfflineOnline");
 const StartedToRain = require("./events/startedToRain");
+const IrrigationFertilzationRequired = require('./events/irrigationFertilizationRequired.js');
 
 // Service
 const Lights = require("./service/lights");
@@ -91,6 +93,9 @@ Hub.events.plug(DeviceOnlineOffline.output);
 StartedToRain.input.plug(Hub.input);
 Hub.events.plug(StartedToRain.output);
 
+IrrigationFertilzationRequired.input.plug(Hub.input);
+Hub.events.plug(IrrigationFertilzationRequired.output);
+
 // Plug Events of Type 2    events -> events
 PresenceDetected.input.plug(Hub.events);
 Hub.events.plug(PresenceDetected.output);
@@ -126,6 +131,9 @@ Hub.events.plug(DeviceUnreachableNotification.output);
 
 RainOpenWindowAlert.input.plug(Hub.events);
 Hub.events.plug(RainOpenWindowAlert.output);
+
+FlowerNeedsLoveAlert.input.plug(Hub.events);
+Hub.events.plug(FlowerNeedsLoveAlert.output);
 
 Dimming.input.plug(Hub.events);
 Hub.events.plug(Dimming.output);

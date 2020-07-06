@@ -14,6 +14,8 @@ const isNotifyUserEvent = Events.isEvent( "NotifyUser");
 const sendMessageToChat = chat => message => bot.sendMessage(chat, message);
 const sendToAllChats = message => chatIds.forEach(id => sendMessageToChat(id)(message));
 
+const sendMessage = message => Events.createEvent({message: message}, "NotifyUser");
+
 const input = new Kefir.pool();
 
 input.filter(isNotifyUserEvent)
@@ -22,4 +24,5 @@ input.filter(isNotifyUserEvent)
 
 module.exports = {
     input,
+    sendMessage
 };

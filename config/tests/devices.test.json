@@ -48,6 +48,12 @@
       "type": "contact",
       "sub_type": "window",
       "description": "window_contact"
+    },
+    "flower_sensor_1": {
+      "interface": "ble",
+      "type": "plant_sensor",
+      "id": "80EACA893A64",
+      "description": ""
     }
   }
 }
