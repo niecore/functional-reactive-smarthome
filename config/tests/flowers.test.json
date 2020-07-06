@@ -1,0 +1,14 @@
+{
+  "flowers": [
+    {
+      "sensor": "flower_sensor_1",
+      "species": "capsicum annuum",
+      "alias": "Chilis"
+    },
+    {
+      "sensor": "flower_sensor_2",
+      "species": "tomato motto f1",
+      "alias": "Tomaten"
+    }
+  ]
+}

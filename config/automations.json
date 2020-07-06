@@ -29,17 +29,5 @@
         }
       }
     }
-  },
-  "thresholdAlarms": [
-    {
-      "room": {
-        "name": "laundry_room"
-      },
-      "property": "humidity",
-      "limits": {
-        "max": 65
-      },
-      "delay": 600
-    }
-  ]
+  }
 }
