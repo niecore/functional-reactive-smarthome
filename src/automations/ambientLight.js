@@ -8,10 +8,10 @@ const Events = require("../events/events");
 const input = new Kefir.pool();
 
 // createStartSceneEvent :: scene => StartScene
-const createStartSceneEvent = scene => Events.createEvent({scene: scene}, "StartScene");
+const createStartSceneEvent = scene => Events.createEvent({scene: scene}, "StartScene", Events.emptyState);
 
 // createStopSceneEvent :: scene => StopScene
-const createStopSceneEvent = scene => Events.createEvent({scene: scene}, "StopScene");
+const createStopSceneEvent = scene => Events.createEvent({scene: scene}, "StopScene", Events.emptyState);
 
 const createStartSceneStream = scene => Kefir.constant(createStartSceneEvent(scene));
 const createStopSceneStream = scene => Kefir.constant(createStopSceneEvent(scene));

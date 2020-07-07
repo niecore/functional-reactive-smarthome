@@ -9,6 +9,8 @@ const createEvent = R.curry(_createEvent);
 const isEvent = id => R.propEq("id", id);
 const getState = R.prop("state");
 
+const emptyState = [{},{}];
+
 const createEventWithDeviceAndIdFromMsg = id => msg => createEvent({device: R.view(Lenses.inputNameLens)(msg)}, id)(msg);
 
 module.exports = {
@@ -16,5 +18,6 @@ module.exports = {
     createEvent,
     isEvent,
     getState,
+    emptyState,
     createEventWithDeviceAndIdFromMsg
 };

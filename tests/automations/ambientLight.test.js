@@ -14,9 +14,9 @@ describe("Ambientlight tests", () => {
     test.skip('Basic ambient light', () => {
         const AmbientLight = require("../../src/automations/ambientLight");
 
-        const output = value({id: "StartScene", scene: "test_scene_2"});
-        const output2 = value({id: "StopScene", scene: "test_scene_2"});
-        const output3 = value({id: "StartScene", scene: "test_scene_3"});
+        const output = value({id: "StartScene", scene: "test_scene_2", state: [{}, {}]} );
+        const output2 = value({id: "StopScene", scene: "test_scene_2", state: [{}, {}]});
+        const output3 = value({id: "StartScene", scene: "test_scene_3", state: [{}, {}]});
 
         expect(AmbientLight.output).toEmitInTime([[71999000, output], [75599000, output2], [75599000, output3]], (tick, clock) => {
             const day = new Date("Januar 01, 1970 20:00:00");
