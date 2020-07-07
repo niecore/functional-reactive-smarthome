@@ -54,6 +54,8 @@ const isRoomWithNightlight = R.pipe(
 // useNightLight :: String => boolean
 const useNightLight = room => DayPeriod.itsNightTime() && isRoomWithNightlight(room);
 
+const presenceGoneInRoom = room => R.propEq("room", room);
+
 // startMotionLightRoutine :: PresenceDetected => Stream<TurnLightsOn, TurnAllLightsOff, NoAction>
 const startMotionLightRoutine = presenceDetected => {
     const state = Events.getState(presenceDetected);
@@ -68,6 +70,7 @@ const startMotionLightRoutine = presenceDetected => {
         .map(_ => createNoActionEvent(state));
 
     const WhenPresenceGone = noPresenceStream
+        .filter(presenceGoneInRoom(room))
         .map(_ => createTurnAllLightsInRoomOffEvent(room)(state));
 
     return Kefir.merge(

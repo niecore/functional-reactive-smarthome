@@ -17,6 +17,18 @@ describe("Motionlight tests", () => {
     const turnLightsOff = value({id: "TurnAllLightsOff", room: "light_room", state: [{},{}]});
     const turnNightLightsOn = value({id: "TurnNightLightsOn", room: "light_room2", state: [{},{}]});
 
+    test('Motion light will ignore PresenceGone events from other rooms', () => {
+        const MotionLight = require("../../src/automations/motionLight");
+
+        const presenceGoneOtherRoom = value({id: "PresenceGone", room: "other_room", state: [{},{}]});
+
+        expect(MotionLight.output).toEmit([turnLightsOn, end()], () => {
+            send(
+                MotionLight.input, [presenceDetected, presenceGoneOtherRoom, end()]
+            );
+        })
+    });
+
     test('Motion light will not turn light off whenever a light has changed during the presence', () => {
 
         const startSceneInRoom = value({ state: [{},{}], id: "StartScene", scene: "test_scene_1"});
@@ -169,8 +181,5 @@ describe("Motionlight tests", () => {
             );
         })
     });
-
-
-
 });
 
