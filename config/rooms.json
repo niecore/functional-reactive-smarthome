@@ -91,13 +91,16 @@
         "remote_tradfri_2",
         "sensor_air_3",
         "plug_osram_2",
-        "etrv-bedroom"
+        "etrv-bedroom",
+        "contact_aqara_5",
+        "contact_aqara_6"
       ]
     },
     "laundry_room": {
       "devices": [
         "sensor_air_1",
-        "etrv-laundryroom"
+        "etrv-laundryroom",
+        "contact_aqara_7"
       ]
     }
   }
