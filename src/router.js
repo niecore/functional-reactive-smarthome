@@ -26,6 +26,7 @@ const AmbientLight = require('./automations/ambientLight.js');
 const MotionLight = require('./automations/motionLight.js');
 const MailBoxNotification = require('./automations/mailBoxNotifcation.js');
 const DeviceUnreachableNotification = require('./automations/deviceUnreachableNotification.js');
+const RainOpenWindowAlert = require('./automations/rainOpenWindowAlert.js');
 
 // Control
 const Dimming = require('./control/dimming.js');
@@ -44,6 +45,7 @@ const StartScene = require("./events/startScene");
 const DoorWindowOpenedClosed = require("./events/doorWindowOpenedClosed");
 const MailBoxOpened = require("./events/mailBoxOpened");
 const DeviceOnlineOffline = require("./events/deviceOfflineOnline");
+const StartedToRain = require("./events/startedToRain");
 
 // Service
 const Lights = require("./service/lights");
@@ -86,6 +88,9 @@ Hub.events.plug(MailBoxOpened.output);
 DeviceOnlineOffline.input.plug(Hub.input);
 Hub.events.plug(DeviceOnlineOffline.output);
 
+StartedToRain.input.plug(Hub.input);
+Hub.events.plug(StartedToRain.output);
+
 // Plug Events of Type 2    events -> events
 PresenceDetected.input.plug(Hub.events);
 Hub.events.plug(PresenceDetected.output);
@@ -118,6 +123,9 @@ Hub.events.plug(MailBoxNotification.output);
 
 DeviceUnreachableNotification.input.plug(Hub.events);
 Hub.events.plug(DeviceUnreachableNotification.output);
+
+RainOpenWindowAlert.input.plug(Hub.events);
+Hub.events.plug(RainOpenWindowAlert.output);
 
 Dimming.input.plug(Hub.events);
 Hub.events.plug(Dimming.output);

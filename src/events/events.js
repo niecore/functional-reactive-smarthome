@@ -13,11 +13,14 @@ const emptyState = [{},{}];
 
 const createEventWithDeviceAndIdFromMsg = id => msg => createEvent({device: R.view(Lenses.inputNameLens)(msg)}, id)(msg);
 
+const isSameEvent = (a,b) => a.id === b.id;
+
 module.exports = {
     createBasicEvent,
     createEvent,
     isEvent,
     getState,
     emptyState,
-    createEventWithDeviceAndIdFromMsg
+    createEventWithDeviceAndIdFromMsg,
+    isSameEvent
 };
