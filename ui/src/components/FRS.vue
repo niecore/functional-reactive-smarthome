@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     lights() {
-      return R.filter(Devices.isLight, this.devices);
+      return R.filter(R.propEq("isLight", true))(this.devices);
     }
   },
 
@@ -47,6 +47,9 @@ export default {
         ),
         R.mapObjIndexed((value, key) =>
           R.assoc("room", Rooms.getRoomOfDevice(key), value)
+        ),
+        R.mapObjIndexed((value, key) =>
+          R.assoc("isLight", Devices.isLight(key), value)
         )
       )(this.state);
     }
