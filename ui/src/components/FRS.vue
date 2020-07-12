@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     lights() {
-      return R.filter(R.propEq("type", "light"))(this.devices);
+      return R.filter(Devices.isLight, this.devices);
     }
   },
 
