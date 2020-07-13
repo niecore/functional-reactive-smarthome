@@ -62,7 +62,7 @@ const fromShellyData = data => {
 
     if(typeOfDevice === "relay"){
         if(sub_topic === "") {
-            return {topic: device_name, payload: {action: R.toUpper(data.payload)}};
+            return {topic: device_name, payload: {state: R.toUpper(data.payload)}};
         } else {
             return {};
         }
