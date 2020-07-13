@@ -19,6 +19,35 @@
     "lightstrip_hue_1": {
       "state": "ON",
       "brightness": 255
+    },
+    "led_driver_tradfri_3": {
+      "state": "ON",
+      "brightness": 255
+    }
+  },
+  "livingroom_dinner_scene": {
+    "plug_tasmota_5": {
+      "state": "ON"
+    },
+    "lightbulb_tradfriw_5": {
+      "state": "ON",
+      "brightness": 255,
+      "color_temp": 400
+    },
+    "led_dimmer_shelly2": {
+      "state": "OFF"
+    },
+    "led_dimmer_shelly3": {
+      "state": "ON",
+      "brightness": 255
+    },
+    "lightstrip_hue_1": {
+      "state": "ON",
+      "brightness": 255
+    },
+    "led_driver_tradfri_3": {
+      "state": "ON",
+      "brightness": 100
     }
   },
   "livingroom_off": {
@@ -35,6 +64,9 @@
       "state": "OFF"
     },
     "lightstrip_hue_1": {
+      "state": "OFF"
+    },
+    "led_driver_tradfri_3": {
       "state": "OFF"
     }
   },
@@ -57,6 +89,10 @@
       "state": "ON",
       "brightness": 100,
       "color_temp": 500
+    },
+    "led_driver_tradfri_3": {
+      "state": "ON",
+      "brightness": 100
     }
   },
   "livingroom_chill_2": {
@@ -80,6 +116,10 @@
       "state": "ON",
       "brightness": 255,
       "color_temp": 500
+    },
+    "led_driver_tradfri_3": {
+      "state": "ON",
+      "brightness": 100
     }
   },
   "bedroom_nightstand_on": {

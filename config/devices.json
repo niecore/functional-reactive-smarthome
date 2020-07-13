@@ -359,6 +359,11 @@
       "type": "contact",
       "sub_type": "window",
       "description": "Window Laundryroom"
+    },
+    "led_driver_tradfri_3": {
+      "interface": "zigbee",
+      "type": "light",
+      "description": "Regalbeleuchtung Wohnzimmer"
     }
   }
 }

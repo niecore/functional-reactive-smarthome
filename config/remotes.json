@@ -3,7 +3,8 @@
     "scenes": [
       "livingroom_on",
       "livingroom_chill_1",
-      "livingroom_chill_2"
+      "livingroom_chill_2",
+      "livingroom_dinner_scene"
     ]
   },
   "remote_tradfri_2": {

@@ -37,7 +37,8 @@
         "contact_aqara_1",
         "plug_tasmota_5",
         "motionsensor_aqara_9",
-        "lightstrip_hue_1"
+        "lightstrip_hue_1",
+        "led_driver_tradfri_3"
       ]
     },
     "junk_room": {
