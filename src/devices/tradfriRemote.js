@@ -4,21 +4,34 @@ const Kefir = require("kefir");
 const Devices = require("../model/devices");
 const Lenses = require('../lenses');
 const Events = require("../events/events");
+const Rooms = require("../model/rooms");
 
-// createButtonBrightnessUpClick :: remote => ButtonBrightnessUpClick
-const createButtonBrightnessUpClick = remote => Events.createEvent({remote: remote}, "ButtonBrightnessUpClick");
+// createButtonEvent :: id => room => Event
+const createButtonEvent = id => room => Events.createEvent({room: room}, id);
 
-// createButtonBrightnessDownClick :: remote => ButtonBrightnessDownClick
-const createButtonBrightnessDownClick = remote => Events.createEvent({remote: remote}, "ButtonBrightnessDownClick");
+// createBrightnessUpClick :: room => BrightnessUpClick
+const createBrightnessUpClick = room => createButtonEvent("BrightnessUpClick")(room);
 
-// createButtonToggleClick :: remote => ButtonToggleClick
-const createButtonToggleClick = remote => Events.createEvent({remote: remote}, "ButtonToggleClick");
+// createBrightnessDownClick :: room => BrightnessDownClick
+const createBrightnessDownClick = room => createButtonEvent("BrightnessDownClick")(room);
 
-// createButtonPreviousClick :: remote => ButtonPreviousSceneClick
-const createButtonPreviousClick = remote => Events.createEvent({remote: remote}, "ButtonPreviousSceneClick");
+// createToggleClick :: room => ToggleClick
+const createToggleClick = room => createButtonEvent("ToggleClick")(room);
 
-// createButtonNextSceneClick :: remote => ButtonNextSceneClick
-const createButtonNextSceneClick = remote => Events.createEvent({remote: remote}, "ButtonNextSceneClick");
+// createButtonPreviousClick :: room => PreviousSceneClick
+const createButtonPreviousClick = room => createButtonEvent("PreviousSceneClick")(room);
+
+// createNextSceneClick :: room => NextSceneClick
+const createNextSceneClick = room => createButtonEvent("NextSceneClick")(room);
+
+// createMoveBrightnessUp :: room => MoveBrightnessUp
+const createMoveBrightnessUp = room => createButtonEvent("MoveBrightnessUp")(room);
+
+// createMoveBrightnessDown :: room => MoveBrightnessDown
+const createMoveBrightnessDown = room => createButtonEvent("MoveBrightnessDown")(room);
+
+// createMoveBrightnessStop :: room => MoveBrightnessStop
+const createMoveBrightnessStop = room => createButtonEvent("MoveBrightnessStop")(room);
 
 // isMessageFromTradfriRemote :: Msg => Boolean
 const isMessageFromTradfriRemote = R.pipe(
@@ -32,22 +45,30 @@ const isMessageWithAction = R.pipe(
     R.has("action")
 );
 
-// createButtonBrightnessModificationEvent :: Msg => Either[ButtonBrightnessUpClick, ButtonBrightnessDownClick, ButtonToggleClick, ButtonPreviousSceneClick, ButtonNextSceneClick]
+// createButtonBrightnessModificationEvent :: Msg => Either[PreviousSceneClick, BrightnessDownClick, ToggleClick, PreviousSceneClick, NextSceneClick]
 const createTradfriButtonEvent = msg => {
     const action = R.prop("action")(R.view(Lenses.inputDataLens)(msg));
     const remote = R.view(Lenses.inputNameLens)(msg);
+    const room = Rooms.getRoomOfDevice(remote);
 
     switch (action) {
         case "brightness_up_click":
-            return createButtonBrightnessUpClick(remote)(msg);
+            return createBrightnessUpClick(room)(msg);
         case "brightness_down_click":
-            return createButtonBrightnessDownClick(remote)(msg);
+            return createBrightnessDownClick(room)(msg);
         case "toggle":
-            return createButtonToggleClick(remote)(msg);
+            return createToggleClick(room)(msg);
         case "arrow_left_click":
-            return createButtonPreviousClick(remote)(msg);
+            return createButtonPreviousClick(room)(msg);
         case "arrow_right_click":
-            return createButtonNextSceneClick(remote)(msg);
+            return createNextSceneClick(room)(msg);
+        case 'brightness_up_hold':
+            return createMoveBrightnessUp(room)(msg);
+        case 'brightness_down_hold':
+            return createMoveBrightnessDown(room)(msg);
+        case 'brightness_up_release':
+        case 'brightness_down_release':
+            return createMoveBrightnessStop(room)(msg);
     }
 };
 

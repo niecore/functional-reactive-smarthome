@@ -4,8 +4,8 @@ const Kefir = require('kefir');
 const Remotes = require('../model/remotes');
 const Events = require("../events/events");
 
-const isSwitchToNextSceneEvent = Events.isEvent( "ButtonNextSceneClick");
-const isSwitchToPreviousSceneEvent = Events.isEvent( "ButtonPreviousSceneClick");
+const isSwitchToNextSceneEvent = Events.isEvent( "NextSceneClick");
+const isSwitchToPreviousSceneEvent = Events.isEvent( "PreviousSceneClick");
 const isSceneSwitchingEvent = R.anyPass([isSwitchToNextSceneEvent, isSwitchToPreviousSceneEvent]);
 
 let currentSceneOfRemotes = {};

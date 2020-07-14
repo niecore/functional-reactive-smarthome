@@ -8,7 +8,7 @@ const Lenses = require("../lenses");
 
 const input = new Kefir.pool();
 
-const isToggleClick = Events.isEvent("ButtonToggleClick");
+const isToggleClick = Events.isEvent("ToggleClick");
 
 const createTurnAllLightsInRoomOnEvent = room => Events.createEvent({room: room}, "TurnLightsOn");
 const createTurnAllLightsInRoomOffEvent = room => Events.createEvent({room: room}, "TurnAllLightsOff");
@@ -16,10 +16,10 @@ const createTurnAllLightsInRoomOffEvent = room => Events.createEvent({room: room
 // isRoomTooDark :: event => boolean
 const hasRoomAllLightsOff = room => event => Lights.lightsInRoomOff(room)(R.view(Lenses.stateLens, event.state));
 
-// changeBrightness :: ButtonToggleClick => Stream<TurnLightOn, TurnAllLightsOff>
+// changeBrightness :: ToggleClick => Stream<TurnLightOn, TurnAllLightsOff>
 const toggleDevicesInRoom = toggleClick => {
     const state = Events.getState(toggleClick);
-    const room = Rooms.getRoomOfDevice(toggleClick.remote);
+    const room = toggleClick.room;
 
     const turnLightsOn = createTurnAllLightsInRoomOnEvent(room)(state);
     const turnLightsOff = createTurnAllLightsInRoomOffEvent(room)(state);

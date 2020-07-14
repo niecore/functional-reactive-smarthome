@@ -14,12 +14,16 @@ const input = new Kefir.pool();
 // getBrightnessOfLight :: Event => String => boolen
 const getBrightnessOfLight = event => light => Lights.getBrightnessOfLight(light)(R.view(Lenses.stateLens, event.state));
 
+// isDimmable :: String => boolean
+const isDimmable = Devices.hasFunction("brightness");
+
 const output = input
     .filter(isChangeBrightnessEvent)
     .map(changeBrightnessEvent => {
 
         const lightsInRoom = Rooms.getDevicesInRoom(changeBrightnessEvent.room)
-            .filter(Devices.isLight);
+            .filter(Devices.isLight)
+            .filter(isDimmable);
 
         const brightnessOfLights = lightsInRoom
             .map(getBrightnessOfLight(changeBrightnessEvent))

@@ -48,6 +48,7 @@ const MailBoxOpened = require("./events/mailBoxOpened");
 const DeviceOnlineOffline = require("./events/deviceOfflineOnline");
 const StartedToRain = require("./events/startedToRain");
 const IrrigationFertilzationRequired = require('./events/irrigationFertilizationRequired.js');
+const MoveBrightness = require('./events/moveBrightness.js');
 
 // Service
 const Lights = require("./service/lights");
@@ -63,8 +64,8 @@ Hub.update.plug(Hmip.deviceInputStream);
 Hub.update.plug(Weather.deviceInputStream);
 Hub.update.plug(Ble.deviceInputStream);
 
-InfluxDb.input.plug(Hub.input);
-Telegram.input.plug(Hub.events);
+// InfluxDb.input.plug(Hub.input);
+// Telegram.input.plug(Hub.events);
 
 EasyControl.deviceInputStream.then(function (stream) {
     Hub.update.plug(stream)
@@ -115,6 +116,9 @@ Hub.output.plug(ChangeBrightness.output);
 
 StartScene.input.plug(Hub.events);
 Hub.output.plug(StartScene.output);
+
+MoveBrightness.input.plug(Hub.events);
+Hub.output.plug(MoveBrightness.output);
 
 // Plug Automations         events -> events
 MotionLight.input.plug(Hub.events);

@@ -61,7 +61,15 @@ const getDescriptionOfDevice = R.pipe(
     R.propOr("", "description")
 );
 
+// isLight :: String => bool
 const isLight = R.anyPass([deviceHasType("light"), deviceHasSubType("light")]);
+
+// hasFunction :: String => String => bool
+const hasFunction = feature => R.pipe(
+    getDeviceByName,
+    R.propOr([], "functions"),
+    R.includes(feature)
+);
 
 module.exports = {
     knownDevices,
@@ -75,6 +83,7 @@ module.exports = {
     filterMsgByDeviceInterface,
     getTypeOfDevice,
     getDescriptionOfDevice,
-    isLight
+    isLight,
+    hasFunction
 };
 
