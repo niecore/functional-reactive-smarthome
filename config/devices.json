@@ -29,31 +29,36 @@
       "interface": "zigbee",
       "type": "light",
       "sub_type": "direct",
-      "description": "Lampe in Speisekammer"
+      "description": "Lampe in Speisekammer",
+      "functions": ["brightness", "brightness_move"]
     },
     "lightbulb_tradfriw_1": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "direct",
-      "description": "Hängelampe Flur (Mitte)"
+      "description": "Hängelampe Flur (Mitte)",
+      "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tradfriw_2": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "direct",
-      "description": "Hängelampe Flur (Oben)"
+      "description": "Hängelampe Flur (Oben)",
+      "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tradfriw_3": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "indirect",
-      "description": "Wandlampe Flur (Oben)"
+      "description": "Wandlampe Flur (Oben)",
+      "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tradfriw_4": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "indirect",
-      "description": "Wandlampe Flur (Mitte)"
+      "description": "Wandlampe Flur (Mitte)",
+      "functions": ["brightness", "temp", "brightness_move"]
     },
     "sensor_air_1": {
       "interface": "zigbee",
@@ -73,22 +78,26 @@
     "lightbulb_tint_2": {
       "interface": "zigbee",
       "type": "light",
-      "description": "Nachtischlampe Her"
+      "description": "Nachtischlampe Her",
+      "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tint_3": {
       "interface": "zigbee",
       "type": "light",
-      "description": "Nachtischlampe Me"
+      "description": "Nachtischlampe Me",
+      "functions": ["brightness", "temp", "brightness_move"]
     },
     "led_driver_tradfri_1": {
       "interface": "zigbee",
       "type": "light",
-      "description": "Küchenunterschrankbeleuchtung Links"
+      "description": "Küchenunterschrankbeleuchtung Links",
+      "functions": ["brightness", "brightness_move"]
     },
     "led_driver_tradfri_2": {
       "interface": "zigbee",
       "type": "light",
-      "description": "Küchenunterschrankbeleuchtung Rechts"
+      "description": "Küchenunterschrankbeleuchtung Rechts",
+      "functions": ["brightness", "brightness_move"]
     },
     "remote_tradfri_3": {
       "interface": "zigbee",
@@ -109,7 +118,8 @@
       "interface": "shelly",
       "type": "light",
       "id": "shellydimmer-F3AB9C/light/0",
-      "description": "Deckenlampe im Arbeitszimmer"
+      "description": "Deckenlampe im Arbeitszimmer",
+      "functions": ["brightness"]
     },
     "button_shelly1": {
       "interface": "shelly",
@@ -121,7 +131,8 @@
       "interface": "zigbee",
       "type": "plug",
       "sub_type": "light",
-      "description": "Plug for lights in Office"
+      "description": "Plug for lights in Office",
+      "functions": []
     },
     "sensor_air_2": {
       "interface": "zigbee",
@@ -142,7 +153,8 @@
       "interface": "shelly",
       "type": "light",
       "id": "shellydimmer-DB338B/light/0",
-      "description": "Dimmer für Deckenlampe Wohnzimmer"
+      "description": "Dimmer für Deckenlampe Wohnzimmer",
+      "functions": ["brightness"]
     },
     "button_shelly2": {
       "interface": "shelly",
@@ -154,7 +166,8 @@
       "interface": "shelly",
       "type": "light",
       "id": "shellydimmer-DB33DF/light/0",
-      "description": "Dimmer für Deckenlampe Esstisch"
+      "description": "Dimmer für Deckenlampe Esstisch",
+      "functions": ["brightness"]
     },
     "button_shelly3": {
       "interface": "shelly",
@@ -166,19 +179,22 @@
       "interface": "zigbee",
       "type": "light",
       "sub_type": "direct",
-      "description": "Stehlampe neben Schreibtisch"
+      "description": "Stehlampe neben Schreibtisch",
+      "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
     "plug_osram_2": {
       "interface": "zigbee",
       "type": "plug",
       "sub_type": "light",
-      "description": "Plug for hue color in bedroom"
+      "description": "Plug for hue color in bedroom",
+      "functions": []
     },
     "lightbulb_hue_3": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "direct",
-      "description": "Stehlampe neben Regal in Arbeitszimmer"
+      "description": "Stehlampe neben Regal in Arbeitszimmer",
+      "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
     "etrv-laundryroom": {
       "interface": "hmip",
@@ -275,7 +291,8 @@
       "type": "relay",
       "id": "shelly1-F41475/relay/0",
       "sub_type": "light",
-      "description": "Relay für Deckenlampe Flur"
+      "description": "Relay für Deckenlampe Flur",
+      "functions": []
     },
     "button_shelly4": {
       "interface": "shelly",
@@ -288,7 +305,8 @@
       "type": "relay",
       "sub_type": "light",
       "id": "shelly1-F3DBB3/relay/0",
-      "description": "Relay für Deckenlampe Küche"
+      "description": "Relay für Deckenlampe Küche",
+      "functions": []
     },
     "button_shelly5": {
       "interface": "shelly",
@@ -305,25 +323,29 @@
       "interface": "zigbee",
       "type": "light",
       "sub_type": "indirect",
-      "description": "Lily Spot 1"
+      "description": "Lily Spot 1",
+      "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
     "outdoorspot_hue_2": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "indirect",
-      "description": "Lily Spot 2"
+      "description": "Lily Spot 2",
+      "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
     "outdoorspot_hue_3": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "indirect",
-      "description": "Lily Spot 3"
+      "description": "Lily Spot 3",
+      "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
     "lightstrip_hue_1": {
       "interface": "zigbee",
       "type": "light",
       "sub_type": "indirect",
-      "description": "Lightstrip under TV"
+      "description": "Lightstrip under TV",
+      "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
     "weather": {
       "interface": "weather",
@@ -363,7 +385,8 @@
     "led_driver_tradfri_3": {
       "interface": "zigbee",
       "type": "light",
-      "description": "Regalbeleuchtung Wohnzimmer"
+      "description": "Regalbeleuchtung Wohnzimmer",
+      "functions": ["brightness", "brightness_move"]
     }
   }
 }

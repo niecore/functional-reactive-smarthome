@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column has-text-left">
-      <span>brigthness</span>
+      <span>brightness</span>
     </div>
     <div class="column has-text-right">
       <input
@@ -22,7 +22,7 @@ const R = require("ramda");
 
 export default {
   props: ["brightness", "device"],
-  name: "State",
+  name: "Brightness",
   methods: {
     updateData() {
       this.$socket.emit(

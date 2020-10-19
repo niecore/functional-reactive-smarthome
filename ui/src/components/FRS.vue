@@ -1,25 +1,20 @@
 <template>
   <div>
     <div class="container">
-      <div v-for="(data, device) in lights" :key="device">
-        <Device :state="data" :name="device"></Device>
-      </div>
+      <Device v-for="(data, device) in devices" :key="device" :state="data" :name="device"></Device>
     </div>
   </div>
 </template>
 
 <script>
 import Device from "../components/Device";
-
 const R = require("ramda");
-const Devices = require("../../../src/model/devices");
-const Rooms = require("../../../src/model/rooms");
 
 export default {
   name: "FRS",
 
   components: {
-    Device
+      Device
   },
 
   data() {
@@ -29,29 +24,13 @@ export default {
       devices: {}
     };
   },
-  computed: {
-    lights() {
-      return R.filter(R.propEq("isLight", true))(this.devices);
-    }
-  },
 
   sockets: {
     frs(data) {
       data = JSON.parse(data);
       this.input = data[0];
       this.state = R.mergeDeepRight(data[1], data[0]);
-
-      this.devices = R.pipe(
-        R.mapObjIndexed((value, key) =>
-          R.assoc("type", Devices.getTypeOfDevice(key), value)
-        ),
-        R.mapObjIndexed((value, key) =>
-          R.assoc("room", Rooms.getRoomOfDevice(key), value)
-        ),
-        R.mapObjIndexed((value, key) =>
-          R.assoc("isLight", Devices.isLight(key), value)
-        )
-      )(this.state);
+      this.devices = this.state
     }
   }
 };

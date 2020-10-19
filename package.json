@@ -2,6 +2,7 @@
   "name": "untitled",
   "version": "1.0.0",
   "dependencies": {
+    "async": "^3.2.0",
     "bosch-xmpp": "^1.0.2",
     "csv": "^5.3.2",
     "csv-parser": "^2.3.3",

@@ -34,6 +34,11 @@
       <i class="fas fa-plug"></i>
     </span>
   </div>
+  <div v-else-if="type === 'etrv'">
+    <span class="icon">
+      <i class="fas fa-fire-alt"></i>
+    </span>
+  </div>
   <div v-else></div>
 </template>
 

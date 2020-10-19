@@ -1,30 +1,23 @@
 <template>
-  <div class="card">
+  <div v-if="isEnabled()" class="card">
     <header class="card-header">
       <div class="card-header-title">
         {{ name }}
       </div>
 
       <div class="card-header-icon">
-        <TypeIcon :type="type" />
+        <TypeIcon :type="data.type" />
       </div>
     </header>
 
     <div class="card-content">
       <div class="content">
-        <div v-if="state.color">
-          <Color :color="state.color" :device="name" />
-        </div>
 
-        <div v-if="state.brightness">
-          <Brightness :brightness="state.brightness" :device="name" />
-        </div>
+        <Light v-if="isLight()"></Light>
+        <Etrv v-if="type == 'etrv'"></Etrv>
 
-        <div v-if="state.state">
-          <State :state="state.state" :device="name" />
-        </div>
 
-        <cite class="is-divider">{{ description }}</cite>
+        <cite class="is-divider">{{ data.description }}</cite>
       </div>
     </div>
   </div>
@@ -32,21 +25,36 @@
 
 <script>
 import TypeIcon from "./TypeIcon";
-import State from "./properties/State";
-import Color from "./properties/Color";
-import Brightness from "./properties/Brightness";
+
 
 const Devices = require("../../../src/model/devices");
+const Rooms = require("../../../src/model/rooms");
+
+import Light from "./devices/Light";
+import Etrv from "./devices/Etrv";
 
 export default {
-  components: { Color, TypeIcon, State, Brightness },
+  components: { Etrv, Light, TypeIcon},
   props: ["state", "name"],
   name: "Device",
   data() {
     return {
-      description: Devices.getDescriptionOfDevice(this.name)
+        data: Devices.getDeviceByName(this.name),
+        type: Devices.getTypeOfDevice(this.name),
+        room: Rooms.getRoomOfDevice(this.name),
     };
-  }
+  },
+  methods: {
+      isLight() {
+         return Devices.isLight(this.name)
+      },
+      hasFunction(feature) {
+        return Devices.hasFunction(feature)(this.name)
+      },
+      isEnabled(){
+          return this.type === "light" || this.type === "etrv"
+      }
+  },
 };
 </script>
 

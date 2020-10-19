@@ -2,7 +2,9 @@ const R = require("ramda");
 const Kefir = require("kefir");
 const xmlrpc = require('homematic-xmlrpc');
 const Interfaces = require("../../config/interfaces");
+const async = require('async');
 const Devices = require("../model/devices");
+const Util = require('../util');
 
 const server = xmlrpc.createServer({host: "0.0.0.0", port: 2011});
 const init_url = 'http://' + Interfaces.hmip.client_address + ':' + 2011;
@@ -12,34 +14,50 @@ const client = xmlrpc.createClient({
     path: '/'
 });
 
-client.methodCall('init', [init_url, 'frs'], (err, res) => {
+client.methodCall('init', [init_url, 'frs-asdasd'], (err, res) => {
     if (err) {
         console.log("unable to connect to ccu: " + err)
     }
 });
 
+const returnEmptyList = (err, params, callback) => {
+    callback(null, []);
+};
+
+const returnEmptyString = (err, params, callback) => {
+    callback(null, '');
+};
+
 server.on("event", (err, params, callback) => {
     callback(null, '');
+    server.emit("event-stream", null, p, callback);
 });
 
-server.on("listDevices", (err, params, callback) => {
-    callback(null, []);
-});
-
-server.on("newDevices", (err, params, callback) => {
-    callback(null, []);
-});
-
-server.on("deleteDevices", (err, params, callback) => {
-    callback(null, []);
-});
+server.on("listDevices", returnEmptyList);
+server.on("newDevices", returnEmptyList);
+server.on("deleteDevices", returnEmptyList);
 
 server.on('system.multicall', (_, params, callback) => {
+    const queue = [];
     params[0].forEach(c => {
         const m = c.methodName;
         const p = c.params;
-        server.emit(m, null, p, callback);
+
+        if(m == "event"){
+            queue.push(cb => {
+                returnEmptyString(null, p, cb);
+            });
+            server.emit("event-stream", null, p, callback);
+
+
+            deviceOutputStream.plug(Kefir.constant({"etrv-office":{"setpoint":5}}))
+        } else {
+            queue.push(cb => {
+                returnEmptyList(null, p, cb);
+            });
+        }
     });
+    async.series(queue, callback);
 });
 
 const isHmipDevice = R.propEq("interface", "hmip");
@@ -75,6 +93,19 @@ const fromHmipData = params => {
     }
 };
 
+const toHmipData = data => {
+    const device = Devices.getDeviceByName(data.key);
+    const typeOfDevice = R.prop("type", device);
+
+    if(typeOfDevice === "etrv") {
+        const isSetpoint = R.has("setpoint")(data.value);
+        if(isSetpoint) {
+            return ({address: device.address + ":1", parameter: "SET_POINT_TEMPERATURE", value: data.value.setpoint})
+        }
+    }
+    return {};
+};
+
 const getDeviceNameFromAddress = address => {
     return R.pipe(
         R.pickBy(R.propEq("address", address.split(":")[0])),
@@ -88,7 +119,21 @@ const getDeviceType = R.pipe(
     R.prop("type")
 );
 
-const deviceInputStream = Kefir.fromEvents(server, 'event', (_, params, __) => params)
+const hmipEventStream = Kefir.stream(function (emitter) {
+    server.on("event-stream", (err, params, callback) => {
+        emitter.emit(params)
+    });
+});
+
+const setValue = data => {
+    client.methodCall('setValue', [data.address, data.parameter, data.value], (err, res) => {
+        if (err) {
+            console.log("unable to set value on hmip")
+        }
+    });
+};
+
+const deviceInputStream = hmipEventStream
     .filter(isFromKnownHmipDevice)
     .map(x => [getDeviceNameFromAddress(x[1]), x[2], x[3]])
     .map(x => [x[0], x[1], x[2], getDeviceType(x[0])])
@@ -97,7 +142,20 @@ const deviceInputStream = Kefir.fromEvents(server, 'event', (_, params, __) => p
     .filter(R.pipe(R.isNil, R.not))
     .map(transformToFrsObject);
 
+const deviceOutputStream = new Kefir.pool();
+
+deviceOutputStream
+    .map(Util.convertToArray)
+    .map(R.map(toHmipData))
+    .onValue(
+        array => array.forEach(input =>
+            setValue(input)
+        )
+    );
+
+
 module.exports = {
     deviceInputStream,
+    deviceOutputStream,
 };
 
