@@ -30,7 +30,7 @@ const returnEmptyString = (err, params, callback) => {
 
 server.on("event", (err, params, callback) => {
     callback(null, '');
-    server.emit("event-stream", null, p, callback);
+    server.emit("event-stream", null, params, callback);
 });
 
 server.on("listDevices", returnEmptyList);
