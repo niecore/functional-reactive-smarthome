@@ -48,9 +48,6 @@ server.on('system.multicall', (_, params, callback) => {
                 returnEmptyString(null, p, cb);
             });
             server.emit("event-stream", null, p, callback);
-
-
-            deviceOutputStream.plug(Kefir.constant({"etrv-office":{"setpoint":5}}))
         } else {
             queue.push(cb => {
                 returnEmptyList(null, p, cb);
