@@ -156,3 +156,5 @@ Shelly.groupOutputStream.plug(groups);
 
 Tasmota.deviceOutputStream.plug(devices.map(Devices.filterMsgByDeviceInterface("tasmota")));
 Tasmota.groupOutputStream.plug(groups);
+
+Hmip.deviceOutputStream.plug(devices.map(Devices.filterMsgByDeviceInterface("hmip")));
