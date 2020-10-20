@@ -9,6 +9,51 @@
         "stop": "0 0 23 * * *"
       }
     ],
+    "climate": {
+      "presets": {
+        "eco": {"heat": 20},
+        "sleep": {"heat": 19},
+        "away": {"heat": 15},
+        "comfort": {"heat": 23}
+      },
+      "programs": {
+        "default": {
+          "setpoints": [
+            {"day": "all", "hour": 8, "minute": 0, "preset": "comfort"},
+            {"day": "all", "hour": 2, "minute": 0, "preset": "away"}
+          ]
+        },
+        "bedroom": {
+          "setpoints": [
+            {"day": "all", "hour": 10, "minute": 0, "preset": "away"},
+            {"day": "all", "hour": 0, "minute": 0, "preset": "sleep"}
+          ]
+        },
+        "eco-room": {
+          "setpoints": [
+            {"day": "all", "hour": 8, "minute": 0, "preset": "eco"},
+            {"day": "all", "hour": 2, "minute": 0, "preset": "away"}
+          ]
+        }
+      },
+      "rooms": {
+        "living_room": {
+          "program": "default"
+        },
+        "bathroom": {
+          "program": "default"
+        },
+        "office": {
+          "program": "default"
+        },
+        "bedroom": {
+          "program": "bedroom"
+        },
+        "laundry_room": {
+          "program": "eco-room"
+        }
+      }
+    },
     "motionLight": {
       "rooms": {
         "junk_room": {

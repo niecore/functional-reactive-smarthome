@@ -75,7 +75,8 @@
         "plug_osram_1",
         "motionsensor_aqara_6",
         "lightbulb_hue_2",
-        "lightbulb_hue_3"
+        "lightbulb_hue_3",
+        "etrv-office"
       ]
     },
     "bathroom": {

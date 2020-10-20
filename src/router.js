@@ -28,6 +28,7 @@ const MailBoxNotification = require('./automations/mailBoxNotifcation.js');
 const DeviceUnreachableNotification = require('./automations/deviceUnreachableNotification.js');
 const RainOpenWindowAlert = require('./automations/rainOpenWindowAlert.js');
 const FlowerNeedsLoveAlert = require("./automations/flowerNeedsLoveAlert");
+const Climate = require("./automations/climate");
 
 // Control
 const Dimming = require('./control/dimming.js');
@@ -48,6 +49,7 @@ const MailBoxOpened = require("./events/mailBoxOpened");
 const DeviceOnlineOffline = require("./events/deviceOfflineOnline");
 const StartedToRain = require("./events/startedToRain");
 const IrrigationFertilzationRequired = require('./events/irrigationFertilizationRequired.js');
+const SetTemperatureInRoom = require('./events/setTemperatureInRoom.js');
 
 // Service
 const Lights = require("./service/lights");
@@ -116,6 +118,9 @@ Hub.output.plug(ChangeBrightness.output);
 StartScene.input.plug(Hub.events);
 Hub.output.plug(StartScene.output);
 
+SetTemperatureInRoom.input.plug(Hub.events);
+Hub.output.plug(SetTemperatureInRoom.output);
+
 // Plug Automations         events -> events
 MotionLight.input.plug(Hub.events);
 Hub.events.plug(MotionLight.output);
@@ -143,6 +148,9 @@ Hub.events.plug(Scenes.output);
 
 OnOffToggle.input.plug(Hub.events);
 Hub.events.plug(OnOffToggle.output);
+
+Climate.input.plug(Hub.events);
+Hub.events.plug(Climate.output);
 
 // Plug hub output to interfaces
 const devices = Hub.output.map(Groups.filterMsgIsDevice);

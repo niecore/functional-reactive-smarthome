@@ -18,6 +18,25 @@
         "trigger": "0 0 21 * * *",
         "stop": "0 0 22 * * *"
       }
-    ]
+    ],
+    "climate": {
+      "presets": {
+        "preset-1": {"heat": 20},
+        "preset-2": {"heat": 19}
+      },
+      "programs": {
+        "program-1": {
+          "setpoints": [
+            {"day": "all", "hour": 8, "minute": 0, "preset": "preset-1"},
+            {"day": "all", "hour": 2, "minute": 0, "preset": "preset-2"}
+          ]
+        }
+      },
+      "rooms": {
+        "first_room": {
+          "program": "program-1"
+        }
+      }
+    }
   }
 }
