@@ -1,15 +1,15 @@
 <template>
   <div>
     <div v-if="this.$parent.hasFunction('rgb')">
-      <Color :color="this.state.color" :device="this.name" />
+      <Color :color="state.color" :device="device" />
     </div>
 
     <div v-if="this.$parent.hasFunction('brightness')">
-      <Brightness :brightness="this.state.brightness" :device="this.name" />
+      <Brightness :brightness="state.brightness" :device="device" />
     </div>
 
-    <div v-if="this.state.state">
-      <State :state="this.state.state" :device="this.name" />
+    <div v-if="state.state">
+      <State :state="state.state" :device="device" />
     </div>
   </div>
 </template>
