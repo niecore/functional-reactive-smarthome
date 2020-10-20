@@ -14,7 +14,7 @@ const client = xmlrpc.createClient({
     path: '/'
 });
 
-client.methodCall('init', [init_url, 'frs-asdasd'], (err, res) => {
+client.methodCall('init', [init_url, 'frs'], (err, res) => {
     if (err) {
         console.log("unable to connect to ccu: " + err)
     }
@@ -125,7 +125,7 @@ const hmipEventStream = Kefir.stream(function (emitter) {
 const setValue = data => {
     client.methodCall('setValue', [data.address, data.parameter, data.value], (err, res) => {
         if (err) {
-            console.log("unable to set value on hmip")
+            console.log("unable to set value on hmip" + err)
         }
     });
 };

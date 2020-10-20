@@ -13,8 +13,8 @@
     <div class="card-content">
       <div class="content">
 
-        <Light v-if="isLight()"></Light>
-        <Etrv v-if="type == 'etrv'"></Etrv>
+        <Light :state="this.state" :device="this.name" v-if="isLight()"></Light>
+        <Etrv :state="this.state" :device="this.name" v-if="type == 'etrv'"></Etrv>
 
 
         <cite class="is-divider">{{ data.description }}</cite>

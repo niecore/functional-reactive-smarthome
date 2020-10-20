@@ -62,6 +62,22 @@ const throttleOncePerDay = src => {
     return throttleEvent
 };
 
+const debounce = R.curry((timeMs, fn) => {
+    let timeout;
+
+    return (...args) => {
+        const later = () => {
+            timeout = null;
+            R.apply(fn, args);
+        };
+
+        clearTimeout(timeout);
+        timeout = setTimeout(later, timeMs);
+
+        return timeout;
+    };
+});
+
 const schedulerStream = value => cron => Kefir.stream(emitter => {
     schedule.scheduleJob(cron, () => {
         emitter.emit(value);
@@ -75,4 +91,5 @@ module.exports = {
     groupBy,
     schedulerStream,
     throttleOncePerDay,
+    debounce
 };

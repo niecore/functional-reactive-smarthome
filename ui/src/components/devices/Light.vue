@@ -1,15 +1,15 @@
 <template>
   <div>
     <div v-if="this.$parent.hasFunction('rgb')">
-      <Color :color="this.$parent.state.color" :device="this.$parent.name" />
+      <Color :color="this.state.color" :device="this.name" />
     </div>
 
     <div v-if="this.$parent.hasFunction('brightness')">
-      <Brightness :brightness="this.$parent.state.brightness" :device="this.$parent.name" />
+      <Brightness :brightness="this.state.brightness" :device="this.name" />
     </div>
 
-    <div v-if="this.$parent.state.state">
-      <State :state="this.$parent.state.state" :device="this.$parent.name" />
+    <div v-if="this.state.state">
+      <State :state="this.state.state" :device="this.name" />
     </div>
   </div>
 </template>
@@ -21,7 +21,8 @@
 
     export default {
         components: { State, Color, Brightness},
-        name: "Etrv"
+        props: ["device", "state"],
+        name: "Light"
     }
 </script>
 

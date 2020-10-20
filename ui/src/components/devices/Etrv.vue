@@ -1,42 +1,41 @@
 <template>
   <div>
     <button v-on:click="increaseSetpoint" class="button is-fullwidth is-danger is-outlined">+</button>
-    <div class="currentTemp">{{ this.temperature }} C°</div>
-    <div class="setpointTemp">{{ this.setpoint }} C°</div>
+    <div class="currentTemp">{{ this.state.temperature }} C°</div>
+    <div class="setpointTemp">{{ this.state.setpoint }} C°</div>
     <button v-on:click="decreaseSetpoint" class="button is-fullwidth is-info is-outlined">-</button>
   </div>
 </template>
 
 <script>
     const R = require("ramda");
+    const Util = require("../../../../src/util.js");
     export default {
         name: "Etrv",
-        data() {
-            return {
-                setpoint: this.$parent.state.setpoint,
-                temperature: this.$parent.state.temperature,
-            };
-        },
+        props: ["device", "state"],
         methods: {
             increaseSetpoint() {
 
-                if(this.setpoint == 30) {return;}
+                if(this.state.setpoint == 30) {return;}
 
-                this.setpoint += 1;
-                this.updateData()
+                this.state.setpoint += 0.5;
+                this.valueChanged()
             },
             decreaseSetpoint() {
-                if(this.setpoint == 5) {return;}
+                if(this.state.setpoint == 5) {return;}
 
-                this.setpoint -= 1;
-                this.updateData()
+                this.state.setpoint -= 0.5;
+                this.valueChanged()
             },
             updateData() {
                 this.$socket.emit(
                     "frs",
-                    JSON.stringify(R.objOf(this.$parent.name, {setpoint: this.setpoint}))
+                    JSON.stringify(R.objOf(this.device, {setpoint: this.state.setpoint}))
                 );
             }
+        },
+        created() {
+            this.valueChanged = Util.debounce(2000, this.updateData)
         }
     }
 </script>
