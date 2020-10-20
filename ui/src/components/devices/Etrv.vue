@@ -1,9 +1,23 @@
 <template>
   <div>
-    <button v-on:click="increaseSetpoint" class="button is-fullwidth is-danger is-outlined">+</button>
-    <div class="currentTemp">{{ this.state.temperature }} C°</div>
-    <div class="setpointTemp">{{ this.state.setpoint }} C°</div>
-    <button v-on:click="decreaseSetpoint" class="button is-fullwidth is-info is-outlined">-</button>
+
+
+    <div class="columns">
+      <div class="column">
+        <button v-on:click="decreaseSetpoint" class="button is-fullwidth is-fullheight is-info is-outlined">-</button>
+      </div>
+      <div class="column">
+        <div class="currentTemp">{{ this.state.temperature }} °C</div>
+        <div class="setpointTemp">{{ this.state.setpoint }} °C</div>
+      </div>
+      <div class="column">
+        <button v-on:click="increaseSetpoint" class="button is-fullheight is-fullwidth is-danger is-outlined">+</button>
+      </div>
+    </div>
+
+
+
+
   </div>
 </template>
 
@@ -42,14 +56,15 @@
 
 <style scoped>
   .currentTemp {
-    font-size: 2em;
+    font-size: 1.75em;
   }
 
   .setpointTemp {
-    font-size: 1em;
+    font-size: 0.75em;
   }
 
   .button {
-    margin: 1em 0em;
+    margin: 0em 0em;
+    height: 100%;
   }
 </style>

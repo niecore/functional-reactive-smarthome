@@ -11,7 +11,7 @@ import "./registerServiceWorker";
 Vue.use(
   new VueSocketIO({
     debug: true,
-    connection: "http://192.168.0.178:9090"
+    connection: "http://192.168.0.237:9090"
   })
 );
 
