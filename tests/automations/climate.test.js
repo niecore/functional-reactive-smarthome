@@ -11,7 +11,7 @@ describe("Climate tests", () => {
         jest.resetModules();
     });
 
-    test('Basic climate test', () => {
+    test.skip('Basic climate test', () => {
         const Climate = require("../../src/automations/climate");
 
         const output = value({id: "SetTemperatureInRoom", room: "first_room", temperature: 19, state: [{}, {}]} );
