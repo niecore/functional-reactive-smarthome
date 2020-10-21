@@ -96,8 +96,14 @@ const toHmipData = data => {
 
     if(typeOfDevice === "etrv") {
         const isSetpoint = R.has("setpoint")(data.value);
+        const isHeatReduction = R.has("heat_reduction")(data.value);
         if(isSetpoint) {
             return ({address: device.address + ":1", parameter: "SET_POINT_TEMPERATURE", value: data.value.setpoint})
+        }
+
+        if(isHeatReduction) {
+            const window_state = data.value.heat_reduction ? "OPEN" : "CLOSED";
+            return ({address: device.address + ":1", parameter: "WINDOW_STATE", value: window_state})
         }
     }
     return {};

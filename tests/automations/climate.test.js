@@ -12,7 +12,7 @@ describe("Climate tests", () => {
     });
 
     test.skip('Basic climate test', () => {
-        const Climate = require("../../src/automations/climate");
+        const Climate = require("../../src/automations/climateProgram");
 
         const output = value({id: "SetTemperatureInRoom", room: "first_room", temperature: 19, state: [{}, {}]} );
         const output2 = value({id: "SetTemperatureInRoom", room: "first_room", temperature: 20, state: [{}, {}]} );

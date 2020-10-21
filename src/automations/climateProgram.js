@@ -36,17 +36,17 @@ const getCronStringFromSetpoint = (day, hour, minute) => {
 };
 
 // getSetTemperatureFromPreset :: String => Number
-const getSetTemperatureFromPreset = preset => R.prop("heat", R.prop(preset, climate_presets));
+const getSetTemperatureFromPreset = preset => R.prop("heat", R.prop(preset, climatePresets));
 
-const climate_presets = Automations.automations.climate.presets;
-const climate_rooms = Automations.automations.climate.rooms;
-const climate_programs = Automations.automations.climate.programs;
+const climatePresets = Automations.automations.climate.presets;
+const climateRooms = Automations.automations.climate.rooms;
+const climatePrograms = Automations.automations.climate.programs;
 
-const climate = Kefir.sequentially(0, Util.convertToArray(climate_rooms))
+const climateProgramOutput = Kefir.sequentially(0, Util.convertToArray(climateRooms))
     .flatMap(room_config => {
 
         const room = room_config.key;
-        const program = R.prop(room_config.value.program, climate_programs);
+        const program = R.prop(room_config.value.program, climatePrograms);
 
         return Kefir.sequentially(0, program.setpoints)
             .flatMap(setpoint => {
@@ -57,7 +57,7 @@ const climate = Kefir.sequentially(0, Util.convertToArray(climate_rooms))
             });
     });
 
-const output = climate;
+const output = climateProgramOutput;
 
 module.exports = {
     output,
