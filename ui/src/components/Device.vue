@@ -1,12 +1,12 @@
 <template>
-  <div v-if="isEnabled()" class="card">
+  <div v-if="isEnabled() && isSupportedType()" class="card">
     <header class="card-header">
       <div class="card-header-title">
         {{ name }}
       </div>
 
       <div class="card-header-icon">
-        <TypeIcon :type="data.type" />
+        <TypeIcon :type="state.type" />
       </div>
     </header>
 
@@ -14,9 +14,8 @@
       <div class="content">
 
         <Light :state="state" :device="name" v-if="isLight()"/>
-        <Etrv :state="state" :device="name" v-if="type === 'etrv'"/>
-        <Contact :state="state" :device="name" v-if="type === 'contact'"/>
-
+        <Etrv :state="state" :device="name" v-if="state.type === 'etrv'"/>
+        <Contact :state="state" :device="name" v-if="state.type === 'contact'"/>
 
         <cite class="is-divider">{{ data.description }}</cite>
       </div>
@@ -37,13 +36,11 @@ import Etrv from "./devices/Etrv";
 
 export default {
   components: { Etrv, Light, Contact, TypeIcon},
-  props: ["state", "name"],
+  props: ["state", "name", "enabled"],
   name: "Device",
   data() {
     return {
         data: Devices.getDeviceByName(this.name),
-        type: Devices.getTypeOfDevice(this.name),
-        room: Rooms.getRoomOfDevice(this.name),
     };
   },
   methods: {
@@ -54,7 +51,10 @@ export default {
         return Devices.hasFunction(feature)(this.name)
       },
       isEnabled(){
-          return this.type === "light" || this.type === "etrv" || this.type === "contact"
+        return this.enabled
+      },
+      isSupportedType() {
+        return this.state.type === "etrv" || this.state.type === "light" || this.state.type === "contact"
       }
   },
 };
