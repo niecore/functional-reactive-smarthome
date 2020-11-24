@@ -15,6 +15,7 @@
 
         <Light :state="state" :device="name" v-if="isLight()"/>
         <Etrv :state="state" :device="name" v-if="type === 'etrv'"/>
+        <Contact :state="state" :device="name" v-if="type === 'contact'"/>
 
 
         <cite class="is-divider">{{ data.description }}</cite>
@@ -31,10 +32,11 @@ const Devices = require("../../../src/model/devices");
 const Rooms = require("../../../src/model/rooms");
 
 import Light from "./devices/Light";
+import Contact from "./devices/Contact";
 import Etrv from "./devices/Etrv";
 
 export default {
-  components: { Etrv, Light, TypeIcon},
+  components: { Etrv, Light, Contact, TypeIcon},
   props: ["state", "name"],
   name: "Device",
   data() {
@@ -52,7 +54,7 @@ export default {
         return Devices.hasFunction(feature)(this.name)
       },
       isEnabled(){
-          return this.type === "light" || this.type === "etrv"
+          return this.type === "light" || this.type === "etrv" || this.type === "contact"
       }
   },
 };
