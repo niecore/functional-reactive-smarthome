@@ -199,22 +199,26 @@
     "etrv-laundryroom": {
       "interface": "hmip",
       "address": "000056D85A8C2C",
-      "type": "etrv"
+      "type": "etrv",
+      "description": "Heizkörper im Wäscheraum"
     },
     "etrv-bedroom": {
       "interface": "hmip",
       "address": "000056D85A8832",
-      "type": "etrv"
+      "type": "etrv",
+      "description": "Heizkörper im Schlafzimmer"
     },
     "etrv-bathroom": {
       "interface": "hmip",
       "address": "000056D85A89A1",
-      "type": "etrv"
+      "type": "etrv",
+      "description": "Heizkörper im Bad"
     },
     "etrv-office": {
       "interface": "hmip",
       "address": "000056D85849BD",
-      "type": "etrv"
+      "type": "etrv",
+      "description": "Heizkörper im Büro"
     },
     "etrv-bedroom2": {
       "interface": "hmip",
@@ -224,12 +228,14 @@
     "etrv-livingroom": {
       "interface": "hmip",
       "address": "000056D85849E6",
-      "type": "etrv"
+      "type": "etrv",
+      "description": "Heizkörper im Wohnzimmer"
     },
     "etrv-kitchen": {
       "interface": "hmip",
       "address": "000056D85843A3",
-      "type": "etrv"
+      "type": "etrv",
+      "description": "Heizkörper in der Küche"
     },
     "miscale": {
       "interface": "miscale",
