@@ -49,7 +49,7 @@ export default {
         "laundry_room"
       ],
       filter_types: ["etrv", "light", "contact"],
-      active_filters_type: ["etrv"],
+      active_filters_type: [],
       active_filters_room: [],
       filters_active: false
     };
