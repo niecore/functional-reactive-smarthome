@@ -54,7 +54,7 @@ export default {
         return this.enabled
       },
       isSupportedType() {
-        return this.state.type === "etrv" || this.state.type === "light" || this.state.type === "contact"
+        return this.state.type === "etrv" || this.isLight() || this.state.type === "contact" ||
       }
   },
 };
