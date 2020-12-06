@@ -271,7 +271,7 @@
       "sub_type": "light",
       "description": "Lamp sideboard livingroom"
     },
-    "plug_tasmota_2": {
+    "plug_tasmota_6": {
       "interface": "tasmota",
       "type": "plug",
       "sub_type": "light",
