@@ -45,7 +45,7 @@
     "junk_room": {
       "devices": [
         "motionsensor_aqara_1",
-        "lightbulb_huew_1"
+        "lightbulb_tradfriw_6"
       ]
     },
     "garden": {
@@ -75,6 +75,7 @@
         "remote_tradfri_4",
         "plug_osram_1",
         "motionsensor_aqara_6",
+        "motionsensor_aqara_12",
         "lightbulb_hue_2",
         "lightbulb_hue_3",
         "etrv-office",
@@ -97,14 +98,19 @@
         "plug_osram_2",
         "etrv-bedroom",
         "contact_aqara_5",
-        "contact_aqara_6"
+        "contact_aqara_6",
+        "motionsensor_aqara_11",
+        "remote_tradfri_small_1",
+        "remote_tradfri_small_2"
       ]
     },
     "laundry_room": {
       "devices": [
         "sensor_air_1",
         "etrv-laundryroom",
-        "contact_aqara_7"
+        "contact_aqara_7",
+        "lightbulb_tradfriw_7",
+        "motionsensor_aqara_10"
       ]
     }
   }

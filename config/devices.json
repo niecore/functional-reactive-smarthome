@@ -405,6 +405,45 @@
       "interface": "zigbee",
       "type": "tradfri_remote",
       "description": "Light Remote Wohnzimmer"
+    },
+    "remote_tradfri_small_1": {
+      "interface": "zigbee",
+      "type": "tradfri_remote_small",
+      "description": ""
+    },
+    "remote_tradfri_small_2": {
+      "interface": "zigbee",
+      "type": "tradfri_remote_small",
+      "description": ""
+    },
+    "lightbulb_tradfriw_6": {
+      "interface": "zigbee",
+      "type": "light",
+      "direct": true,
+      "description": "Wandlampe in Speisekammer",
+      "functions": ["brightness", "temp", "brightness_move"]
+    },
+    "lightbulb_tradfriw_7": {
+      "interface": "zigbee",
+      "type": "light",
+      "direct": true,
+      "description": "Deckenlampe in Wäschezimmer",
+      "functions": ["brightness", "temp", "brightness_move"]
+    },
+    "motionsensor_aqara_10": {
+      "interface": "zigbee",
+      "type": "motion_sensor",
+      "description": "Wäschezimmer"
+    },
+    "motionsensor_aqara_11": {
+      "interface": "zigbee",
+      "type": "motion_sensor",
+      "description": "Schlafzimmer unter Bett"
+    },
+    "motionsensor_aqara_12": {
+      "interface": "zigbee",
+      "type": "motion_sensor",
+      "description": "Bewegensmelder Büro an der Lampe"
     }
   }
 }
