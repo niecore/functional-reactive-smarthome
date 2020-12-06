@@ -101,7 +101,8 @@
         "contact_aqara_6",
         "motionsensor_aqara_11",
         "remote_tradfri_small_1",
-        "remote_tradfri_small_2"
+        "remote_tradfri_small_2",
+        "plug_tasmota_2"
       ]
     },
     "laundry_room": {
