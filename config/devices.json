@@ -393,6 +393,17 @@
       "type": "light",
       "description": "Regalbeleuchtung Wohnzimmer",
       "functions": ["brightness", "brightness_move"]
+    },
+    "contact_aqara_8": {
+      "interface": "zigbee",
+      "type": "contact",
+      "sub_type": "window",
+      "description": "Window Office"
+    },
+    "remote_tradfri_5": {
+      "interface": "zigbee",
+      "type": "tradfri_remote",
+      "description": "Light Remote Wohnzimmer"
     }
   }
 }

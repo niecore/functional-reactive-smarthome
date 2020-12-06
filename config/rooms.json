@@ -27,6 +27,7 @@
     "living_room": {
       "devices": [
         "remote_tradfri_1",
+        "remote_tradfri_5",
         "lightbulb_tradfriw_5",
         "led_dimmer_shelly3",
         "led_dimmer_shelly2",
@@ -76,7 +77,8 @@
         "motionsensor_aqara_6",
         "lightbulb_hue_2",
         "lightbulb_hue_3",
-        "etrv-office"
+        "etrv-office",
+        "contact_aqara_8"
       ]
     },
     "bathroom": {
