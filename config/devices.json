@@ -28,35 +28,35 @@
     "lightbulb_huew_1": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "direct",
+      "direct": true,
       "description": "Lampe in Speisekammer",
       "functions": ["brightness", "brightness_move"]
     },
     "lightbulb_tradfriw_1": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "direct",
+      "direct": true,
       "description": "Hängelampe Flur (Mitte)",
       "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tradfriw_2": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "direct",
+      "direct": true,
       "description": "Hängelampe Flur (Oben)",
       "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tradfriw_3": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "indirect",
+      "direct": false,
       "description": "Wandlampe Flur (Oben)",
       "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tradfriw_4": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "indirect",
+      "direct": false,
       "description": "Wandlampe Flur (Mitte)",
       "functions": ["brightness", "temp", "brightness_move"]
     },
@@ -178,7 +178,7 @@
     "lightbulb_hue_2": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "direct",
+      "direct": true,
       "description": "Stehlampe neben Schreibtisch",
       "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
@@ -192,7 +192,7 @@
     "lightbulb_hue_3": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "direct",
+      "direct": true,
       "description": "Stehlampe neben Regal in Arbeitszimmer",
       "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
@@ -274,7 +274,7 @@
     "lightbulb_tradfriw_5": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "indirect",
+      "direct": false,
       "description": "Tischlampe Schreibmaschine"
     },
     "motionsensor_aqara_7": {
@@ -328,28 +328,28 @@
     "outdoorspot_hue_1": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "indirect",
+      "direct": false,
       "description": "Lily Spot 1",
       "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
     "outdoorspot_hue_2": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "indirect",
+      "direct": false,
       "description": "Lily Spot 2",
       "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
     "outdoorspot_hue_3": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "indirect",
+      "direct": false,
       "description": "Lily Spot 3",
       "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
     "lightstrip_hue_1": {
       "interface": "zigbee",
       "type": "light",
-      "sub_type": "indirect",
+      "direct": false,
       "description": "Lightstrip under TV",
       "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
@@ -391,6 +391,7 @@
     "led_driver_tradfri_3": {
       "interface": "zigbee",
       "type": "light",
+      "direct": false,
       "description": "Regalbeleuchtung Wohnzimmer",
       "functions": ["brightness", "brightness_move"]
     },

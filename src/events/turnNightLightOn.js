@@ -12,7 +12,7 @@ const input = new Kefir.pool();
 // isNightLight :: String => boolean
 const isNightLight = R.pipe(
     Devices.getDeviceByName,
-    R.propEq("sub_type", "indirect")
+    R.propOr("direct", true)
 );
 
 const output = input

@@ -13,7 +13,7 @@
     "light_1": {
       "interface": "interface_1",
       "type": "light",
-      "sub_type": "direct",
+      "direct": true,
       "description": "description_2"
     },
     "motion_sensor_1": {
@@ -24,7 +24,7 @@
     "light_2": {
       "interface": "interface_1",
       "type": "light",
-      "sub_type": "indirect",
+      "direct": false,
       "description": "description_2"
     },
     "light_3": {
