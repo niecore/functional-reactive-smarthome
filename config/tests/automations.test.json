@@ -3,10 +3,12 @@
     "motionLight": {
       "rooms": {
         "light_room": {
-          "nightLight": false
+          "nightLight": false,
+          "delay": 120
         },
         "light_room2": {
-          "nightLight": true
+          "nightLight": true,
+          "delay": 120
         }
       }
     },

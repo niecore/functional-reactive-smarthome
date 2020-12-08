@@ -69,7 +69,7 @@
           "nightLight": false
         },
         "hallway": {
-          "delay": 240,
+          "delay": 300,
           "nightLight": false
         },
         "living_room": {
@@ -77,15 +77,15 @@
           "nightLight": true
         },
         "kitchen": {
-          "delay": 240,
+          "delay": 90,
           "nightLight": true
         },
         "laundry_room": {
-          "delay": 240,
+          "delay": 90,
           "nightLight": true
         },
         "bedroom": {
-          "delay": 240,
+          "delay": 90,
           "nightLight": true
         }
       }

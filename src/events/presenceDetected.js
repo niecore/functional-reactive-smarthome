@@ -3,6 +3,7 @@ const Kefir = require("kefir");
 
 const Events = require("./events");
 const Util = require('../util');
+const Automations = require("../../config/automations.json");
 
 // isMovementDetectedEvent :: Event => boolean
 const isMovementDetectedEvent = Events.isEvent("MovementDetected");
@@ -20,9 +21,10 @@ const createPresenceGoneEvent = room => Events.createEvent({room: room}, "Presen
 const presenceDetectedDueToMovementInRoom = movementDetectedEvent => {
     const room = getRoomOfMovement(movementDetectedEvent);
     const state = Events.getState(movementDetectedEvent);
+    const timeout = R.path([room, "delay"], Automations.automations.motionLight.rooms)
 
     const presenceDetected = Kefir.constant(createPresenceDetectedEvent(room)(state));
-    const presenceGone = Kefir.later(120000, createPresenceGoneEvent(room)(state));
+    const presenceGone = Kefir.later(timeout * 1000, createPresenceGoneEvent(room)(state));
 
     return presenceDetected.merge(presenceGone)
 };
