@@ -12,8 +12,12 @@ const input = new Kefir.pool();
 // isNightLight :: String => boolean
 const isNightLight = R.pipe(
     Devices.getDeviceByName,
-    R.propOr("direct", true)
+    R.propOr(true, "direct"),
+    R.not
 );
+
+// isDimmable :: String => boolean
+const isDimmable = Devices.hasFunction("brightness")
 
 const output = input
     .filter(isLightOnEvent)
@@ -21,7 +25,8 @@ const output = input
 
         const nightLightsInRoom = Rooms.getDevicesInRoom(lightOnEvent.room)
             .filter(Devices.isLight)
-            .filter(isNightLight);
+            .filter(isNightLight)
+            .filter(isDimmable);
 
         const enableLights = nightLightsInRoom
             .map(device_name => R.objOf(device_name, {state: "ON", brightness: 1}));
