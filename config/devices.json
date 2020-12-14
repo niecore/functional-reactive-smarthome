@@ -25,13 +25,6 @@
       "type": "motion_sensor",
       "description": ""
     },
-    "lightbulb_huew_1": {
-      "interface": "zigbee",
-      "type": "light",
-      "direct": true,
-      "description": "Lampe in Speisekammer",
-      "functions": ["brightness", "brightness_move"]
-    },
     "lightbulb_tradfriw_1": {
       "interface": "zigbee",
       "type": "light",
@@ -78,24 +71,28 @@
     "lightbulb_tint_2": {
       "interface": "zigbee",
       "type": "light",
+      "direct": false,
       "description": "Lampe in Regal links",
       "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tint_3": {
       "interface": "zigbee",
       "type": "light",
+      "direct": false,
       "description": "Lampe in Regal rechts",
       "functions": ["brightness", "temp", "brightness_move"]
     },
     "led_driver_tradfri_1": {
       "interface": "zigbee",
       "type": "light",
+      "direct": false,
       "description": "Küchenunterschrankbeleuchtung Links",
       "functions": ["brightness", "brightness_move"]
     },
     "led_driver_tradfri_2": {
       "interface": "zigbee",
       "type": "light",
+      "direct": false,
       "description": "Küchenunterschrankbeleuchtung Rechts",
       "functions": ["brightness", "brightness_move"]
     },
@@ -178,7 +175,7 @@
     "lightbulb_hue_2": {
       "interface": "zigbee",
       "type": "light",
-      "direct": true,
+      "direct": false,
       "description": "Stehlampe neben Schreibtisch",
       "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
@@ -192,7 +189,7 @@
     "lightbulb_hue_3": {
       "interface": "zigbee",
       "type": "light",
-      "direct": true,
+      "direct": false,
       "description": "Stehlampe neben Regal in Arbeitszimmer",
       "functions": ["brightness", "temp", "brightness_move", "rgb"]
     },
@@ -281,7 +278,8 @@
       "interface": "zigbee",
       "type": "light",
       "direct": false,
-      "description": "Tischlampe Schreibmaschine"
+      "description": "Tischlampe Schreibmaschine",
+      "functions": ["brightness", "temp", "brightness_move"]
     },
     "motionsensor_aqara_7": {
       "interface": "zigbee",
@@ -439,14 +437,14 @@
     "lightbulb_tradfriw_8": {
       "interface": "zigbee",
       "type": "light",
-      "direct": true,
+      "direct": false,
       "description": "Nachttischlampe Rechts",
       "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tradfriw_9": {
       "interface": "zigbee",
       "type": "light",
-      "direct": true,
+      "direct": false,
       "description": "Nachttischlampe Links",
       "functions": ["brightness", "temp", "brightness_move"]
     },
