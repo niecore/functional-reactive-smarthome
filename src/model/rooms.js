@@ -34,6 +34,7 @@ const getRoomOfMessage = R.pipe(
 );
 
 module.exports = {
+    knownRooms,
     getRoomByName,
     getDevicesInRoom,
     getRoomOfDevice,

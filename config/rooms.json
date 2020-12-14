@@ -12,8 +12,6 @@
         "contact_aqara_3"
       ]
     },
-    "server_room": {},
-    "bathroom_small": {},
     "kitchen": {
       "devices": [
         "led_driver_tradfri_1",
