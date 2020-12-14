@@ -93,7 +93,6 @@
       "devices": [
         "remote_tradfri_2",
         "sensor_air_3",
-        "plug_osram_2",
         "etrv-bedroom",
         "contact_aqara_5",
         "contact_aqara_6",
