@@ -66,7 +66,7 @@
         },
         "office": {
           "delay": 600,
-          "nightLight": false
+          "nightLight": true
         },
         "hallway": {
           "delay": 300,
@@ -78,11 +78,11 @@
         },
         "kitchen": {
           "delay": 90,
-          "nightLight": true
+          "nightLight": false
         },
         "laundry_room": {
           "delay": 90,
-          "nightLight": true
+          "nightLight": false
         },
         "bedroom": {
           "delay": 90,
