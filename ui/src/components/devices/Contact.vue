@@ -10,12 +10,7 @@ const Devices = require("../../../../src/model/devices");
 const R = require("ramda");
 export default {
   name: "Contact",
-  props: ["device", "state"],
-  data() {
-    return {
-      data: Devices.getDeviceByName(this.name),
-    };
-  },
+  props: ["device", "state", "name"],
 }
 </script>
 

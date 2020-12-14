@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      :id="device + '_color'"
+      :id="name + '_color'"
       class="color-box"
       v-bind:style="{ backgroundColor: getCssColor }"
     ></div>
@@ -17,7 +17,7 @@
             step="1"
             min="0"
             max="360"
-            v-model="hue"
+            v-model="state.color.hue"
             v-on:change="updateData()"
             type="range"
           />
@@ -36,7 +36,7 @@
             step="1"
             min="0"
             max="100"
-            v-model="saturation"
+            v-model="state.color.saturation"
             v-on:change="updateData()"
             type="range"
           />
@@ -51,33 +51,21 @@ const space = require("color-space");
 const R = require("ramda");
 
 export default {
-  props: ["color", "device"],
+  props: ["state", "name"],
   name: "Color",
-  data() {
-    return {
-      hue: this.color.hue,
-      saturation: this.color.saturation,
-      swatches: [
-        "#f8ff00",
-        "#f6008c",
-        "#f24cf4",
-        "#42f8ee",
-        "#ff0500",
-        "#0001f6"
-      ]
-    };
-  },
   computed: {
     getCssColor() {
-      if (this.color.hue && this.color.saturation) {
-        return `hsl(${this.color.hue}, ${this.color.saturation}%, 90%)`;
-      } else if (this.color.x && this.color.y) {
+      if (!this.state || !this.state.color) {
+        return `hsl(0, 0%, 90%)`;
+      } else  if (this.state.color.hue && this.state.color.saturation) {
+        return `hsl(${this.state.color.hue}, ${this.state.color.saturation}%, 90%)`;
+      } else if (this.state.color.x && this.state.color.y) {
         const hsl = space.xyz.hsluv(
-          space.xyy.xyz([this.color.x, this.color.y, 1])
+          space.xyy.xyz([this.state.color.x, this.state.color.y, 1])
         );
         return `hsl(${hsl[0]}, ${hsl[0]}%, 90%)`;
       } else {
-        return `hsl(0, 0%, 90%)\``;
+
       }
     }
   },
@@ -86,10 +74,10 @@ export default {
       this.$socket.emit(
         "frs",
         JSON.stringify(
-          R.objOf(this.device, {
+          R.objOf(this.name, {
             color: {
-              hue: this.hue,
-              saturation: this.saturation
+              hue: this.state.color.hue,
+              saturation: this.state.color.saturation
             }
           })
         )

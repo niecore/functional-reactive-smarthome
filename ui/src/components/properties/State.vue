@@ -6,13 +6,13 @@
     <div class="column has-text-right">
       <div class="field">
         <input
-          :id="device + '_state_btn'"
+          :id="name + '_state_btn'"
           type="checkbox"
           class="switch"
           v-model="checked"
           v-on:change="updateData()"
         />
-        <label :for="device + '_state_btn'"></label>
+        <label :for="name + '_state_btn'"></label>
       </div>
     </div>
   </div>
@@ -22,19 +22,16 @@
 const R = require("ramda");
 
 export default {
-  props: ["state", "device"],
+  props: ["state", "name"],
   name: "State",
   data() {
     return {
-      checked: this.state.toUpperCase() === "ON"
+      checked: R.pathOr('OFF', ['state'], this.state).toUpperCase() === "ON"
     };
   },
   watch: {
-    checked: function(newValue) {
-      this.state.toUpperCase = newValue.toUpperCase() ? "ON" : "OFF";
-    },
     state: function(newValue) {
-      this.checked = newValue.toUpperCase() === "ON";
+      this.checked = newValue.state.toUpperCase() === "ON";
     }
   },
   methods: {
@@ -42,7 +39,7 @@ export default {
       this.$socket.emit(
         "frs",
         JSON.stringify(
-          R.objOf(this.device, { state: this.checked ? "ON" : "OFF" })
+          R.objOf(this.name, { state: this.checked ? "ON" : "OFF" })
         )
       );
     }

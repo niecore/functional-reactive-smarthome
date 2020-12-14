@@ -6,18 +6,18 @@
       </div>
 
       <div class="card-header-icon">
-        <TypeIcon :type="state.type" />
+        <TypeIcon :type="device.type" />
       </div>
     </header>
 
     <div class="card-content">
       <div class="content">
 
-        <Light :state="state" :device="name" v-if="isLight()"/>
-        <Etrv :state="state" :device="name" v-if="state.type === 'etrv'"/>
-        <Contact :state="state" :device="name" v-if="state.type === 'contact'"/>
+        <Light :device="device" :state="state" :name="name" v-if="isLight()"/>
+        <Etrv :device="device" :state="state" :name="name" v-if="device.type === 'etrv'"/>
+        <Contact :device="device" :state="state" :name="name" v-if="device.type === 'contact'"/>
 
-        <cite class="is-divider">{{ data.description }}</cite>
+        <cite class="is-divider">{{ device.description }}</cite>
       </div>
     </div>
   </div>
@@ -36,13 +36,9 @@ import Etrv from "./devices/Etrv";
 
 export default {
   components: { Etrv, Light, Contact, TypeIcon},
-  props: ["state", "name", "enabled"],
+  props: ["device", "state", "name", "enabled"],
   name: "Device",
-  data() {
-    return {
-        data: Devices.getDeviceByName(this.name),
-    };
-  },
+
   methods: {
       isLight() {
          return Devices.isLight(this.name)
@@ -54,7 +50,7 @@ export default {
         return this.enabled
       },
       isSupportedType() {
-        return this.state.type === "etrv" || this.isLight() || this.state.type === "contact"
+        return this.device.type === "etrv" || this.isLight() || this.device.type === "contact"
       }
   },
 };

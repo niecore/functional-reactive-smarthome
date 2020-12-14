@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="devices container">
-      <Device v-for="(data, device) in devices" :key="device" :state="data" :name="device"
+      <Device v-for="(data, device) in devices" :state="state[device]" :key="device" :device="data" :name="device"
               :enabled="isDeviceEnabled(data)"></Device>
     </div>
   </div>
@@ -27,6 +27,14 @@ export default {
   components: {
     Device
   },
+  created() {
+    this.devices = Devices.knownDevices
+
+    for (const [key, _] of Object.entries(this.devices)) {
+      this.devices[key].room = Rooms.getRoomOfDevice(key);
+      this.devices[key].enabled = this.isDeviceEnabled(this.devices[key]);
+    }
+  },
 
   data() {
     return {
@@ -34,10 +42,7 @@ export default {
       state: {},
       devices: {},
       filter_rooms: [
-        "front_door",
         "hallway",
-        "server_room",
-        "bathroom_small",
         "kitchen",
         "living_room",
         "junk_room",
@@ -85,6 +90,17 @@ export default {
       } else {
         this.active_filters_room.push(tag);
       }
+      const devicesTypeActive = R.includes(device.type, this.active_filters_type);
+      const deviceRoomActive = R.includes(device.room, this.active_filters_room);
+      const deviceBothActive = devicesTypeActive && deviceRoomActive;
+
+      return filterByBoth
+          ? deviceBothActive
+          : filterByType
+              ? devicesTypeActive
+              : filterByRoom
+                  ? deviceRoomActive
+                  : true;
     },
     clickFilterType(tag) {
       if(this.filterActive(tag)) {
@@ -107,15 +123,6 @@ export default {
       data = JSON.parse(data);
       this.input = data[0];
       this.state = R.mergeDeepRight(data[1], data[0]);
-      this.devices = this.state
-
-      for (const [key, value] of Object.entries(this.devices)) {
-        this.devices[key].type = Devices.getTypeOfDevice(key);
-        this.devices[key].room = Rooms.getRoomOfDevice(key);
-        this.devices[key].enabled = this.isDeviceEnabled(this.devices[key]);
-      }
-
-      console.log(this.devices)
     }
   }
 };

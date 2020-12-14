@@ -9,7 +9,7 @@
         step="1"
         min="0"
         max="255"
-        v-model="brightness"
+        v-model="state.brightness"
         v-on:change="updateData()"
         type="range"
       />
@@ -21,13 +21,13 @@
 const R = require("ramda");
 
 export default {
-  props: ["brightness", "device"],
+  props: ["state", "name"],
   name: "Brightness",
   methods: {
     updateData() {
       this.$socket.emit(
         "frs",
-        JSON.stringify(R.objOf(this.device, { brightness: this.brightness }))
+        JSON.stringify(R.objOf(this.name, { brightness: this.state.brightness }))
       );
     }
   }
