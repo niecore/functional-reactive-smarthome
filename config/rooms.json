@@ -71,26 +71,26 @@
         "button_shelly1",
         "led_dimmer_shelly1",
         "remote_tradfri_4",
-        "plug_osram_1",
         "motionsensor_aqara_6",
         "motionsensor_aqara_12",
         "lightbulb_hue_2",
         "lightbulb_hue_3",
         "etrv-office",
-        "contact_aqara_8"
+        "contact_aqara_8",
+        "lightbulb_tint_3",
+        "lightbulb_tint_2"
       ]
     },
     "bathroom": {
       "devices": [
         "sensor_air_2",
         "etrv-bathroom",
-        "miscale"
+        "miscale",
+        "contact_aqara_9"
       ]
     },
     "bedroom": {
       "devices": [
-        "lightbulb_tint_3",
-        "lightbulb_tint_2",
         "remote_tradfri_2",
         "sensor_air_3",
         "plug_osram_2",
@@ -100,7 +100,9 @@
         "motionsensor_aqara_11",
         "remote_tradfri_small_1",
         "remote_tradfri_small_2",
-        "plug_tasmota_6"
+        "plug_tasmota_6",
+        "lightbulb_tradfriw_8",
+        "lightbulb_tradfriw_9"
       ]
     },
     "laundry_room": {

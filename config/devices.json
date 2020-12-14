@@ -78,13 +78,13 @@
     "lightbulb_tint_2": {
       "interface": "zigbee",
       "type": "light",
-      "description": "Nachtischlampe Her",
+      "description": "Lampe in Regal links",
       "functions": ["brightness", "temp", "brightness_move"]
     },
     "lightbulb_tint_3": {
       "interface": "zigbee",
       "type": "light",
-      "description": "Nachtischlampe Me",
+      "description": "Lampe in Regal rechts",
       "functions": ["brightness", "temp", "brightness_move"]
     },
     "led_driver_tradfri_1": {
@@ -436,6 +436,20 @@
       "description": "Deckenlampe in Wäschezimmer",
       "functions": ["brightness", "temp", "brightness_move"]
     },
+    "lightbulb_tradfriw_8": {
+      "interface": "zigbee",
+      "type": "light",
+      "direct": true,
+      "description": "Nachttischlampe Rechts",
+      "functions": ["brightness", "temp", "brightness_move"]
+    },
+    "lightbulb_tradfriw_9": {
+      "interface": "zigbee",
+      "type": "light",
+      "direct": true,
+      "description": "Nachttischlampe Links",
+      "functions": ["brightness", "temp", "brightness_move"]
+    },
     "motionsensor_aqara_10": {
       "interface": "zigbee",
       "type": "motion_sensor",
@@ -449,7 +463,13 @@
     "motionsensor_aqara_12": {
       "interface": "zigbee",
       "type": "motion_sensor",
-      "description": "Bewegensmelder Büro an der Lampe"
+      "description": "Bewegungsmelder Büro an der Lampe"
+    },
+    "contact_aqara_9": {
+      "interface": "zigbee",
+      "type": "contact",
+      "sub_type": "door",
+      "description": "Fenster Badezimmer oben"
     }
   }
 }
