@@ -33,5 +33,11 @@
     "right": [
       "staircase_on"
     ]
+  },
+  "remote_tradfri_small_1": {
+    "bind": "lightbulb_tradfriw_8"
+  },
+  "remote_tradfri_small_2": {
+    "bind": "lightbulb_tradfriw_9"
   }
 }
