@@ -20,6 +20,7 @@ const Groups = require("./model/groups");
 
 // Devices
 const TradfriRemote = require("./devices/tradfriRemote");
+const TradfriRemoteSmall = require("./devices/tradfriRemoteSmall");
 
 // Automations
 const AmbientLight = require('./automations/ambientLight.js');
@@ -35,14 +36,14 @@ const HeatReductionWithOpenWindow = require("./automations/heatReductionWithOpen
 const Dimming = require('./control/dimming.js');
 const Scenes = require('./control/sceneSwitching.js');
 const OnOffToggle = require('./control/onOffToggle.js');
+const OnOffSwitch = require('./control/onOffSwitch.js');
 
 // Events
 const LuminosityInRoom = require("./events/luminosityInRoom");
 const MovementDetected = require("./events/movementDetected");
 const PresenceDetected = require("./events/presenceDetected");
-const TurnLightOn = require("./events/turnLightOn");
+const TurnLightOn = require("./events/turnLightOnOff");
 const TurnNightLightsOn = require("./events/turnNightLightOn");
-const TurnAllLightsOff = require("./events/turnAllLightsOff");
 const ChangeBrightness = require("./events/changeBrightness");
 const StartScene = require("./events/startScene");
 const DoorWindowOpenedClosed = require("./events/doorWindowOpenedClosed");
@@ -78,6 +79,9 @@ EasyControl.deviceInputStream.then(function (stream) {
 TradfriRemote.input.plug(Hub.input);
 Hub.events.plug(TradfriRemote.output);
 
+TradfriRemoteSmall.input.plug(Hub.input);
+Hub.events.plug(TradfriRemoteSmall.output);
+
 // Plug Events of Type 1    input -> events
 MovementDetected.input.plug(Hub.input);
 Hub.events.plug(MovementDetected.output);
@@ -110,9 +114,6 @@ Hub.output.plug(TurnLightOn.output);
 
 TurnNightLightsOn.input.plug(Hub.events);
 Hub.output.plug(TurnNightLightsOn.output);
-
-TurnAllLightsOff.input.plug(Hub.events);
-Hub.output.plug(TurnAllLightsOff.output);
 
 ChangeBrightness.input.plug(Hub.events);
 Hub.output.plug(ChangeBrightness.output);
@@ -153,6 +154,9 @@ Hub.events.plug(Scenes.output);
 
 OnOffToggle.input.plug(Hub.events);
 Hub.events.plug(OnOffToggle.output);
+
+OnOffSwitch.input.plug(Hub.events);
+Hub.events.plug(OnOffSwitch.output);
 
 ClimateProgram.input.plug(Hub.events);
 Hub.events.plug(ClimateProgram.output);

@@ -24,7 +24,7 @@ const isActivateSceneEvent = Events.isEvent("StartScene");
 const createNoActionEvent = Events.createBasicEvent("NoAction");
 const createTurnAllLightsInRoomOnEvent = room => Events.createEvent({room: room}, "TurnLightsOn");
 const createTurnAllNightLightsInRoomOnEvent = room => Events.createEvent({room: room}, "TurnNightLightsOn");
-const createTurnAllLightsInRoomOffEvent = room => Events.createEvent({room: room}, "TurnAllLightsOff");
+const createTurnAllLightsInRoomOffEvent = room => Events.createEvent({room: room}, "TurnLightsOff");
 
 const presenceStream = input
     .filter(isPresenceInRoomEvent);
@@ -56,7 +56,7 @@ const useNightLight = room => DayPeriod.itsNightTime() && isRoomWithNightlight(r
 
 const presenceGoneInRoom = room => R.propEq("room", room);
 
-// startMotionLightRoutine :: PresenceDetected => Stream<TurnLightsOn, TurnAllLightsOff, NoAction>
+// startMotionLightRoutine :: PresenceDetected => Stream<TurnLightsOn, TurnLightsOff, NoAction>
 const startMotionLightRoutine = presenceDetected => {
     const state = Events.getState(presenceDetected);
     const room = presenceDetected.room;

@@ -14,7 +14,7 @@ describe("Motionlight tests", () => {
     const presenceDetected = value({id: "PresenceDetected", room: "light_room", state: [{},{}]});
     const presenceGone = value({id: "PresenceGone", room: "light_room", state: [{},{}]});
     const turnLightsOn = value({id: "TurnLightsOn", room: "light_room", state: [{},{}]});
-    const turnLightsOff = value({id: "TurnAllLightsOff", room: "light_room", state: [{},{}]});
+    const turnLightsOff = value({id: "TurnLightsOff", room: "light_room", state: [{},{}]});
     const turnNightLightsOn = value({id: "TurnNightLightsOn", room: "light_room2", state: [{},{}]});
 
     test('Motion light will ignore PresenceGone events from other rooms', () => {
